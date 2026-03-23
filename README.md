@@ -14,7 +14,7 @@ AutoMindLab owns its own council, specialist agents, automation, and runtime-sid
 - GitHub automation for validation and repository health
 - reusable service clients for consumer products
 
-BMO-stack remains as the **reference point and inspiration source** for the core agent concepts and local-first design principles.
+## Boundary model
 
 ### AutoMindLab Stack owns
 - runtime and agent execution
@@ -84,7 +84,7 @@ The repository includes:
 - CodeQL analysis for JavaScript files
 - Dependabot updates for GitHub Actions and npm dependencies
 
-## License
+## Design rules
 
 - runtime-side output is advisory unless a consumer product explicitly persists it
 - safety, escalation, and uncertainty should always be explicit

@@ -73,8 +73,11 @@ config_path.parent.mkdir(parents=True, exist_ok=True)
 config_path.write_text(json.dumps(config, indent=2) + "\n")
 PY
 
-openclaw agents set-identity --workspace "$HOST_WORKSPACE" --from-identity >/dev/null 2>&1 || true
-openclaw agents set-identity --workspace "$WORKER_WORKSPACE" --from-identity >/dev/null 2>&1 || true
+openclaw agents set-identity --workspace "$HOST_WORKSPACE" --from-identity \
+  || echo "Warning: host identity seeding failed — verify workspace manually"
+openclaw agents set-identity --workspace "$WORKER_WORKSPACE" --from-identity \
+  || echo "Warning: worker identity seeding failed — verify workspace manually"
+
 openclaw config validate >/dev/null
 
 echo "Configured OpenClaw host/worker split for AutoMindLab."

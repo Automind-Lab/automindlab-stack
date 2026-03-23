@@ -3,6 +3,8 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 CONFIG_FILE="$ROOT_DIR/config/runtime.auto.env"
+OPENCLAW_HOME="${OPENCLAW_HOME:-$HOME/.openclaw}"
+HOST_WORKSPACE="${AUTOMIND_HOST_WORKSPACE:-$OPENCLAW_HOME/workspace-automind-host}"
 
 read_value() {
   local file="$1"
@@ -45,6 +47,19 @@ if docker compose version >/dev/null 2>&1; then
   echo "docker compose: present"
 else
   echo "docker compose: missing"
+fi
+
+echo
+count=$(find "$ROOT_DIR/context/council" -maxdepth 1 -name '*.md' ! -name 'COUNCIL_OF_13.md' | wc -l | tr -d ' ')
+echo "council seats detected: $count"
+if [[ "$count" != "13" ]]; then
+  echo "warning: expected exactly 13 council seat files"
+fi
+
+if [[ -f "$HOST_WORKSPACE/BOOTSTRAP.md" ]]; then
+  echo "workspace bootstrap: present"
+else
+  echo "workspace bootstrap: missing; run make configure-agents"
 fi
 
 echo
