@@ -1,0 +1,39 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate diagnostic package metadata
+        run: |
+          node -e "const fs=require('fs'); const pkg=JSON.parse(fs.readFileSync('services/diagnostic/package.json','utf8')); if(!pkg.name||!pkg.scripts){throw new Error('package.json missing required fields')}"
+
+      - name: Syntax check diagnostic service
+        run: |
+          node --check services/diagnostic/consultation-service.js
+          node --check services/diagnostic/server.js
+
+      - name: Validate council seat count
+        run: |
+          count=$(find context/council -maxdepth 1 -name '*.md' ! -name 'COUNCIL_OF_13.md' | wc -l | tr -d ' ')
+          test "$count" -ge 13
+
+      - name: Validate key files exist
+        run: |
+          test -f docs/OPENCLAW_HOST_AGENT_SYSTEM.md
+          test -f scripts/configure-openclaw-agents.sh
+          test -f lib/services/diagnostic_consultation_service.dart
