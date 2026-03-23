@@ -44,6 +44,11 @@ openclaw gateway restart
 - configures `automind-worker` with sandbox mode `all`
 - restores front-door bindings to the host agent
 
+## Delegation protocol
+
+The host-to-worker handoff is documented in `docs/WORKER_DELEGATION_PROTOCOL.md`.
+Use that protocol whenever the host delegates isolated execution to the worker.
+
 ## Verification
 
 ```bash

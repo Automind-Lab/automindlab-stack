@@ -1,4 +1,4 @@
-.PHONY: doctor configure-agents worker-status diagnostic-install diagnostic-start up down
+.PHONY: doctor configure-agents worker-status diagnostic-install diagnostic-start diagnostic-test diagnostic-ci up down review-comments
 
 doctor:
 	./scripts/runtime-doctor.sh
@@ -14,6 +14,15 @@ diagnostic-install:
 
 diagnostic-start:
 	cd services/diagnostic && npm start
+
+diagnostic-test:
+	cd services/diagnostic && npm test
+
+diagnostic-ci:
+	cd services/diagnostic && npm install && npm test
+
+review-comments:
+	cat .ona/review/comments.json
 
 up:
 	docker compose -f deployments/openclaw/compose.yaml up -d
