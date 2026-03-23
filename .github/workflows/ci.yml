@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - feature/**
+      - fix/**
   pull_request:
 
 jobs:
@@ -20,7 +21,7 @@ jobs:
 
       - name: Validate diagnostic package metadata
         run: |
-          node -e "const fs=require('fs'); const pkg=JSON.parse(fs.readFileSync('services/diagnostic/package.json','utf8')); if(!pkg.name||!pkg.scripts){throw new Error('package.json missing required fields')}"
+          node -e "const fs=require('fs'); const pkg=JSON.parse(fs.readFileSync('services/diagnostic/package.json','utf8')); if(!pkg.name||!pkg.scripts||!pkg.scripts.test){throw new Error('package.json missing required fields')}"
 
       - name: Syntax check diagnostic service
         run: |
@@ -30,10 +31,29 @@ jobs:
       - name: Validate council seat count
         run: |
           count=$(find context/council -maxdepth 1 -name '*.md' ! -name 'COUNCIL_OF_13.md' | wc -l | tr -d ' ')
-          test "$count" -ge 13
+          test "$count" -eq 13
+
+      - name: Validate specialist brief markers
+        run: |
+          grep -q 'Council Composition & Influence' context/council/diagnostic/PUMP_SPECIALIST.md
+          grep -q 'The Pump Specialist is a specialist agent, not a numbered council seat.' context/council/diagnostic/PUMP_SPECIALIST.md
+
+      - name: Verify module resolution
+        run: |
+          node -e "require('./services/diagnostic/consultation-service')"
+
+      - name: Install diagnostic service dependencies
+        run: |
+          npm install --prefix services/diagnostic
+
+      - name: Run diagnostic service tests
+        run: |
+          npm test --prefix services/diagnostic
 
       - name: Validate key files exist
         run: |
           test -f docs/OPENCLAW_HOST_AGENT_SYSTEM.md
           test -f scripts/configure-openclaw-agents.sh
           test -f lib/services/diagnostic_consultation_service.dart
+          test -f .ona/skills/diagnostic-consultation.md
+          test -f .cursor/rules/agents.md

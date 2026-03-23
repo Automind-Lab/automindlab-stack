@@ -1,708 +1,280 @@
 /**
- * Diagnostic Consultation Service for AutoMindLab Stack
- * Provides Pump Specialist guidance to enhance FLOWCOMMANDER diagnostic workflows
+ * AutoMindLab diagnostic consultation service.
+ *
+ * This adapter stays self-contained and runnable inside this repository.
+ * It returns structured advisory output aligned with the Pump Specialist brief
+ * without depending on council runtime classes that do not exist here.
  */
 
-const { Prismo } = require('../../context/council/PRISMO');
-const { AutoMindLab } = require('../../context/council/AUTOMINDLAB');
-const { PumpSpecialist } = require('../diagnostic/PUMP_SPECIALIST');
+const COUNCIL_ROUTER = {
+  lowPressure: ['Nikola Tesla', 'Albert Einstein', 'Marcus Aurelius'],
+  pressureOscillation: ['Nikola Tesla', 'Albert Einstein', 'Bob Ross'],
+  highAmps: ['Albert Einstein', 'Marcus Aurelius', 'David Goggins'],
+  pumpCycling: ['Nikola Tesla', 'Carl Jung', 'Bob Ross'],
+  lagPumpNotEngaging: ['Nikola Tesla', 'Albert Einstein', 'David Goggins'],
+  abnormalFrequencyBehavior: ['Nikola Tesla', 'Albert Einstein', 'Carl Jung'],
+  communicationTimeSyncAnomaly: ['Nikola Tesla', 'Albert Einstein', 'Marcus Aurelius'],
+  generalPerformanceIssue: ['Leonardo da Vinci', 'Carl Jung', 'Bob Ross'],
+};
+
+const BASELINES = {
+  lowPressure: {
+    probableCauses: [
+      { cause: 'Demand increase or inadequate lag support', confidence: 'medium', evidence: ['Low pressure commonly appears when real demand exceeds available support.'] },
+      { cause: 'Control tuning weakness', confidence: 'medium', evidence: ['Weak control response can hold pressure below setpoint without a hard alarm.'] },
+      { cause: 'Mechanical restriction or wear', confidence: 'low', evidence: ['Restriction, wear, or blockage can suppress pressure even when the pump is running.'] },
+    ],
+    nextChecks: [
+      { action: 'Capture steady-state discharge pressure versus setpoint.', tool: 'Calibrated pressure gauge', safety: 'Standard LOTO and pressure awareness', priority: 'high' },
+      { action: 'Capture lead pump frequency while demand is stable.', tool: 'HMI or VFD readout', safety: 'Observe electrical boundaries', priority: 'high' },
+      { action: 'Review lag threshold, alarm history, and control limits.', tool: 'Controller or SCADA history', safety: 'No field disassembly required', priority: 'medium' },
+    ],
+    partsToConsider: [
+      { part: 'Pressure transducer', reason: 'If sensing quality is questionable', compatibility: 'Verify OEM and range', urgency: 'medium' },
+      { part: 'Suction strainer service parts', reason: 'Restriction is a common low-pressure contributor', compatibility: 'Match station piping and basket size', urgency: 'medium' },
+    ],
+    escalationCriteria: [
+      { condition: 'Pressure remains materially below setpoint after validation checks', threshold: '>10% below target', action: 'Escalate to senior technician or engineer', timeline: 'Within current service window' },
+      { condition: 'Unsafe electrical or control condition is observed', threshold: 'Any credible safety concern', action: 'Stop work and escalate immediately', timeline: 'Immediate' },
+    ],
+    closeOutNote: 'Technician validated low-pressure behavior and should record PSI, lead pump Hz, and whether demand, tuning, or restriction best explains the condition.',
+    alternativePaths: [
+      { name: 'Controls-first review', description: 'If Hz is low while pressure is low, prioritize tuning and lag-threshold review.', trigger: 'Low pressure paired with unexpectedly low Hz' },
+      { name: 'Mechanical restriction path', description: 'If Hz is high while pressure remains low, inspect for restriction, wear, or cavitation contributors.', trigger: 'Low pressure paired with elevated Hz' },
+    ],
+  },
+  pressureOscillation: {
+    probableCauses: [
+      { cause: 'Aggressive control behavior', confidence: 'medium', evidence: ['Oscillation frequently points to unstable tuning.'] },
+      { cause: 'Sensor noise or placement issue', confidence: 'medium', evidence: ['Poor sensing can drive false corrections.'] },
+      { cause: 'Valve or mechanical instability', confidence: 'low', evidence: ['Mechanical instability can amplify otherwise small control swings.'] },
+    ],
+    nextChecks: [
+      { action: 'Capture oscillation range and period.', tool: 'Trend log or gauge observation', safety: 'Standard PPE', priority: 'high' },
+      { action: 'Confirm whether VFD output is hunting or stable.', tool: 'Drive display or trend view', safety: 'Observe electrical boundaries', priority: 'high' },
+      { action: 'Inspect sensor location, wiring, and valve behavior.', tool: 'Inspection tools', safety: 'LOTO before touching wiring', priority: 'medium' },
+    ],
+    partsToConsider: [
+      { part: 'Pressure transducer', reason: 'If sensing instability is suspected', compatibility: 'Verify range and connector type', urgency: 'medium' },
+    ],
+    escalationCriteria: [
+      { condition: 'Oscillation persists after sensing and control checks', threshold: 'Repeatable pattern remains present', action: 'Escalate for controls review', timeline: 'Same visit' },
+    ],
+    closeOutNote: 'Technician observed oscillation and should document swing range, controller behavior, and whether sensing, tuning, or mechanical instability best matches the evidence.',
+    alternativePaths: [
+      { name: 'Tuning review', description: 'If the drive is hunting, review control tuning before hardware replacement.', trigger: 'Oscillation accompanied by unstable output' },
+      { name: 'Mechanical path', description: 'If drive output is stable, inspect valves, sensing, and hydraulic contributors.', trigger: 'Stable output but unstable pressure' },
+    ],
+  },
+  highAmps: {
+    probableCauses: [
+      { cause: 'Mechanical load or restriction', confidence: 'medium', evidence: ['Mechanical drag and restriction are common current drivers.'] },
+      { cause: 'Electrical imbalance or supply issue', confidence: 'medium', evidence: ['Voltage or phase imbalance can elevate current without matching demand.'] },
+      { cause: 'Poor operating point', confidence: 'low', evidence: ['A bad operating point can increase load without an obvious discrete fault.'] },
+    ],
+    nextChecks: [
+      { action: 'Record running amps by phase and compare to nameplate.', tool: 'Clamp meter', safety: 'Electrical PPE and LOTO boundaries', priority: 'high' },
+      { action: 'Validate voltage balance and controller faults.', tool: 'Multimeter and controller logs', safety: 'Electrical PPE required', priority: 'high' },
+      { action: 'Inspect for binding, restriction, or wear.', tool: 'Inspection tools', safety: 'Mechanical isolation before teardown', priority: 'medium' },
+    ],
+    partsToConsider: [
+      { part: 'Motor protection components', reason: 'If overload behavior is confirmed', compatibility: 'Match motor starter and rating', urgency: 'medium' },
+      { part: 'Bearing kit', reason: 'If binding or noise is confirmed', compatibility: 'Verify motor/pump model', urgency: 'medium' },
+    ],
+    escalationCriteria: [
+      { condition: 'Current remains abnormal after basic validation', threshold: '>10% above expected load', action: 'Escalate for electrical/mechanical deep dive', timeline: 'Same visit' },
+      { condition: 'Electrical hazard is present', threshold: 'Any credible shock or overheating risk', action: 'Stop work and escalate immediately', timeline: 'Immediate' },
+    ],
+    closeOutNote: 'Technician should document per-phase amps, electrical condition, and whether mechanical or electrical evidence best explains the elevated load.',
+    alternativePaths: [
+      { name: 'Electrical supply path', description: 'If supply is unstable, investigate voltage quality and phase balance first.', trigger: 'Uneven phase current or poor voltage quality' },
+      { name: 'Mechanical load path', description: 'If supply is normal, inspect restriction, wear, and rotating components.', trigger: 'Stable electrical supply with persistent high amps' },
+    ],
+  },
+  pumpCycling: {
+    probableCauses: [
+      { cause: 'Deadband or threshold issue', confidence: 'medium', evidence: ['Short cycling often starts with overly tight control bands.'] },
+      { cause: 'Tank or switch instability', confidence: 'medium', evidence: ['Erratic tank or switch behavior can retrigger the cycle repeatedly.'] },
+      { cause: 'Lag logic mismatch', confidence: 'low', evidence: ['Lead-only cycling can be reinforced by lag logic that never engages correctly.'] },
+    ],
+    nextChecks: [
+      { action: 'Document cycle interval and demand context.', tool: 'Trend log or manual observation', safety: 'Standard PPE', priority: 'high' },
+      { action: 'Review deadband, threshold, and switch behavior.', tool: 'Controller settings and switch inspection', safety: 'LOTO before adjustment', priority: 'high' },
+      { action: 'Inspect tank condition and trigger repeatability.', tool: 'Visual inspection and pressure reading', safety: 'Pressure awareness', priority: 'medium' },
+    ],
+    partsToConsider: [
+      { part: 'Pressure switch', reason: 'If switch repeatability is poor', compatibility: 'Verify pressure range and contacts', urgency: 'medium' },
+      { part: 'Tank service kit', reason: 'If tank behavior is suspect', compatibility: 'Match tank model and bladder type', urgency: 'medium' },
+    ],
+    escalationCriteria: [
+      { condition: 'Cycling persists after controls and switch validation', threshold: 'Recurring short-cycle behavior remains present', action: 'Escalate for controls review', timeline: 'Same visit' },
+    ],
+    closeOutNote: 'Technician should record cycle interval, demand context, and whether deadband, switch, tank, or lag logic best explains the repeated cycling.',
+    alternativePaths: [
+      { name: 'Controls-first review', description: 'If cycling is highly repeatable, review control band logic first.', trigger: 'Stable repeat cycle interval' },
+      { name: 'Field hardware path', description: 'If cycling is erratic, inspect switch and tank condition first.', trigger: 'Erratic cycle interval' },
+    ],
+  },
+  lagPumpNotEngaging: {
+    probableCauses: [
+      { cause: 'Missing lag call or inhibit state', confidence: 'medium', evidence: ['A lag pump often fails to engage because the call never becomes valid.'] },
+      { cause: 'Relay or wiring path issue', confidence: 'medium', evidence: ['Broken command path can block engagement even when logic is correct.'] },
+      { cause: 'Settings mismatch', confidence: 'medium', evidence: ['Threshold mismatch can prevent lag call generation.'] },
+    ],
+    nextChecks: [
+      { action: 'Verify lag call condition against current lead load.', tool: 'Controller status view', safety: 'Standard PPE', priority: 'high' },
+      { action: 'Review alarm and inhibit history.', tool: 'Controller logs', safety: 'No field disassembly required', priority: 'high' },
+      { action: 'Inspect relay, wiring, and enable-path settings.', tool: 'Multimeter and wiring diagram', safety: 'Electrical PPE and LOTO', priority: 'medium' },
+    ],
+    partsToConsider: [
+      { part: 'Control relay', reason: 'If command path integrity is suspect', compatibility: 'Match coil and contact rating', urgency: 'medium' },
+    ],
+    escalationCriteria: [
+      { condition: 'A valid lag call exists but engagement still fails', threshold: 'Confirmed call with no actuation', action: 'Escalate for controls/electrical review', timeline: 'Same visit' },
+    ],
+    closeOutNote: 'Technician should document whether a valid lag call was present, whether the command path was intact, and whether settings, faults, or hardware blocked engagement.',
+    alternativePaths: [
+      { name: 'Threshold review', description: 'If no valid lag call exists, review thresholds and mode settings first.', trigger: 'No command generated' },
+      { name: 'Command-path review', description: 'If the call exists, inspect relay and wiring path next.', trigger: 'Call present but no engagement' },
+    ],
+  },
+  abnormalFrequencyBehavior: {
+    probableCauses: [
+      { cause: 'Limit mismatch or bad configuration', confidence: 'medium', evidence: ['Configured limits can create seemingly abnormal frequency patterns.'] },
+      { cause: 'Noisy or invalid inputs', confidence: 'medium', evidence: ['Bad inputs can drive unstable frequency changes.'] },
+      { cause: 'Mode bounce or controller-state issue', confidence: 'low', evidence: ['Rapid mode changes can produce confusing Hz behavior.'] },
+    ],
+    nextChecks: [
+      { action: 'Capture observed Hz trend over a useful time window.', tool: 'Drive or SCADA trend view', safety: 'Standard PPE', priority: 'high' },
+      { action: 'Compare the trend to configured min/max limits.', tool: 'Controller settings', safety: 'No field disassembly required', priority: 'high' },
+      { action: 'Validate input quality and current control mode.', tool: 'Controller diagnostics', safety: 'LOTO before touching wiring', priority: 'medium' },
+    ],
+    partsToConsider: [
+      { part: 'Input module diagnostics', reason: 'If controller inputs are suspect', compatibility: 'Match controller platform', urgency: 'medium' },
+    ],
+    escalationCriteria: [
+      { condition: 'Frequency behavior remains abnormal after limit and input validation', threshold: 'Repeatable abnormal Hz pattern remains present', action: 'Escalate for controls review', timeline: 'Same visit' },
+    ],
+    closeOutNote: 'Technician should document observed Hz pattern, configured range, and whether bad inputs, limits, or mode transitions best explain the behavior.',
+    alternativePaths: [
+      { name: 'Configuration path', description: 'If frequency violates configured limits, review configuration first.', trigger: 'Observed behavior conflicts with configuration' },
+      { name: 'Input quality path', description: 'If configuration is sound, inspect inputs and mode transitions.', trigger: 'Configured limits appear correct' },
+    ],
+  },
+  communicationTimeSyncAnomaly: {
+    probableCauses: [
+      { cause: 'Gateway or network-path issue', confidence: 'medium', evidence: ['Shared communications problems often surface as time-sync drift.'] },
+      { cause: 'Controller clock drift', confidence: 'medium', evidence: ['One controller drifting alone usually points to local clock behavior.'] },
+      { cause: 'Reference-clock problem', confidence: 'low', evidence: ['A bad shared reference can distort the whole site.'] },
+    ],
+    nextChecks: [
+      { action: 'Confirm whether the issue is isolated or site-wide.', tool: 'Controller and gateway status', safety: 'Standard PPE', priority: 'high' },
+      { action: 'Validate gateway power, network path, and time-reference source.', tool: 'Network diagnostics and inspection tools', safety: 'Electrical PPE as needed', priority: 'high' },
+      { action: 'Record observed drift and communications symptoms.', tool: 'Trend logs', safety: 'No field disassembly required', priority: 'medium' },
+    ],
+    partsToConsider: [
+      { part: 'Gateway power supply', reason: 'If gateway stability is suspect', compatibility: 'Match gateway model', urgency: 'medium' },
+    ],
+    escalationCriteria: [
+      { condition: 'Shared communications or timing infrastructure appears compromised', threshold: 'Site-wide drift or comm loss', action: 'Escalate to controls/network support', timeline: 'Immediate' },
+    ],
+    closeOutNote: 'Technician should document whether the issue was isolated or site-wide, along with gateway state, observed drift, and network-path condition.',
+    alternativePaths: [
+      { name: 'Local controller path', description: 'If one controller drifts alone, inspect that controller first.', trigger: 'Isolated controller drift' },
+      { name: 'Shared infrastructure path', description: 'If the site drifts together, inspect shared gateway and timing path first.', trigger: 'Site-wide time-sync anomaly' },
+    ],
+  },
+  generalPerformanceIssue: {
+    probableCauses: [
+      { cause: 'Demand or operating-context shift', confidence: 'medium', evidence: ['Broad performance complaints often trace to site condition changes.'] },
+      { cause: 'Controls issue', confidence: 'medium', evidence: ['General complaints commonly hide threshold or mode issues.'] },
+      { cause: 'Mechanical degradation', confidence: 'low', evidence: ['Wear remains plausible until measurements narrow the field.'] },
+    ],
+    nextChecks: [
+      { action: 'Capture a concise issue summary tied to a time window.', tool: 'Technician interview and log review', safety: 'Standard PPE', priority: 'high' },
+      { action: 'Review recent history and recurring alerts.', tool: 'SCADA or controller history', safety: 'No field disassembly required', priority: 'high' },
+      { action: 'Collect at least one strong field measurement tied to the complaint.', tool: 'Appropriate field instruments', safety: 'Standard LOTO where applicable', priority: 'medium' },
+    ],
+    partsToConsider: [],
+    escalationCriteria: [
+      { condition: 'Issue remains broad after first-pass measurement collection', threshold: 'No clear branch after initial triage', action: 'Escalate for deeper specialist review', timeline: 'Same visit' },
+    ],
+    closeOutNote: 'Technician should document operating context, recurrence pattern, and which first-pass measurements were collected to narrow the diagnosis.',
+    alternativePaths: [
+      { name: 'History-first review', description: 'If the issue is recurring, start with service history and recurring alerts.', trigger: 'Known repeat issue' },
+      { name: 'Present-state triage', description: 'If the issue is new, prioritize current-state measurements.', trigger: 'New or first-time complaint' },
+    ],
+  },
+};
 
 class DiagnosticConsultationService {
-  constructor() {
-    this.prismo = new Prismo();
-    this.automindlab = new AutoMindLab();
-    this.pumpSpecialist = new PumpSpecialist();
-  }
-
-  /**
-   * Consult with pump specialist for diagnostic enhancement
-   * @param {Object} context - Diagnostic context from FLOWCOMMANDER
-   * @returns {Promise<Object>} Structured enhancement recommendations
-   */
-  async consult(context) {
+  consult(context = {}) {
     try {
-      // Extract and validate key information
-      const { symptom, responses, siteContext, technicianContext, environmentalContext, safetyContext, partsContext } = this.validateContext(context);
-      
-      // Build consultation prompt for pump specialist using Council of 13 reasoning
-      const prompt = this.buildCouncilPrompt(symptom, responses, siteContext, technicianContext, environmentalContext, safetyContext, partsContext);
-      
-      // Get council recommendation (Prismo orchestrates the Council of 13)
-      const councilRecommendation = await this.prismo.delegate({
-        task: 'diagnostic_enhancement',
-        prompt,
-        agents: ['PUMP_SPECIALIST'],
-        context: {
-          symptom,
-          responses,
-          siteContext,
-          technicianContext,
-          environmentalContext,
-          safetyContext,
-          partsContext
-        }
-      });
-      
-      // Have AutoMindLab format the final response according to enterprise standards
-      const formattedResponse = await this.automindlab.process({
-        rawInput: councilRecommendation,
-        context: { 
-          source: 'diagnostic_consultation',
-          specialist: 'PUMP_SPECIALIST',
-          councilVersion: '2.1.0'
-        }
-      });
-      
-      // Parse and structure the response according to standardized contract
-      return this.parseResponse(formattedResponse, symptom);
+      const symptom = this.normalizeSymptom(context.symptom);
+      const baseline = BASELINES[symptom];
+      const warnings = [];
+
+      if (!Array.isArray(context.responses) || context.responses.length === 0) {
+        warnings.push('No structured diagnostic responses were supplied.');
+      }
+      if (!context.siteContext || !context.siteContext.controllerType) {
+        warnings.push('Controller type was not supplied.');
+      }
+
+      return {
+        probableCauses: baseline.probableCauses,
+        nextChecks: baseline.nextChecks,
+        partsToConsider: baseline.partsToConsider,
+        escalationCriteria: baseline.escalationCriteria,
+        closeOutNote: baseline.closeOutNote,
+        alternativePaths: baseline.alternativePaths,
+        metadata: {
+          confidence: warnings.length >= 2 ? 'low' : 'medium',
+          timestamp: new Date().toISOString(),
+          consultationId: `consult_${Date.now()}`,
+          dataQuality: warnings.length === 0 ? 'good' : 'fair',
+          limitations: warnings.length === 0 ? ['No major limitations identified'] : warnings,
+          originalSymptom: symptom,
+          councilSeatsConsulted: COUNCIL_ROUTER[symptom] || [],
+        },
+      };
     } catch (error) {
-      console.error('Diagnostic consultation failed:', error);
-      // Return structured fallback enhancement
-      return this.getFallbackEnhancement(symptom, error.message);
+      return this.getFallbackEnhancement(context.symptom, error.message);
     }
   }
 
-  /**
-   * Validate and normalize consultation context
-   */
-  validateContext(context) {
-    // Ensure required fields exist with sensible defaults
-    const validated = {
-      symptom: context.symptom || 'unknown',
-      responses: Array.isArray(context.responses) ? context.responses : [],
-      siteContext: context.siteContext || {},
-      technicianContext: context.technicianContext || {},
-      environmentalContext: context.environmentalContext || {},
-      safetyContext: context.safetyContext || {},
-      partsContext: context.partsContext || {}
-    };
-
-    // Validate symptom is known
-    const validSymptoms = [
-      'lowPressure', 'pressureOscillation', 'highAmps', 'pumpCycling',
-      'lagPumpNotEngaging', 'abnormalFrequencyBehavior', 
-      'communicationTimeSyncAnomaly', 'generalPerformanceIssue'
-    ];
-    
-    if (!validSymptoms.includes(validated.symptom)) {
-      throw new Error(`Invalid symptom: ${validated.symptom}. Must be one of: ${validSymptoms.join(', ')}`);
-    }
-
-    return validated;
-  }
-
-  /**
-   * Build consultation prompt for pump specialist using Council of 13 reasoning framework
-   */
-  buildCouncilPrompt(symptom, responses, siteContext, technicianContext, environmentalContext, safetyContext, partsContext) {
-    return `
-AUTOMINDIAGNOSTIC CONSULTATION REQUEST - PUMP SPECIALIST (Seat 7 of Council of 13)
-
-PRIMARY SYMPTOM: ${this.formatSymptom(symptom)}
-
-TECHNICIAN DIAGNOSTIC PATH COMPLETED:
-${this.formatResponses(responses)}
-
-SITE & STATION CONTEXT:
-${this.formatSiteContext(siteContext)}
-
-TECHNICIAN PROFILE:
-${this.formatTechnicianContext(technicianContext)}
-
-ENVIRONMENTAL FACTORS:
-${this.formatEnvironmentalContext(environmentalContext)}
-
-SAFETY CONSIDERATIONS:
-${this.formatSafetyContext(safetyContext)}
-
-PARTS & INVENTORY CONTEXT:
-${this.formatPartsContext(partsContext)}
-
-CONSULTATION REQUEST:
-Apply your Pump Specialist expertise (drawing from Tesla, Einstein, Jung, Aurelius, Ross, Goggins, Curie, Turing, Franklin, and Carver) to provide:
-
-1. RANKED PROBABLE CAUSES - List with confidence levels (high/medium/low) and supporting evidence
-2. SPECIFIC NEXT CHECKS - Actionable measurements/inspections with tools, safety notes, and priority
-3. PARTS TO CONSIDER - Specific components with compatibility notes and urgency indicators
-4. ESCALATION CRITERIA - Clear, measurable indicators for when to escalate
-5. CONTEXTUAL CLOSE-OUT NOTE - Suggested technical note for service record
-6. ALTERNATIVE DIAGNOSTIC PATHS - Different approaches if current path isn't resolving
-7. CONFIDENCE ASSESSMENT - Overall confidence in guidance given data quality
-8. LIMITATIONS & ASSUMPTIONS - What we don't know or are assuming
-
-FORMAT YOUR RESPONSE AS A STRUCTURED GUIDE THAT CAN BE PARSED BY AUTOMATED SYSTEMS.
-USE CLEAR, ACTIONABLE LANGUAGE SUITABLE FOR FIELD TECHNICIANS.
-WHEN UNCERTAIN, STATE SO EXPLICITLY AND RECOMMEND FIELD VERIFICATION.
-
-Domain-specific guidance to consider:
-- Low pressure: demand spikes, lag support, tuning, restriction, wear, controller limits
-- Pressure oscillation: tuning stability, VFD behavior, sensing, valve instability, mechanical contributors  
-- High amps: overload, restriction, binding, wear, phase imbalance, voltage quality, operating points
-- Pump cycling: deadband, threshold logic, tank behavior, switch stability
-- Lag pump not engaging: lag call verification, inhibit states, relay/wiring faults, settings
-- Abnormal frequency: limit mismatch, noisy inputs, mode bounce, controller-state anomalies
-- Communication/time sync: gateway health, network stability, controller drift, reference-clock issues
-
-Always prioritize safety: never bypass LOTO, never claim mechanical confirmation without verification, never hide uncertainty.
-`;
-  }
-
-  formatSymptom(symptom) {
-    const symptomMap = {
-      lowPressure: 'LOW PRESSURE - System pressure below setpoint',
-      pressureOscillation: 'PRESSURE OSCILLATION - Unstable pressure fluctuations',
-      highAmps: 'HIGH AMPS - Motor current above nameplate rating',
-      pumpCycling: 'PUMP CYCLING - Excessive starting/stopping',
-      lagPumpNotEngaging: 'LAG PUMP NOT ENGAGING - Backup pump fails to start when needed',
-      abnormalFrequencyBehavior: 'ABNORMAL FREQUENCY - VFD/output frequency irregularities',
-      communicationTimeSyncAnomaly: 'COMMUNICATION/TIME SYNC - Controller comms or clock issues',
-      generalPerformanceIssue: 'GENERAL PERFORMANCE - Non-specific performance degradation'
-    };
-    return symptomMap[symptom] || symptom;
-  }
-
-  formatResponses(responses) {
-    if (responses.length === 0) return 'No diagnostic steps completed yet.';
-    return responses.map((r, i) => {
-      const notes = r.notes ? ` (Notes: ${r.notes})` : '';
-      return `${i+1}. ${r.prompt}: ${r.responseValue}${notes}`;
-    }).join('\n');
-  }
-
-  formatSiteContext(context) {
-    if (!context || Object.keys(context).length === 0) return 'No site context provided.';
-    return Object.entries(context).map(([key, value]) => 
-      `- ${this.capitalize(key)}: ${value}`
-    ).join('\n');
-  }
-
-  formatTechnicianContext(context) {
-    if (!context || Object.keys(context).length === 0) return 'No technician context provided.';
-    return Object.entries(context).map(([key, value]) => 
-      `- ${this.capitalize(key)}: ${value}`
-    ).join('\n');
-  }
-
-  formatEnvironmentalContext(context) {
-    if (!context || Object.keys(context).length === 0) return 'No environmental context provided.';
-    return Object.entries(context).map(([key, value]) => 
-      `- ${this.capitalize(key)}: ${value}`
-    ).join('\n');
-  }
-
-  formatSafetyContext(context) {
-    if (!context || Object.keys(context).length === 0) return 'No specific safety context provided (assume standard LOTO required).';
-    return Object.entries(context).map(([key, value]) => 
-      `- ${this.capitalize(key)}: ${value}`
-    ).join('\n');
-  }
-
-  formatPartsContext(context) {
-    if (!context || Object.keys(context).length === 0) return 'No parts/inventory context provided.';
-    return Object.entries(context).map(([key, value]) => 
-      `- ${this.capitalize(key)}: ${value}`
-    ).join('\n');
-  }
-
-  capitalize(str) {
-    if (!str) return '';
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
-  /**
-   * Parse council/AutoMindLab response into structured enhancement per contract
-   */
-  parseResponse(response, originalSymptom) {
-    // Extract structured data from the response
-    const enhancement = {
-      probableCauses: this.extractProbableCauses(response),
-      nextChecks: this.extractNextChecks(response),
-      partsToConsider: this.extractPartsToConsider(response),
-      escalationCriteria: this.extractEscalationCriteria(response),
-      closeOutNote: this.extractCloseOutNote(response),
-      alternativePaths: this.extractAlternativePaths(response),
-      metadata: this.extractMetadata(response, originalSymptom)
-    };
-
-    return enhancement;
-  }
-
-  extractProbableCauses(response) {
-    // Extract causes with confidence levels
-    const causes = [];
-    
-    // Look for numbered lists or bullet points with causes
-    const causePatterns = [
-      /(?:\d+\.|\*\s*|\-)\s*(.+?)(?:\s*\((confidence:?\s*(high|medium|low))\))?/gi,
-      /(?:\*\*|\_\_)(.+?)(?:\*\*|\_\_)(?:\s*\((confidence:?\s*(high|medium|low))\))?/gi
-    ];
-
-    let match;
-    for (const pattern of causePatterns) {
-      while ((match = pattern.exec(response)) !== null) {
-        const causeText = match[1].trim();
-        const confidence = match[2] || match[3] || 'medium';
-        
-        // Avoid duplicates and very short matches
-        if (causeText.length > 10 && !causes.some(c => c.cause.toLowerCase() === causeText.toLowerCase())) {
-          causes.push({
-            cause: causeText,
-            confidence: confidence.toLowerCase(),
-            evidence: ['Council of 13 diagnostic reasoning']
-          });
-        }
-      }
-    }
-
-    // If no structured causes found, extract from paragraphs
-    if (causes.length === 0) {
-      const paragraphs = response.split('\n\n').filter(p => p.trim().length > 20);
-      paragraphs.slice(0, 3).forEach((p, index) => {
-        const cleanCause = p.replace(/[^\w\s\-]/g, ' ').replace(/\s+/g, ' ').trim();
-        if (cleanCause.length > 15) {
-          causes.push({
-            cause: cleanCause.substring(0, 100) + '...',
-            confidence: ['high', 'medium', 'low'][index % 3],
-            evidence: ['Paragraph analysis']
-          });
-        }
-      });
-    }
-
-    // Ensure we have at least some causes
-    if (causes.length === 0) {
-      causes.push({
-        cause: 'Requires further investigation based on presented symptoms',
-        confidence: 'low',
-        evidence: ['Insufficient diagnostic data']
-      });
-    }
-
-    return causes.slice(0, 5); // Top 5 causes
-  }
-
-  extractNextChecks(response) {
-    const checks = [];
-    
-    // Look for action-oriented phrases
-    const checkPatterns = [
-      /(?:check|verify|measure|test|inspect|examine|monitor|observe)\s+([^.!?\n]+[.!?])/gi,
-      /(?:\d+\.|\*\s*|\-)\s*(?:check|verify|measure|test|inspect|examine|monitor|observe)\s+([^.!?\n]+[.!?])/gi
-    ];
-
-    let match;
-    for (const pattern of checkPatterns) {
-      while ((match = pattern.exec(response)) !== null) {
-        const checkText = match[1].trim();
-        if (checkText.length > 10 && !checks.some(c => c.action.toLowerCase() === checkText.toLowerCase())) {
-          checks.push({
-            action: checkText,
-            tool: this.inferTool(checkText),
-            safety: this.inferSafetyNote(checkText),
-            priority: this.inferPriority(checkText)
-          });
-        }
-      }
-    }
-
-    // Default checks if none found
-    if (checks.length === 0) {
-      checks.push({
-        action: 'Verify measurements with calibrated equipment',
-        tool: 'Calibrated pressure gauge and multimeter',
-        safety: 'Standard LOTO procedures required',
-        priority: 'high'
-      });
-      checks.push({
-        action: 'Review service history and alert logs',
-        tool: 'SCADA/HMI system',
-        safety: 'Office safety - no field exposure',
-        priority: 'medium'
-      });
-    }
-
-    return checks.slice(0, 6); // Top 6 checks
-  }
-
-  inferTool(action) {
-    const actionLower = action.toLowerCase();
-    if (actionLower.includes('pressure') || actionLower.includes('psi')) return 'Calibrated pressure gauge';
-    if (actionLower.includes('amp') || actionLower.includes('current') || actionLower.includes('voltage')) return 'Clamp multimeter';
-    if (actionLower.includes('flow')) return 'Flow meter';
-    if (actionLower.includes('vibration')) return 'Vibration analyzer';
-    if (actionLower.includes('temperature') || actionLower.includes('temp')) return 'Infrared thermometer';
-    if (actionLower.includes('frequency') || actionLower.includes('hz')) return 'Frequency meter';
-    if (actionLower.includes('inspect') || actionLower.includes('examine') || actionLower.includes('visual')) return 'Flashlight and inspection mirror';
-    return 'Appropriate diagnostic tool';
-  }
-
-  inferSafetyNote(action) {
-    const actionLower = action.toLowerCase();
-    if (actionLower.includes('electrical') || actionLower.includes('wire') || actionLower.includes('terminal') || 
-        actionLower.includes('connection') || actionLower.includes('power')) {
-      return 'Electrical PPE required, verify LOTO';
-    }
-    if (actionLower.includes('mechanical') || actionLower.includes('bearing') || actionLower.includes('shaft') || 
-        actionLower.includes('impeller') || actionLower.includes('coupling')) {
-      return 'Mechanical PPE required, verify machine isolation';
-    }
-    if (actionLower.includes('pressure') || actionLower.includes('psi') || actionLower.includes('flow')) {
-      return 'Standard LOTO, pressure relief before disassembly';
-    }
-    return 'Standard PPE and safety procedures';
-  }
-
-  inferPriority(action) {
-    const actionLower = action.toLowerCase();
-    if (actionLower.includes('immediate') || actionLower.includes('urgent') || actionLower.includes('critical') || 
-        actionLower.includes('danger') || actionLower.includes('unsafe')) {
-      return 'high';
-    }
-    if (actionLower.includes('check') || actionLower.includes('verify') || actionLower.includes('measure')) {
-      return 'medium';
-    }
-    return 'low';
-  }
-
-  extractPartsToConsider(response) {
-    const parts = [];
-    
-    // Look for part-related mentions
-    const partPatterns = [
-      /(?:check|replace|inspect)\s+(?:the\s+)?([a-zA-Z\s]+?)(?:\s+\([^)]*\)|\s+for|\s+if|\s+and|\s+or|\s*[.,;:])/gi,
-      /(?:strainer|filter|seal|gasket|bearing|impeller|volute|check valve|pressure gauge|transducer|sensor|wire|cable|connector)\s+[a-zA-Z\s]*/gi
-    ];
-
-    let match;
-    for (const pattern of partPatterns) {
-      while ((match = pattern.exec(response)) !== null) {
-        const partText = match[0].trim();
-        if (partText.length > 5 && partText.length < 50 && 
-            !parts.some(p => p.part.toLowerCase() === partText.toLowerCase())) {
-          parts.push({
-            part: partText,
-            reason: 'Identified during diagnostic reasoning',
-            compatibility: 'Verify OEM specifications',
-            urgency: 'medium'
-          });
-        }
-      }
-    }
-
-    // Default parts if none found
-    if (parts.length === 0) {
-      parts.push({
-        part: 'Pressure gauge (calibrated)',
-        reason: 'Verification measurement',
-        compatibility: 'Industry standard NPT connection',
-        urgency: 'high'
-      });
-      parts.push({
-        part: 'Suction strainer',
-        reason: 'Common restriction point',
-        compatibility: 'Verify pipe size and mesh rating',
-        urgency: 'medium'
-      });
-    }
-
-    return parts.slice(0, 5); // Top 5 parts
-  }
-
-  extractEscalationCriteria(response) {
-    const criteria = [];
-    
-    // Look for escalation/threhold language
-    const escalationPatterns = [
-      /(?:if|when|should|must|ought to)\s+[^.!?]*?(?:escalate|call|notify|alert|refer)[^.!?]*[.!?]/gi,
-      /(?:abnormal|exceed|above|below|more than|less than)\s+[^.!?]*?(?:psi|amp|hz|degree|inch|%)\s*[^.!?]*[.!?]/gi,
-      /(?:persist|continue|remain|still)\s+[^.!?]*?(?:after|following|despite)\s+[^.!?]*[.!?]/gi
-    ];
-
-    let match;
-    for (const pattern of escalationPatterns) {
-      while ((match = pattern.exec(response)) !== null) {
-        const criteriaText = match[0].trim();
-        if (criteriaText.length > 15 && 
-            !criteria.some(c => c.condition.toLowerCase() === criteriaText.toLowerCase())) {
-          criteria.push({
-            condition: criteriaText,
-            threshold: this.extractThreshold(criteriaText),
-            action: this.extractEscalationAction(criteriaText),
-            timeline: this.extractTimeline(criteriaText)
-          });
-        }
-      }
-    }
-
-    // Default criteria if none found
-    if (criteria.length === 0) {
-      criteria.push({
-        condition: 'Symptom persists after initial checks',
-        threshold: '>15% deviation from setpoint',
-        action: 'Escalate to senior technician or engineer',
-        timeline: 'Within 30 minutes of initial assessment'
-      });
-      criteria.push({
-        condition: 'Safety concern identified',
-        threshold: 'Any LOTO violation or hazardous condition',
-        action: 'Stop work and notify safety officer',
-        timeline: 'Immediate'
-      });
-    }
-
-    return criteria.slice(0, 4); // Top 4 criteria
-  }
-
-  extractThreshold(text) {
-    const thresholdMatch = text.match(/(\d+(\.\d+)?)\s*([%°]|psi|amps?|hz|inches?|feet?|volts?|watts?)/i);
-    return thresholdMatch ? thresholdMatch[0] : 'Not specified';
-  }
-
-  extractEscalationAction(text) {
-    const actionMatch = text.match(/^(?:if|when|should|must|ought to)\s+([^.!?]+?)(?:\s+(?:if|when|above|below|more|less|persist|continue|remain|still))/i);
-    return actionMatch ? actionMatch[1].trim() : 'Escalate per protocol';
-  }
-
-  extractTimeline(text) {
-    const timeMatch = text.match(/(\d+\s*(?:second|minute|hour|day|week|month|sec|min|hr|day|wk|mo)s?)/i);
-    return timeMatch ? timeMatch[0] : 'As soon as practicable';
-  }
-
-  extractCloseOutNote(response) {
-    // Look for conclusion/summary language
-    const notePatterns = [
-      /(?:in summary|to summarize|consequently|therefore|as a result|close.*out.*note|service note).*?[.!?]/gi,
-      /(?:the\s+issue\s+was|root\s+cause\s+appears\s+to\s+be|diagnosis\s+indicates).*?[.!?]/gi
-    ];
-
-    let match;
-    for (const pattern of notePatterns) {
-      while ((match = pattern.exec(response)) !== null) {
-        const noteText = match[0].trim();
-        if (noteText.length > 20 && noteText.length < 200) {
-          // Clean up the note
-          const cleanNote = noteText
-            .replace(/^(in summary|to summarize|consequently|therefore|as a result|close.*out.*note|service note):?\s*/i, '')
-            .replace(/[.!?]+$/, '.');
-          return cleanNote.charAt(0).toUpperCase() + cleanNote.slice(1);
-        }
-      }
-    }
-
-    // Generate from probable causes if no explicit note found
-    const causes = this.extractProbableCauses(response);
-    if (causes.length > 0) {
-      return `Diagnostic enhanced with AutoMindLab Pump Specialist guidance. Primary consideration: ${causes[0].cause}. Verified through structured council reasoning.`;
-    }
-
-    return 'Diagnostic consultation completed via AutoMindLab Pump Specialist. Standard procedures followed.';
-  }
-
-  extractAlternativePaths(response) {
-    const paths = [];
-    
-    // Look for alternative/conditional language
-    const altPatterns = [
-      /(?:alternatively|instead|or|if not|if then|otherwise|either)\s+[^.!?]*[.!?]/gi,
-      /(?:consider|try|attempt|explore)\s+[^.!?]*[.!?]/gi,
-      /(?:if.*?pressure.*?normal|if.*?amps.*?okay|if.*?frequency.*?stable)\s+[^.!?]*[.!?]/gi
-    ];
-
-    let match;
-    for (const pattern of altPatterns) {
-      while ((match = pattern.exec(response)) !== null) {
-        const pathText = match[0].trim();
-        if (pathText.length > 15 && pathText.length < 150 && 
-            !paths.some(p => p.description.toLowerCase() === pathText.toLowerCase())) {
-          paths.push({
-            name: this.generatePathName(pathText),
-            description: pathText,
-            trigger: this.extractPathTrigger(pathText)
-          });
-        }
-      }
-    }
-
-    // Default alternatives if none found
-    if (paths.length === 0) {
-      paths.push({
-        name: 'Suction-Side Investigation',
-        description: 'If pressure normal but flow low: check for suction-side restrictions, strainer condition, and suction pressure',
-        trigger: 'Pressure measurements within normal range but flow below expected'
-      });
-      paths.push({
-        name: 'Electrical Deep Dive', 
-        description: 'If mechanical checks normal: proceed with detailed electrical inspection including voltage quality, phase balance, and insulation testing',
-        trigger: 'All mechanical inspections show normal operation'
-      });
-      paths.push({
-        name: 'System Curve Analysis',
-        description: 'If issue persists: compare actual system curve to design curve to identify hidden restrictions or demand changes',
-        trigger: 'Multiple mechanical and electrical checks inconclusive'
-      });
-    }
-
-    return paths.slice(0, 4); // Top 4 alternatives
-  }
-
-  generatePathName(description) {
-    const descLower = description.toLowerCase();
-    if (descLower.includes('suction') || descLower.includes('inlet')) return 'Suction-Side Investigation';
-    if (descLower.includes('electrical') || descLower.includes('voltage') || descLower.includes('phase')) return 'Electrical Deep Dive';
-    if (descLower.includes('system curve') || descLower.includes('design curve')) return 'System Curve Analysis';
-    if (descLower.includes('vibration') || descLower.includes('balance')) return 'Vibration Analysis';
-    if (descLower.includes('temperature') || descLower.includes('thermal')) return 'Thermal Imaging Survey';
-    if (descLower.includes('control') || descLower.includes('tuning') || descLower.includes('pid')) return 'Control Loop Review';
-    return 'Alternative Diagnostic Path';
-  }
-
-  extractPathTrigger(description) {
-    const descLower = description.toLowerCase();
-    if (descLower.includes('if') || descLower.includes('when')) {
-      const triggerMatch = description.match(/(?:if|when)\s+([^:]+?)(?::|then|\.|$)/i);
-      return triggerMatch ? triggerMatch[1].trim() : 'Condition not specified';
-    }
-    return 'Standard diagnostic flow completion';
-  }
-
-  extractMetadata(response, originalSymptom) {
-    // Assess confidence based on response quality and specificity
-    let confidence = 'medium';
-    const limitations = [];
-    const dataQuality = 'good';
-
-    // Check for uncertainty indicators
-    const uncertaintyIndicators = [
-      'unclear', 'uncertain', 'possibly', 'maybe', 'might', 'could be', 
-      'appears to', 'suggests', 'indicates', 'likely', 'probable'
-    ];
-    const certaintyIndicators = [
-      'definitely', 'confirmed', 'verified', 'certain', 'certainly', 
-      'without doubt', 'clearly', 'obviously', 'evident'
-    ];
-
-    const uncertaintyCount = uncertaintyIndicators.reduce((count, word) => 
-      count + (response.toLowerCase().match(new RegExp(`\\b${word}\\b`, 'g')) || []).length, 0);
-    const certaintyCount = certaintyIndicators.reduce((count, word) => 
-      count + (response.toLowerCase().match(new RegExp(`\\b${word}\\b`, 'g')) || []).length, 0);
-
-    if (uncertaintyCount > certaintyCount + 2) {
-      confidence = 'low';
-      limitations.push('High uncertainty in diagnostic reasoning');
-    } else if (certaintyCount > uncertaintyCount) {
-      confidence = 'high';
-    } else {
-      confidence = 'medium';
-    }
-
-    // Check for missing data indicators
-    const missingDataIndicators = [
-      'missing data', 'no data', 'insufficient information', 
-      'more data needed', 'additional information required'
-    ];
-    const missingDataCount = missingDataIndicators.reduce((count, phrase) => 
-      count + (response.toLowerCase().includes(phrase) ? 1 : 0), 0);
-    
-    if (missingDataCount > 0) {
-      limitations.push('Limited diagnostic data available');
-      if (missingDataCount >= 2) dataQuality = 'poor';
-      else if (missingDataCount === 1) dataQuality = 'fair';
-    }
-
-    // Check for specificity
-    const specificIndicators = [
-      'psi', 'amp', 'hz', 'volt', 'degree', 'inch', 'foot', 
-      'specific', 'exact', 'precise', 'measured', 'reading'
-    ];
-    const specificityCount = specificIndicators.reduce((count, word) => 
-      count + (response.toLowerCase().match(new RegExp(`\\b${word}\\b`, 'g')) || []).length, 0);
-
-    if (specificityCount < 3) {
-      limitations.push('Limited quantitative data in reasoning');
-      if (dataQuality === 'good') dataQuality = 'fair';
-    }
-
-    // Generate consultation ID
-    const consultationId = `consult_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-
-    return {
-      confidence,
-      timestamp: new Date().toISOString(),
-      consultationId,
-      dataQuality,
-      limitations: limitations.length > 0 ? limitations : ['No significant limitations identified'],
-      originalSymptom: originalSymptom
-    };
-  }
-
-  getFallbackEnhancement(symptom, errorMessage) {
+  getFallbackEnhancement(symptom = 'generalPerformanceIssue', errorMessage = 'Unknown runtime error') {
     return {
       probableCauses: [
-        { 
-          cause: 'Diagnostic consultation service unavailable - requires manual technician review', 
-          confidence: 'low', 
-          evidence: ['Service error: ' + errorMessage] 
-        }
+        { cause: 'Runtime consultation fallback was used', confidence: 'low', evidence: [errorMessage] },
       ],
       nextChecks: [
-        {
-          action: 'Verify all measurements with calibrated equipment',
-          tool: 'Calibrated pressure gauge, multimeter, and flow meter',
-          safety: 'Standard LOTO and PPE required',
-          priority: 'high'
-        },
-        {
-          action: 'Review complete service history and alert logs',
-          tool: 'SCADA/HMI system',
-          safety: 'Office safety',
-          priority: 'medium'
-        },
-        {
-          action: 'Consult senior technician or engineer',
-          tool: 'Phone or radio communication',
-          safety: 'Standard safety procedures',
-          priority: 'medium'
-        }
+        { action: 'Verify measurements with calibrated equipment.', tool: 'Appropriate field instruments', safety: 'Standard LOTO and PPE', priority: 'high' },
+        { action: 'Review recent service history and alert logs.', tool: 'Controller or SCADA history', safety: 'No field disassembly required', priority: 'medium' },
       ],
-      partsToConsider: [
-        { 
-          part: 'Complete diagnostic kit', 
-          reason: 'Enables thorough field verification', 
-          compatibility: 'Standard technician tools', 
-          urgency: 'medium' 
-        }
-      ],
+      partsToConsider: [],
       escalationCriteria: [
-        {
-          condition: 'Unable to complete diagnostic safely',
-          threshold: 'Any safety concern identified',
-          action: 'Stop work and notify supervisor',
-          timeline: 'Immediate'
-        },
-        {
-          condition: 'Symptom not resolved after standard procedures',
-          threshold: '>20% deviation from acceptable parameters',
-          action: 'Escalate to senior specialist or engineer',
-          timeline: 'Within 60 minutes'
-        }
+        { condition: 'Consultation confidence is low or runtime failed', threshold: 'Fallback path engaged', action: 'Escalate to senior technician or engineer', timeline: 'Same visit' },
       ],
-      closeOutNote: 'Diagnostic consultation service unavailable. Technician performed standard procedures with manual review.',
+      closeOutNote: 'Runtime fallback guidance used. Recommend field verification and specialist review if uncertainty remains.',
       alternativePaths: [
-        {
-          name: 'Manual Expert Review',
-          description: 'Escalate to senior technician for expert judgment when automated consultation unavailable',
-          trigger: 'Consultation service failure or unavailable'
-        }
+        { name: 'Manual expert review', description: 'Use senior technician judgment and manufacturer procedures when runtime guidance is unavailable.', trigger: 'Fallback path engaged' },
       ],
       metadata: {
         confidence: 'low',
         timestamp: new Date().toISOString(),
         consultationId: `fallback_${Date.now()}`,
         dataQuality: 'poor',
-        limitations: ['Consultation service unavailable', errorMessage],
-        originalSymptom: symptom
-      }
+        limitations: ['Runtime fallback engaged', errorMessage],
+        originalSymptom: this.normalizeSymptom(symptom),
+        councilSeatsConsulted: [],
+      },
     };
+  }
+
+  normalizeSymptom(symptom) {
+    const known = Object.keys(BASELINES);
+    return known.includes(symptom) ? symptom : 'generalPerformanceIssue';
   }
 }
 

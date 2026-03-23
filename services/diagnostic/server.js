@@ -19,7 +19,7 @@ app.get('/api/health', (_req, res) => {
   });
 });
 
-app.post('/api/diagnose', (req, res) => {
+app.post('/api/diagnose', async (req, res) => {
   const context = req.body || {};
 
   if (!context.symptom) {
@@ -30,7 +30,7 @@ app.post('/api/diagnose', (req, res) => {
   }
 
   try {
-    const enhancement = diagnosticService.consult(context);
+    const enhancement = await diagnosticService.consult(context);
     res.status(200).json(enhancement);
   } catch (error) {
     console.error('AutoMindLab diagnostic consultation error:', error);
@@ -41,8 +41,10 @@ app.post('/api/diagnose', (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`AutoMindLab diagnostic consultation server listening on port ${port}`);
-});
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`AutoMindLab diagnostic consultation server listening on port ${port}`);
+  });
+}
 
 module.exports = app;
