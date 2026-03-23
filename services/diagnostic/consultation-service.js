@@ -1,178 +1,263 @@
 /**
- * Diagnostic Consultation Service for BMO-stack
- * Provides pump specialist guidance to enhance FLOWCOMMANDER diagnostic workflows
+ * AutoMindLab diagnostic consultation service.
+ *
+ * This is the enterprise-side consultation layer consumed by products such as
+ * FLOWCOMMANDER. It owns runtime-side reasoning and returns advisory,
+ * structured output without taking ownership of the business workflow.
  */
 
-const { Prismo } = require('../council/PRISMO');
-const { BMO } = require('../council/BMO_TRON');
-const { PumpSpecialist } = require('../council/diagnostic/PUMP_SPECIALIST');
+const COUNCIL_ROUTER = {
+  low_pressure: ['NIKOLA_TESLA', 'ALBERT_EINSTEIN', 'MARCUS_AURELIUS'],
+  pressure_oscillation: ['NIKOLA_TESLA', 'ALBERT_EINSTEIN', 'BOB_ROSS'],
+  high_amps: ['ALBERT_EINSTEIN', 'MARCUS_AURELIUS', 'DAVID_GOGGINS'],
+  pump_cycling: ['NIKOLA_TESLA', 'CARL_JUNG', 'BOB_ROSS'],
+  lag_pump_not_engaging: ['NIKOLA_TESLA', 'ALBERT_EINSTEIN', 'DAVID_GOGGINS'],
+  abnormal_frequency_behavior: ['NIKOLA_TESLA', 'ALBERT_EINSTEIN', 'CARL_JUNG'],
+  communication_time_sync_anomaly: ['NIKOLA_TESLA', 'ALBERT_EINSTEIN', 'MARCUS_AURELIUS'],
+  general_performance_issue: ['LEONARDO_DA_VINCI', 'CARL_JUNG', 'BOB_ROSS'],
+};
+
+const BASELINES = {
+  low_pressure: {
+    probableCauses: [
+      { cause: 'Demand increase or inadequate lag support', confidence: 'medium' },
+      { cause: 'Tuning issue or control-band weakness', confidence: 'medium' },
+      { cause: 'Mechanical restriction or wear', confidence: 'low' },
+    ],
+    nextChecks: [
+      'Capture steady-state discharge pressure versus setpoint.',
+      'Capture lead pump frequency while demand is stable.',
+      'Review lag threshold, alarm history, and control limits.',
+      'Inspect for restriction if demand does not explain the pressure drop.',
+    ],
+    partsToConsider: [
+      { part: 'Calibrated pressure gauge', reason: 'Independent pressure verification' },
+      { part: 'Pressure transducer', reason: 'If sensing quality is questionable' },
+    ],
+    escalationCriteria: [
+      'Pressure remains materially below setpoint after validation checks.',
+      'Evidence suggests unsafe electrical or controls conditions.',
+      'Restriction or mechanical wear cannot be safely resolved in the field.',
+    ],
+    closeOutNote: 'Technician validated low-pressure behavior and should document PSI, lead pump Hz, and whether demand, tuning, or restriction best explains the condition.',
+    alternativePaths: [
+      'If Hz is low with low pressure, prioritize controls and lag-threshold review.',
+      'If Hz is high with low pressure, prioritize restriction and wear inspection.',
+    ],
+  },
+  pressure_oscillation: {
+    probableCauses: [
+      { cause: 'Aggressive control behavior', confidence: 'medium' },
+      { cause: 'Sensor noise or placement issue', confidence: 'medium' },
+      { cause: 'Valve or mechanical instability', confidence: 'low' },
+    ],
+    nextChecks: [
+      'Capture swing range and oscillation period.',
+      'Confirm whether VFD output is hunting or stable.',
+      'Inspect sensor location, wiring, and valve behavior.',
+    ],
+    partsToConsider: [
+      { part: 'Pressure transducer', reason: 'If sensing instability is suspected' },
+    ],
+    escalationCriteria: [
+      'Oscillation persists after sensing and control checks.',
+      'Control instability risks service continuity or equipment stress.',
+    ],
+    closeOutNote: 'Technician observed oscillation and should document swing range, controller behavior, and whether sensing, tuning, or mechanical instability best matches the evidence.',
+    alternativePaths: [
+      'If the drive is hunting, review tuning before hardware replacement.',
+      'If the drive is stable, inspect sensing and mechanical contributors first.',
+    ],
+  },
+  high_amps: {
+    probableCauses: [
+      { cause: 'Mechanical load or restriction', confidence: 'medium' },
+      { cause: 'Electrical imbalance or supply issue', confidence: 'medium' },
+      { cause: 'Poor operating point', confidence: 'low' },
+    ],
+    nextChecks: [
+      'Record running amps by phase and compare to nameplate.',
+      'Validate voltage balance and controller faults.',
+      'Inspect for binding, restriction, or wear.',
+    ],
+    partsToConsider: [
+      { part: 'Clamp meter', reason: 'Per-phase current validation' },
+      { part: 'Motor-protection components', reason: 'If overload behavior is confirmed' },
+    ],
+    escalationCriteria: [
+      'Current remains abnormal after field validation.',
+      'Voltage imbalance or electrical fault is detected.',
+      'Mechanical drag or binding requires deeper teardown.',
+    ],
+    closeOutNote: 'Technician should document per-phase amps, electrical condition, and whether mechanical or electrical evidence best explains the elevated load.',
+    alternativePaths: [
+      'If electrical supply is unstable, pause mechanical assumptions and investigate power quality.',
+      'If supply is normal, inspect restriction, wear, and pump loading.',
+    ],
+  },
+  pump_cycling: {
+    probableCauses: [
+      { cause: 'Deadband or threshold issue', confidence: 'medium' },
+      { cause: 'Tank or switch instability', confidence: 'medium' },
+      { cause: 'Lag logic mismatch', confidence: 'low' },
+    ],
+    nextChecks: [
+      'Document cycle interval and whether the pattern changes with demand.',
+      'Review deadband, threshold, and switch behavior.',
+      'Inspect tank condition and repeatability of the trigger.',
+    ],
+    partsToConsider: [
+      { part: 'Pressure switch', reason: 'If switch repeatability is poor' },
+      { part: 'Tank service kit', reason: 'If pressure-tank behavior is suspect' },
+    ],
+    escalationCriteria: [
+      'Cycling persists after deadband and switch validation.',
+      'The cycling pattern suggests a deeper controls defect.',
+    ],
+    closeOutNote: 'Technician should record cycle interval, demand context, and whether deadband, tank, switch, or lag logic best explains the repeated cycling.',
+    alternativePaths: [
+      'If cycling is steady and repeatable, review controls first.',
+      'If cycling is erratic, inspect switch and tank behavior first.',
+    ],
+  },
+  lag_pump_not_engaging: {
+    probableCauses: [
+      { cause: 'Missing lag call or inhibit state', confidence: 'medium' },
+      { cause: 'Relay or wiring path issue', confidence: 'medium' },
+      { cause: 'Settings mismatch', confidence: 'medium' },
+    ],
+    nextChecks: [
+      'Verify the lag call condition against current lead load.',
+      'Review alarm and inhibit history.',
+      'Inspect relay, wiring, and enable-path settings.',
+    ],
+    partsToConsider: [
+      { part: 'Control relay', reason: 'If command path integrity is suspect' },
+      { part: 'I/O module parts', reason: 'If controller path appears degraded' },
+    ],
+    escalationCriteria: [
+      'A valid lag call exists but the engagement path fails.',
+      'The control path cannot be verified safely in the field.',
+    ],
+    closeOutNote: 'Technician should document whether a valid lag call was present, whether the control path was intact, and whether settings, faults, or hardware blocked engagement.',
+    alternativePaths: [
+      'If no valid lag call exists, investigate thresholds and mode settings first.',
+      'If the call exists, inspect relay and wiring path next.',
+    ],
+  },
+  abnormal_frequency_behavior: {
+    probableCauses: [
+      { cause: 'Limit mismatch or bad configuration', confidence: 'medium' },
+      { cause: 'Noisy or invalid inputs', confidence: 'medium' },
+      { cause: 'Mode bounce or controller-state issue', confidence: 'low' },
+    ],
+    nextChecks: [
+      'Capture observed Hz trend over a useful time window.',
+      'Compare the trend to configured min/max limits.',
+      'Validate input quality and current control mode.',
+    ],
+    partsToConsider: [
+      { part: 'Input module diagnostics', reason: 'If controller inputs are suspect' },
+    ],
+    escalationCriteria: [
+      'Frequency behavior remains abnormal after limit and input validation.',
+      'Controller-state instability cannot be resolved in field scope.',
+    ],
+    closeOutNote: 'Technician should document observed Hz pattern, configured range, and whether bad inputs, limits, or mode transitions best explain the behavior.',
+    alternativePaths: [
+      'If frequency violates configured limits, review configuration first.',
+      'If configuration is sound, inspect inputs and mode transitions.',
+    ],
+  },
+  communication_time_sync_anomaly: {
+    probableCauses: [
+      { cause: 'Gateway or network-path issue', confidence: 'medium' },
+      { cause: 'Controller clock drift', confidence: 'medium' },
+      { cause: 'Reference-clock problem', confidence: 'low' },
+    ],
+    nextChecks: [
+      'Confirm whether the issue is isolated or site-wide.',
+      'Validate gateway power, network path, and time-reference source.',
+      'Record observed drift and communications symptoms.',
+    ],
+    partsToConsider: [
+      { part: 'Gateway power supply', reason: 'If gateway stability is suspect' },
+      { part: 'Network hardware spares', reason: 'If site communications path is unstable' },
+    ],
+    escalationCriteria: [
+      'Shared communications or timing infrastructure appears compromised.',
+      'The source of time drift cannot be isolated safely in field scope.',
+    ],
+    closeOutNote: 'Technician should document whether the issue was isolated or site-wide, along with gateway state, observed drift, and network-path condition.',
+    alternativePaths: [
+      'If one controller drifts alone, inspect that controller first.',
+      'If the site drifts together, inspect shared gateway and timing path first.',
+    ],
+  },
+  general_performance_issue: {
+    probableCauses: [
+      { cause: 'Demand or operating-context shift', confidence: 'medium' },
+      { cause: 'Controls issue', confidence: 'medium' },
+      { cause: 'Mechanical degradation', confidence: 'low' },
+    ],
+    nextChecks: [
+      'Capture a concise issue summary tied to a time window.',
+      'Review recent history and recurring alerts.',
+      'Collect at least one strong field measurement tied to the complaint.',
+    ],
+    partsToConsider: [],
+    escalationCriteria: [
+      'The issue remains broad after first-pass measurement collection.',
+      'The symptom pattern suggests a recurring unresolved defect.',
+    ],
+    closeOutNote: 'Technician should document operating context, recurrence pattern, and which first-pass measurements were collected to narrow the diagnosis.',
+    alternativePaths: [
+      'If the issue is recurring, start with history review.',
+      'If the issue is new, prioritize current-state measurements.',
+    ],
+  },
+};
 
 class DiagnosticConsultationService {
-  constructor() {
-    this.prismo = new Prismo();
-    this.bmo = new BMO();
-    this.pumpSpecialist = new PumpSpecialist();
-  }
+  consult(context = {}) {
+    const symptom = String(context.symptom || 'general_performance_issue').trim();
+    const key = BASELINES[symptom] ? symptom : 'general_performance_issue';
+    const baseline = BASELINES[key];
+    const responses = Array.isArray(context.responses) ? context.responses : [];
+    const siteContext = context.siteContext || {};
+    const technicianContext = context.technicianContext || {};
+    const recentAlerts = siteContext.recentAlerts || 'none';
+    const skillLevel = technicianContext.skillLevel || 'unknown';
 
-  /**
-   * Consult with pump specialist for diagnostic enhancement
-   * @param {Object} context - Diagnostic context from FLOWCOMMANDER
-   * @returns {Promise<Object>} Enhancement recommendations
-   */
-  async consult(context) {
-    try {
-      // Extract key information
-      const { symptom, responses, siteContext, technicianContext } = context;
-      
-      // Build consultation prompt for pump specialist
-      const prompt = this.buildConsultationPrompt(symptom, responses, siteContext, technicianContext);
-      
-      // Get council recommendation (Prismo orchestrates)
-      const councilRecommendation = await this.prismo.delegate({
-        task: 'diagnostic_enhancement',
-        prompt,
-        agents: ['PUMP_SPECIALIST'],
-        context
-      });
-      
-      // Have BMO format the final response
-      const formattedResponse = await this.bmo.process({
-        rawInput: councilRecommendation,
-        context: { source: 'diagnostic_consultation' }
-      });
-      
-      // Parse and structure the response
-      return this.parseResponse(formattedResponse);
-    } catch (error) {
-      console.error('Diagnostic consultation failed:', error);
-      // Return fallback enhancement
-      return this.getFallbackEnhancement(symptom);
+    const warnings = [];
+    if (!responses.length) {
+      warnings.push('No structured diagnostic responses were supplied.');
     }
-  }
+    if (!siteContext.controllerType) {
+      warnings.push('Controller type was not supplied.');
+    }
 
-  /**
-   * Build consultation prompt for pump specialist
-   */
-  buildConsultationPrompt(symptom, responses, siteContext, technicianContext) {
-    return `
-PUMP SPECIALIST CONSULTATION REQUEST
+    let confidence = 'medium';
+    if (warnings.length >= 2) {
+      confidence = 'low';
+    }
 
-SYMPTOM: ${symptom}
-
-CURRENT DIAGNOSTIC RESPONSES:
-${responses.map((r, i) => `${i+1}. ${r.prompt}: ${r.responseValue}${r.notes ? ' (Notes: ' + r.notes + ')' : ''}`).join('\n')}
-
-SITE CONTEXT:
-- Station ID: ${siteContext.stationId || 'unknown'}
-- System Type: ${siteContext.systemType || 'unknown'}
-- Controller Type: ${siteContext.controllerType || 'unknown'}
-- OEM: ${siteContext.oem || 'unknown'}
-- Pump Count: ${siteContext.pumpCount || 'unknown'}
-- Recent Alerts: ${siteContext.recentAlerts || 'none'}
-- Configuration Summary: ${siteContext.configurationSummary || 'not available'}
-
-TECHNICIAN CONTEXT:
-- Skill Level: ${technicianContext.skillLevel || 'unknown'}
-- Certifications: ${technicianContext.certifications || 'none'}
-- Experience Years: ${technicianContext.experienceYears || 'unknown'}
-
-ENVIRONMENTAL FACTORS:
-- Weather: ${siteContext.weather || 'not provided'}
-- Demand Pattern: ${siteContext.demandPattern || 'not provided'}
-- Time of Day: ${siteContext.timeOfDay || 'not provided'}
-
-REQUEST:
-Please provide pump-specific diagnostic enhancement including:
-1. UPDATED PROBABLE CAUSES - Ranked by likelihood with confidence indicators
-2. SPECIFIC NEXT CHECKS - Targeted measurements or inspections to perform
-3. PARTS TO CONSIDER - Specific parts to bring based on symptoms and history
-4. ESCALATION CRITERIA - Clear indicators when to escalate
-5. CONTEXTUAL CLOSE-OUT NOTE - Suggested note for service record
-6. ALTERNATIVE DIAGNOSTIC PATHS - If current approach isn't resolving
-
-Consider pump affinity laws, common failure modes, tuning effects, and safety procedures.
-Format response as actionable, field-ready guidance.
-`;
-  }
-
-  /**
-   * Parse council/BMO response into structured enhancement
-   */
-  parseResponse(response) {
-    // In a real implementation, this would parse the structured response
-    // For MVP, return a structured enhancement based on common patterns
-    
     return {
-      probableCauses: this.extractProbableCauses(response),
-      nextChecks: this.extractNextChecks(response),
-      partsToConsider: this.extractPartsToConsider(response),
-      escalationCriteria: this.extractEscalationCriteria(response),
-      closeOutNote: this.extractCloseOutNote(response),
-      alternativePaths: this.extractAlternativePaths(response),
-      confidence: 'medium', // Would be calculated based on data quality
-      timestamp: new Date().toISOString()
-    };
-  }
-
-  // Helper methods to extract specific sections from response
-  extractProbableCauses(response) {
-    // Simplified extraction - would be more sophisticated in reality
-    return [
-      { cause: 'Demand increase', confidence: 'high' },
-      { cause: 'Tuning issue', confidence: 'medium' },
-      { cause: 'Mechanical restriction', confidence: 'medium' }
-    ];
-  }
-
-  extractNextChecks(response) {
-    return [
-      'Verify actual discharge pressure with calibrated gauge',
-      'Check pump frequency vs setpoint band',
-      'Inspect for temporary vs persistent demand spike',
-      'Review alarm history for related events'
-    ];
-  }
-
-  extractPartsToConsider(response) {
-    return [
-      { part: 'Pressure gauge (calibrated)', reason: 'Verification measurement' },
-      { part: 'Suction strainer', reason: 'Common restriction point' },
-      { part: 'Impeller wear ring', reason: 'Wear-related performance loss' }
-    ];
-  }
-
-  extractEscalationCriteria(response) {
-    return [
-      'Pressure remains >15% below setpoint after checks',
-      'Mechanical binding or restriction found',
-      'Electrical faults detected (voltage imbalance, phase loss)',
-      'Safety concerns identified (lockout/tagout required)'
-    ];
-  }
-
-  extractCloseOutNote(response) {
-    return 'Diagnostic enhanced with pump specialist guidance. Verified pressure measurements and demand patterns before determining root cause.';
-  }
-
-  extractAlternativePaths(response) {
-    return [
-      'If pressure normal but flow low: check for suction-side restrictions',
-      'If pressure oscillates: review PID tuning and sensor placement',
-      'If electrical checks normal: proceed with mechanical inspection'
-    ];
-  }
-
-  getFallbackEnhancement(symptom) {
-    // Return basic enhancement if consultation fails
-    return {
-      probableCauses: [{ cause: 'Requires further investigation', confidence: 'low' }],
-      nextChecks: ['Verify measurements with calibrated equipment', 'Review service history'],
-      partsToConsider: [],
-      escalationCriteria: ['Unable to verify measurements safely'],
-      closeOutNote: 'Basic diagnostic completed. Recommend escalation for specialist review.',
-      alternativePaths: ['Consider manufacturer-specific diagnostic procedures'],
-      confidence: 'low',
-      timestamp: new Date().toISOString()
+      symptom: key,
+      councilSeatsConsulted: COUNCIL_ROUTER[key] || [],
+      probableCauses: baseline.probableCauses,
+      nextChecks: baseline.nextChecks,
+      partsToConsider: baseline.partsToConsider,
+      escalationCriteria: baseline.escalationCriteria,
+      closeOutNote: baseline.closeOutNote,
+      alternativePaths: baseline.alternativePaths,
+      confidence,
+      runtimeNotes: [
+        `Recent alerts context: ${recentAlerts}`,
+        `Technician skill level: ${skillLevel}`,
+      ],
+      warnings,
+      timestamp: new Date().toISOString(),
     };
   }
 }
