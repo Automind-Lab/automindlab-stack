@@ -1,94 +1,94 @@
 # AutoMindLab Stack
 
-AutoMindLab Stack is the enterprise runtime, agent system, and integration layer for business-facing OpenClaw deployments.
+Business/enterprise stack for BMO/OpenClaw integrations - Enterprise Runtime Owner
 
-BMO-stack is a reference point only.
-AutoMindLab is the production-facing home for its own host runtime, its own council, its own specialist agents, and its own integration surfaces.
+This repository contains the **AutoMindLab enterprise runtime** - the production-ready ownership layer for the BMO/OpenClaw agent council system. While BMO-stack remains the family/community/adventure-time themed reference point, AutoMindLab Stack owns the council, runtime, and specialist execution layer for business/enterprise applications.
 
-## Operating stance
+## Philosophy
 
-This repository exists to provide:
-- enterprise host and agent runtime patterns
-- business-facing APIs and SDKs
-- vertical specialist systems
-- deployment-ready services
-- clear separation between runtime ownership and product consumption
+AutoMindLab Stack is the **enterprise runtime owner** that:
+- Owns the Council of 13 agent runtime and execution layer
+- Provides production-ready services, SDKs, and deployment configurations  
+- Maintains specialist agents (like Pump Specialist) as enterprise assets
+- Handles security hardening, performance monitoring, and analytics
+- Provides formal APIs, SLAs, and support for business applications
+- Less Adventure Time theming, more enterprise readiness and reliability
 
-## Boundary model
+BMO-stack remains as the **reference point and inspiration source** for the core agent concepts and local-first design principles.
 
-### AutoMindLab Stack owns
-- the enterprise council and orchestration model
-- specialist agents for verticals and workflows
-- service endpoints used by client applications
-- integration contracts and reusable SDKs
-- deployment and operational hardening
+## Structure
 
-### BMO-stack is
-- a historical and architectural reference point
-- not the home of this production council
-- not the owner of the AutoMindLab enterprise runtime
-
-### FLOWCOMMANDER is
-- a consumer of the integration
-- the owner of technician workflow UX and business records
-- not the owner of the AutoMindLab runtime
-
-## Repository structure
-
-```text
+```
 automindlab-stack/
-├── context/
+├── context/                    # AutoMindLab-owned agent council definitions
 │   └── council/
-│       ├── COUNCIL_OF_13.md
-│       ├── diagnostic/
-│       │   └── PUMP_SPECIALIST.md
-│       └── *.md                # Council seat definitions
-├── services/
-│   └── diagnostic/
-│       ├── consultation-service.js
-│       ├── package.json
-│       └── server.js
-└── lib/
-    └── services/
-        └── diagnostic_consultation_service.dart
+│       ├── COUNCIL_OF_13.md          # Council overview and operating principles
+│       ├── diagnostic/               # Vertical-specific specialists (e.g., PUMP_SPECIALIST)
+│       │   └── PUMP_SPECIALIST.md    # AutoMindLab-owned Pump Specialist seat
+│       ├── ALBERT_EINSTEIN.md        # Individual council member definitions
+│       ├── BOB_ROSS.md
+│       ├── CARL_JUNG.md
+│       ├── ... (all 13 seats)
+│       └── ...                       # Other council infrastructure
+├── services/                   # Production services and microservices
+│   └── diagnostic/             # Diagnostic consultation services (AutoMindLab-owned)
+├── lib/                        # Reusable libraries and SDKs
+│   └── services/               # Client libraries for consuming services
+│       └── diagnostic_consultation_service.dart  # FLOWCOMMANDER client
+├── sdks/                       # Official SDKs for different platforms
+├── deployments/                # Deployment configurations (Docker, Kubernetes, etc.)
+├── docs/                       # Documentation
+└── scripts/                    # Utility scripts
 ```
 
-## Council of 13
+## Current Integration
 
-The AutoMindLab enterprise council is composed of 13 operating seats inspired by distinct strategic archetypes:
+### FLOWCOMMANDER Diagnostic Consultation (AutoMindLab-owned)
 
-1. Nikola Tesla — inventor / systems thinker
-2. Ram Dass — inner work / alignment
-3. Leonardo da Vinci — polymath / synthesis
-4. Pablo Picasso — creative disruptor
-5. Bob Ross — calm builder / teacher
-6. Albert Einstein — theoretical genius
-7. Steve Jobs — visionary operator
-8. Napoleon Bonaparte — strategic leadership
-9. Elon Musk — modern business builder
-10. Carl Jung — psychology / shadow work
-11. Marcus Aurelius — stoic discipline
-12. Robert Cialdini — persuasion / influence
-13. David Goggins — warrior execution
+Enhances FLOWCOMMANDER's diagnostic workflows with Pump Specialist guidance from the AutoMindLab Council of 13.
 
-These are original operating profiles inspired by those figures, not literal impersonations.
+**AutoMindLab owns and operates:**
+- Pump Specialist agent (context/council/diagnostic/PUMP_SPECIALIST.md) - Seat 7 of Council of 13
+- Diagnostic consultation service (services/diagnostic/) - HTTP endpoint `/api/diagnose`
+- Metadata, documentation, and service contracts
 
-## Current implementation
+**FLOWCOMMANDER consumes:**
+- Dart client service (lib/services/diagnostic_consultation_service.dart)
+- Standardized request/response contracts
+- Enhancement guidance for technician workflows
 
-### FLOWCOMMANDER diagnostic consultation
+**Provides to FLOWCOMMANDER technicians:**
+- Ranked probable causes with confidence levels and evidence
+- Specific next checks with tools, safety notes, and priority
+- Parts to consider with compatibility and urgency indicators
+- Clear escalation criteria with thresholds and actions
+- Contextual close-out note suggestions
+- Alternative diagnostic paths
+- Metadata including confidence assessment, limitations, and data quality
 
-This repository currently packages the AutoMindLab-side diagnostic consultation surface for FLOWCOMMANDER.
+## Getting Started
 
-It includes:
-- the AutoMindLab Council of 13 foundation
-- a pump-domain specialist agent brief
-- a Node.js consultation service
-- an HTTP server exposing `POST /api/diagnose`
-- a reusable Dart client for consumer apps
+See individual service directories for setup instructions.
 
-## Design rules
+## Council of 13 Seats
 
-- AutoMindLab owns runtime and agent execution.
-- Consumer apps own UX, persistence, and business workflow decisions.
-- Specialist output is advisory unless the consumer app explicitly persists it.
-- Safety, escalation, and uncertainty should always be explicit.
+AutoMindLab Stack owns and maintains the full Council of 13:
+1. Albert Einstein - First principles and theoretical foundation
+2. Bob Ross - Clear communication and approachable guidance
+3. Carl Jung - Pattern recognition and archetypal analysis
+4. David Goggins - Decisive action and mental toughness
+5. Elon Musk - Systems thinking and innovation
+6. Leonardo da Vinci - Interdisciplinary creativity
+7. **Marcus Aurelius** - Stoic judgment and risk assessment (Seat 1 - Council Lead)
+8. Marie Curie - Safety and hazardous materials awareness
+9. **Nikola Tesla** - System interactions and flow relationships (Seat 2)
+10. Napoleon Bonaparte - Strategy and resource allocation
+11. Pablo Picasso - Creative problem solving and perspective
+12. Rama Dass - Spiritual awareness and holistic thinking
+13. Steve Jobs - User experience and design excellence
+
+The Pump Specialist draws reasoning from seats 2, 1, 3, 7, 6, 4, 8, 9, 10, 11, and 12 as appropriate for pump-station diagnostics.
+
+## License
+
+MIT
