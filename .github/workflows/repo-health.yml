@@ -14,14 +14,26 @@ jobs:
       - name: Check key directories
         run: |
           test -d context/council
+          test -d context/council/diagnostic
           test -d services/diagnostic
           test -d scripts
           test -d docs
+          test -d .ona/skills
 
-      - name: Report council seat count
+      - name: Validate council seat count
         run: |
           count=$(find context/council -maxdepth 1 -name '*.md' ! -name 'COUNCIL_OF_13.md' | wc -l | tr -d ' ')
           echo "Council seat files: $count"
+          test "$count" -eq 13
+
+      - name: Verify specialist markers
+        run: |
+          grep -q 'The Pump Specialist is a specialist agent, not a numbered council seat.' context/council/diagnostic/PUMP_SPECIALIST.md
+          grep -q 'Council Composition & Influence' context/council/diagnostic/PUMP_SPECIALIST.md
+
+      - name: Verify module resolution
+        run: |
+          node -e "require('./services/diagnostic/consultation-service')"
 
       - name: Check script syntax
         run: |
