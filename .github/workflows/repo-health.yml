@@ -1,0 +1,30 @@
+name: repo-health
+
+on:
+  schedule:
+    - cron: '17 11 * * 1'
+  workflow_dispatch:
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check key directories
+        run: |
+          test -d context/council
+          test -d services/diagnostic
+          test -d scripts
+          test -d docs
+
+      - name: Report council seat count
+        run: |
+          count=$(find context/council -maxdepth 1 -name '*.md' ! -name 'COUNCIL_OF_13.md' | wc -l | tr -d ' ')
+          echo "Council seat files: $count"
+
+      - name: Check script syntax
+        run: |
+          bash -n scripts/configure-openclaw-agents.sh
+          bash -n scripts/runtime-doctor.sh
+          bash -n scripts/worker-status.sh

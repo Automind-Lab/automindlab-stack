@@ -1,94 +1,92 @@
 # AutoMindLab Stack
 
-AutoMindLab Stack is the enterprise runtime, agent system, and integration layer for business-facing OpenClaw deployments.
+AutoMindLab Stack is the enterprise runtime, host/agent system, and integration layer for business-facing OpenClaw deployments.
 
 BMO-stack is a reference point only.
-AutoMindLab is the production-facing home for its own host runtime, its own council, its own specialist agents, and its own integration surfaces.
+AutoMindLab owns its own council, specialist agents, automation, and runtime-side service surfaces.
 
-## Operating stance
+## What this repository owns
 
-This repository exists to provide:
-- enterprise host and agent runtime patterns
-- business-facing APIs and SDKs
-- vertical specialist systems
-- deployment-ready services
-- clear separation between runtime ownership and product consumption
+- the Council of 13 enterprise council
+- specialist agents such as Pump Specialist
+- the OpenClaw host / worker split for AutoMindLab
+- deployment and operations scaffolding
+- GitHub automation for validation and repository health
+- reusable service clients for consumer products
 
 ## Boundary model
 
 ### AutoMindLab Stack owns
-- the enterprise council and orchestration model
-- specialist agents for verticals and workflows
-- service endpoints used by client applications
-- integration contracts and reusable SDKs
-- deployment and operational hardening
+- runtime and agent execution
+- council and specialist routing
+- enterprise-side APIs and operational hardening
+- deployment documentation and host setup
+
+### Consumer applications own
+- user experience
+- business records and persistence
+- approvals, reporting, and workflow outcomes
 
 ### BMO-stack is
-- a historical and architectural reference point
-- not the home of this production council
-- not the owner of the AutoMindLab enterprise runtime
-
-### FLOWCOMMANDER is
-- a consumer of the integration
-- the owner of technician workflow UX and business records
-- not the owner of the AutoMindLab runtime
+- an architectural reference point
+- not the owner of this production council
+- not the home of the AutoMindLab enterprise runtime
 
 ## Repository structure
 
 ```text
 automindlab-stack/
+├── .github/                    # GitHub automation and dependency updates
+├── config/                     # Runtime bridge templates
 ├── context/
-│   └── council/
-│       ├── COUNCIL_OF_13.md
-│       ├── diagnostic/
-│       │   └── PUMP_SPECIALIST.md
-│       └── *.md                # Council seat definitions
+│   ├── BOOTSTRAP.md
+│   ├── council/
+│   │   ├── COUNCIL_OF_13.md
+│   │   ├── diagnostic/
+│   │   │   └── PUMP_SPECIALIST.md
+│   │   └── *.md               # Council seat definitions
+│   └── identity/             # Host and worker identity seeds
+├── deployments/
+│   └── openclaw/             # Optional host-side auxiliary services
+├── docs/
+│   ├── GITHUB_AUTOMATION.md
+│   └── OPENCLAW_HOST_AGENT_SYSTEM.md
+├── lib/
+│   └── services/
+│       └── diagnostic_consultation_service.dart
+├── scripts/
+│   ├── configure-openclaw-agents.sh
+│   ├── runtime-doctor.sh
+│   └── worker-status.sh
 ├── services/
 │   └── diagnostic/
-│       ├── consultation-service.js
-│       ├── package.json
-│       └── server.js
-└── lib/
-    └── services/
-        └── diagnostic_consultation_service.dart
+└── Makefile
 ```
-
-## Council of 13
-
-The AutoMindLab enterprise council is composed of 13 operating seats inspired by distinct strategic archetypes:
-
-1. Nikola Tesla — inventor / systems thinker
-2. Ram Dass — inner work / alignment
-3. Leonardo da Vinci — polymath / synthesis
-4. Pablo Picasso — creative disruptor
-5. Bob Ross — calm builder / teacher
-6. Albert Einstein — theoretical genius
-7. Steve Jobs — visionary operator
-8. Napoleon Bonaparte — strategic leadership
-9. Elon Musk — modern business builder
-10. Carl Jung — psychology / shadow work
-11. Marcus Aurelius — stoic discipline
-12. Robert Cialdini — persuasion / influence
-13. David Goggins — warrior execution
-
-These are original operating profiles inspired by those figures, not literal impersonations.
 
 ## Current implementation
 
+### Council of 13
+The enterprise council is made of 13 original operating profiles inspired by:
+Nikola Tesla, Ram Dass, Leonardo da Vinci, Pablo Picasso, Bob Ross, Albert Einstein, Steve Jobs, Napoleon Bonaparte, Elon Musk, Carl Jung, Marcus Aurelius, Robert Cialdini, and David Goggins.
+
+### OpenClaw host / worker topology
+The intended topology is:
+- `automind-host` = host-facing conversational runtime, sandbox off
+- `automind-worker` = dedicated sandbox worker, sandbox all
+
 ### FLOWCOMMANDER diagnostic consultation
+This repository packages the AutoMindLab-side diagnostic consultation surface for FLOWCOMMANDER and similar products.
 
-This repository currently packages the AutoMindLab-side diagnostic consultation surface for FLOWCOMMANDER.
-
-It includes:
-- the AutoMindLab Council of 13 foundation
-- a pump-domain specialist agent brief
-- a Node.js consultation service
-- an HTTP server exposing `POST /api/diagnose`
-- a reusable Dart client for consumer apps
+## GitHub automation
+The repository includes:
+- CI validation for council and diagnostic-service scaffolding
+- scheduled repository health checks
+- CodeQL analysis for JavaScript files
+- Dependabot updates for GitHub Actions and npm dependencies
 
 ## Design rules
 
-- AutoMindLab owns runtime and agent execution.
-- Consumer apps own UX, persistence, and business workflow decisions.
-- Specialist output is advisory unless the consumer app explicitly persists it.
-- Safety, escalation, and uncertainty should always be explicit.
+- runtime-side output is advisory unless a consumer product explicitly persists it
+- safety, escalation, and uncertainty should always be explicit
+- specialist guidance should stay structured and reviewable
+- host and worker responsibilities should remain separate

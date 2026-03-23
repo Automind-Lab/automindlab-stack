@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - '5432:5432'
+    volumes:
+      - automind_pgdata:/var/lib/postgresql/data
+
+volumes:
+  automind_pgdata:
