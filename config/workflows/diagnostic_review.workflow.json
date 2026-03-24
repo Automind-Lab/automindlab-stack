@@ -1,0 +1,12 @@
+{
+  "name": "diagnostic_review",
+  "description": "Structured host-worker review loop for diagnostic consultations.",
+  "entry_skill": "diagnostic-consultation",
+  "steps": [
+    {"id": "collect-input", "type": "host", "output": "request"},
+    {"id": "specialist-pass", "type": "worker", "skill": "diagnostic-consultation", "timeoutMs": 30000},
+    {"id": "memory-capture", "type": "host", "skill": "memory-capture"},
+    {"id": "escalation-check", "type": "host", "skill": "escalate-to-human"}
+  ],
+  "outputs": ["probableCauses", "nextChecks", "escalationCriteria", "metadata"]
+}
