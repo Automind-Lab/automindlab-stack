@@ -6,6 +6,8 @@
 const express = require('express');
 const DiagnosticConsultationService = require('./consultation-service');
 
+const CONTRACT_VERSION = '2026-03-24.v1';
+
 const app = express();
 const diagnosticService = new DiagnosticConsultationService();
 const port = Number(process.env.PORT || 3001);
@@ -23,20 +25,47 @@ app.post('/api/diagnose', async (req, res) => {
   const context = req.body || {};
 
   if (!context.symptom) {
-    res.status(400).json({
-      error: 'Missing required field: symptom',
+    return res.status(400).json({
+      contract_version: CONTRACT_VERSION,
+      advisory: true,
+      status: 'error',
+      output: null,
+      uncertainty: 'Missing required field: symptom',
+      safe_action: 'Provide symptom and retry',
+      escalation: false,
+      metadata: {},
     });
-    return;
   }
 
   try {
     const enhancement = await diagnosticService.consult(context);
-    res.status(200).json(enhancement);
+
+    return res.status(200).json({
+      contract_version: CONTRACT_VERSION,
+      advisory: true,
+      status: 'ok',
+      output: enhancement,
+      uncertainty: null,
+      safe_action: 'Review suggested checks before acting',
+      escalation: false,
+      metadata: enhancement.metadata || {},
+    });
   } catch (error) {
     console.error('AutoMindLab diagnostic consultation error:', error);
-    res.status(500).json({
-      error: 'Internal server error',
-      message: error.message,
+    const fallback = diagnosticService.getFallbackEnhancement(
+      context.symptom,
+      error.message
+    );
+
+    return res.status(200).json({
+      contract_version: CONTRACT_VERSION,
+      advisory: true,
+      status: 'partial',
+      output: fallback,
+      uncertainty: error.message,
+      safe_action: 'Fallback used — escalate if uncertainty remains',
+      escalation: true,
+      metadata: fallback.metadata || {},
     });
   }
 });

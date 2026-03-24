@@ -56,7 +56,9 @@ test('POST /api/diagnose returns 400 when symptom is missing', async () => {
     const body = await response.json();
 
     assert.equal(response.status, 400);
-    assert.equal(body.error, 'Missing required field: symptom');
+    assert.equal(body.status, 'error');
+    assert.equal(body.advisory, true);
+    assert.equal(body.uncertainty, 'Missing required field: symptom');
   });
 });
 
@@ -78,12 +80,17 @@ test('POST /api/diagnose returns a valid output schema for a known symptom', asy
     const body = await response.json();
 
     assert.equal(response.status, 200);
-    assert.equal(Array.isArray(body.probableCauses), true);
-    assert.equal(Array.isArray(body.nextChecks), true);
-    assert.equal(Array.isArray(body.partsToConsider), true);
-    assert.equal(Array.isArray(body.escalationCriteria), true);
-    assert.equal(Array.isArray(body.alternativePaths), true);
-    assert.equal(typeof body.closeOutNote, 'string');
-    assert.equal(typeof body.metadata, 'object');
+    assert.equal(body.contract_version, '2026-03-24.v1');
+    assert.equal(body.advisory, true);
+    assert.equal(body.status, 'ok');
+    assert.equal(typeof body.output, 'object');
+    assert.equal(Array.isArray(body.output.probableCauses), true);
+    assert.equal(Array.isArray(body.output.nextChecks), true);
+    assert.equal(Array.isArray(body.output.partsToConsider), true);
+    assert.equal(Array.isArray(body.output.escalationCriteria), true);
+    assert.equal(Array.isArray(body.output.alternativePaths), true);
+    assert.equal(typeof body.output.closeOutNote, 'string');
+    assert.equal(typeof body.output.metadata, 'object');
+    assert.equal(typeof body.safe_action, 'string');
   });
 });
