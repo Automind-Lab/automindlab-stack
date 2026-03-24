@@ -1,0 +1,30 @@
+name: governance-validation
+
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+  pull_request:
+
+jobs:
+  validate-governance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Check governance docs exist
+        run: |
+          test -f CONTRIBUTING.md
+          test -f docs/REPO_HYGIENE.md
+          test -f docs/MEMORY_STRATEGY.md
+          test -f docs/WORKER_DELEGATION_PROTOCOL.md
+
+      - name: Validate memory workflow and schema files exist
+        run: |
+          test -f config/workflows/memory_capture.workflow.json
+          test -f config/schemas/memory-entry.schema.json
+
+      - name: Run memory schema sanity test
+        run: |
+          node --test services/diagnostic/test/memory-schema.test.js

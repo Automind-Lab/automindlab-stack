@@ -1,0 +1,11 @@
+{
+  "id": "mem_diag_low_pressure_001",
+  "type": "pattern",
+  "summary": "Repeated low-pressure calls at this site were most often explained by lag-support delay rather than sensor failure.",
+  "sourceRefs": [
+    "work-order:wo_1042",
+    "service-log:svc_1042"
+  ],
+  "confidence": "medium",
+  "scope": "diagnostic"
+}

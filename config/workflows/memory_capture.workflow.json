@@ -1,0 +1,11 @@
+{
+  "name": "memory_capture",
+  "description": "Structured workflow for capturing reusable runtime memory after validated outcomes.",
+  "entry_skill": "memory-capture",
+  "steps": [
+    {"id": "collect-outcome", "type": "host", "output": "outcome"},
+    {"id": "shape-memory", "type": "host", "skill": "memory-capture"},
+    {"id": "review-memory", "type": "worker", "skill": "council-review", "timeoutMs": 30000}
+  ],
+  "outputs": ["id", "type", "summary", "sourceRefs", "confidence", "scope"]
+}
