@@ -1,0 +1,71 @@
+{
+  "probableCauses": [
+    {
+      "cause": "Demand increase or inadequate lag support",
+      "confidence": "medium",
+      "evidence": [
+        "Low pressure commonly appears when real demand exceeds available support."
+      ]
+    },
+    {
+      "cause": "Control tuning weakness",
+      "confidence": "medium",
+      "evidence": [
+        "Weak control response can hold pressure below setpoint without a hard alarm."
+      ]
+    }
+  ],
+  "nextChecks": [
+    {
+      "action": "Capture steady-state discharge pressure versus setpoint.",
+      "tool": "Calibrated pressure gauge",
+      "safety": "Standard LOTO and pressure awareness",
+      "priority": "high"
+    },
+    {
+      "action": "Capture lead pump frequency while demand is stable.",
+      "tool": "HMI or VFD readout",
+      "safety": "Observe electrical boundaries",
+      "priority": "high"
+    }
+  ],
+  "partsToConsider": [
+    {
+      "part": "Pressure transducer",
+      "reason": "If sensing quality is questionable",
+      "compatibility": "Verify OEM and range",
+      "urgency": "medium"
+    }
+  ],
+  "escalationCriteria": [
+    {
+      "condition": "Pressure remains materially below setpoint after validation checks",
+      "threshold": ">10% below target",
+      "action": "Escalate to senior technician or engineer",
+      "timeline": "Within current service window"
+    }
+  ],
+  "closeOutNote": "Technician validated low-pressure behavior and should record PSI, lead pump Hz, and whether demand, tuning, or restriction best explains the condition.",
+  "alternativePaths": [
+    {
+      "name": "Controls-first review",
+      "description": "If Hz is low while pressure is low, prioritize tuning and lag-threshold review.",
+      "trigger": "Low pressure paired with unexpectedly low Hz"
+    }
+  ],
+  "metadata": {
+    "confidence": "medium",
+    "timestamp": "2026-03-24T14:00:00Z",
+    "consultationId": "consult_example_001",
+    "dataQuality": "good",
+    "limitations": [
+      "No major limitations identified"
+    ],
+    "originalSymptom": "lowPressure",
+    "councilSeatsConsulted": [
+      "Nikola Tesla",
+      "Albert Einstein",
+      "Marcus Aurelius"
+    ]
+  }
+}
