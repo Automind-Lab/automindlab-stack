@@ -1,0 +1,40 @@
+{
+  "symptom": "lowPressure",
+  "responses": [
+    {
+      "stepKey": "confirm-pressure",
+      "prompt": "Confirm actual discharge pressure versus setpoint.",
+      "responseValue": "48 psi",
+      "notes": "Gauge verified against calibrated test gauge."
+    },
+    {
+      "stepKey": "check-hz",
+      "prompt": "Is the lead pump frequency below the normal control band?",
+      "responseValue": "yes",
+      "notes": "Lead pump running at 36 Hz under normal demand."
+    }
+  ],
+  "siteContext": {
+    "stationId": "station-otis-iii",
+    "controllerType": "VFD",
+    "systemType": "3-pump booster system",
+    "oem": "Example OEM",
+    "serviceHistoryTag": "repeat-low-pressure"
+  },
+  "technicianContext": {
+    "skillLevel": "journeyman",
+    "experienceYears": 4,
+    "languagePreference": "en"
+  },
+  "environmentalContext": {
+    "timeOfDay": "afternoon",
+    "demandPattern": "steady"
+  },
+  "safetyContext": {
+    "lockoutTagoutRequired": true,
+    "electricalHazard": true
+  },
+  "partsContext": {
+    "inventoryAvailable": ["pressure transducer", "suction strainer service kit"]
+  }
+}
