@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automindlab.local/schemas/diagnostic-response.schema.json",
+  "title": "AutoMindLab Diagnostic Response",
+  "type": "object",
+  "required": [
+    "probableCauses",
+    "nextChecks",
+    "partsToConsider",
+    "escalationCriteria",
+    "closeOutNote",
+    "alternativePaths",
+    "metadata"
+  ],
+  "properties": {
+    "probableCauses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["cause", "confidence", "evidence"],
+        "properties": {
+          "cause": {"type": "string"},
+          "confidence": {"type": "string", "enum": ["high", "medium", "low"]},
+          "evidence": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "nextChecks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["action", "tool", "safety", "priority"],
+        "properties": {
+          "action": {"type": "string"},
+          "tool": {"type": "string"},
+          "safety": {"type": "string"},
+          "priority": {"type": "string", "enum": ["high", "medium", "low"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "partsToConsider": {"type": "array"},
+    "escalationCriteria": {"type": "array"},
+    "closeOutNote": {"type": "string"},
+    "alternativePaths": {"type": "array"},
+    "metadata": {
+      "type": "object",
+      "required": ["confidence", "timestamp", "consultationId", "dataQuality", "limitations", "originalSymptom", "councilSeatsConsulted"],
+      "properties": {
+        "confidence": {"type": "string", "enum": ["high", "medium", "low"]},
+        "timestamp": {"type": "string"},
+        "consultationId": {"type": "string"},
+        "dataQuality": {"type": "string"},
+        "limitations": {"type": "array", "items": {"type": "string"}},
+        "originalSymptom": {"type": "string"},
+        "councilSeatsConsulted": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
