@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automindlab.local/schemas/memory-entry.schema.json",
+  "title": "Runtime Memory Entry",
+  "type": "object",
+  "required": ["id", "type", "summary", "sourceRefs", "confidence", "scope"],
+  "properties": {
+    "id": {"type": "string"},
+    "type": {"type": "string", "enum": ["incident", "pattern", "playbook", "operator-note"]},
+    "summary": {"type": "string"},
+    "sourceRefs": {"type": "array", "items": {"type": "string"}},
+    "confidence": {"type": "string", "enum": ["low", "medium", "high"]},
+    "scope": {"type": "string", "enum": ["runtime", "diagnostic", "operator"]}
+  },
+  "additionalProperties": false
+}
