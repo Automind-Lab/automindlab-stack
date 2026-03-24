@@ -1,0 +1,29 @@
+name: adaptive-skills-reporting
+
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+  pull_request:
+
+jobs:
+  report-adaptive-skills:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Validate adaptive store schema file exists
+        run: |
+          test -f config/schemas/adaptive-skills-store.schema.json
+          test -f data/adaptive-skills-store.json
+          test -f scripts/skill_stats.py
+
+      - name: Run adaptive skill stats report
+        run: |
+          python3 scripts/skill_stats.py
