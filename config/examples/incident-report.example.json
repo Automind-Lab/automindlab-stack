@@ -1,0 +1,12 @@
+{
+  "id": "inc_runtime_worker_timeout_001",
+  "summary": "Worker timed out during browser-assisted research for a diagnostic escalation.",
+  "severity": "sev2",
+  "status": "mitigated",
+  "affectedScope": "worker",
+  "nextAction": "Review browser workflow timeout and reduce task scope.",
+  "notes": [
+    "Host returned partial result and escalated safely.",
+    "No irreversible browser actions were attempted."
+  ]
+}
