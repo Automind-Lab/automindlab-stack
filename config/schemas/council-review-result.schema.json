@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automindlab.local/schemas/council-review-result.schema.json",
+  "title": "Council Review Result",
+  "type": "object",
+  "required": ["decision", "seatReviews", "synthesis", "confidence", "escalate"],
+  "properties": {
+    "decision": {"type": "string"},
+    "seatReviews": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["seat", "position", "notes"],
+        "properties": {
+          "seat": {"type": "string"},
+          "position": {"type": "string"},
+          "notes": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "synthesis": {"type": "string"},
+    "confidence": {"type": "string", "enum": ["low", "medium", "high"]},
+    "escalate": {"type": "boolean"}
+  },
+  "additionalProperties": false
+}

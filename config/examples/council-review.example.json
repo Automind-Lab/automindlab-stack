@@ -1,0 +1,18 @@
+{
+  "decision": "Should the host enable browser-assisted research for this customer workflow?",
+  "seatReviews": [
+    {
+      "seat": "Nikola Tesla",
+      "position": "Useful when information is spread across multiple systems and pages.",
+      "notes": "Best when bounded and evidence-oriented."
+    },
+    {
+      "seat": "Marcus Aurelius",
+      "position": "Only enable it with explicit escalation guardrails.",
+      "notes": "Risk rises when browsing could trigger irreversible actions."
+    }
+  ],
+  "synthesis": "Enable bounded browser research for read-oriented evidence gathering only.",
+  "confidence": "medium",
+  "escalate": false
+}
