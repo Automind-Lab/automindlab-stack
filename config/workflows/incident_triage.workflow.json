@@ -1,0 +1,12 @@
+{
+  "name": "incident_triage",
+  "description": "Structured workflow for routing runtime incidents through host review, worker evidence gathering, and escalation.",
+  "entry_skill": "escalate-to-human",
+  "steps": [
+    {"id": "collect-incident", "type": "host", "output": "incident"},
+    {"id": "gather-evidence", "type": "worker", "skill": "browser-research", "timeoutMs": 30000},
+    {"id": "review-severity", "type": "host", "skill": "council-review"},
+    {"id": "decide-next-action", "type": "host", "skill": "escalate-to-human"}
+  ],
+  "outputs": ["severity", "status", "nextAction", "escalate"]
+}
