@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automindlab.local/schemas/adaptive-skills-store.schema.json",
+  "title": "Adaptive Skills Store",
+  "type": "object",
+  "required": ["records"],
+  "properties": {
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["input", "skill", "action", "success", "timestamp"],
+        "properties": {
+          "input": {"type": "string"},
+          "skill": {"type": "string"},
+          "action": {"type": "string"},
+          "success": {"type": "boolean"},
+          "timestamp": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
