@@ -1,0 +1,25 @@
+name: schema-validation
+
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+  pull_request:
+
+jobs:
+  validate-schemas:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+
+      - name: Install diagnostic dependencies
+        run: npm install --prefix services/diagnostic
+
+      - name: Run schema and workflow sanity tests
+        run: node --test services/diagnostic/test/schema-files.test.js
