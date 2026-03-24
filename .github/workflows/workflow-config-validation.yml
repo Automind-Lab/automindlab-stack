@@ -1,0 +1,42 @@
+name: workflow-config-validation
+
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+  pull_request:
+
+jobs:
+  validate-workflows:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Validate workflow config JSON files
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const path = require('path');
+          const workflowDir = path.join(process.cwd(), 'config', 'workflows');
+          const files = fs.readdirSync(workflowDir).filter((name) => name.endsWith('.json'));
+          if (files.length === 0) {
+            throw new Error('No workflow config files found');
+          }
+          for (const file of files) {
+            const payload = JSON.parse(fs.readFileSync(path.join(workflowDir, file), 'utf8'));
+            for (const key of ['name', 'description', 'entry_skill', 'steps', 'outputs']) {
+              if (!(key in payload)) {
+                throw new Error(`${file} missing required key: ${key}`);
+              }
+            }
+            if (!Array.isArray(payload.steps) || payload.steps.length === 0) {
+              throw new Error(`${file} must contain at least one workflow step`);
+            }
+          }
+          NODE
+
+      - name: Validate skills index references
+        run: |
+          grep -q 'browser-research.md' .ona/skills/INDEX.md
+          grep -q 'memory-capture.md' .ona/skills/INDEX.md
