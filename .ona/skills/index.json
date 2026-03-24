@@ -1,0 +1,76 @@
+{
+  "skills": {
+    "browser-research": {
+      "file": ".ona/skills/browser-research.md",
+      "actions": ["research", "gather-evidence"],
+      "default_action": "research",
+      "triggers": [
+        "browse the web",
+        "visit the page",
+        "gather evidence from pages",
+        "multi-step browsing",
+        "browser worker"
+      ]
+    },
+    "council-query": {
+      "file": ".ona/skills/council-query.md",
+      "actions": ["synthesize", "route"],
+      "default_action": "synthesize",
+      "triggers": [
+        "council synthesis",
+        "strategic lens",
+        "small seat mix",
+        "multi-seat reasoning",
+        "council query"
+      ]
+    },
+    "diagnostic-consultation": {
+      "file": ".ona/skills/diagnostic-consultation.md",
+      "actions": ["consult", "triage"],
+      "default_action": "consult",
+      "triggers": [
+        "diagnostic consult",
+        "pump diagnosis",
+        "probable causes",
+        "next checks",
+        "close out note"
+      ]
+    },
+    "escalate-to-human": {
+      "file": ".ona/skills/escalate-to-human.md",
+      "actions": ["escalate", "handoff"],
+      "default_action": "escalate",
+      "triggers": [
+        "unsafe to continue",
+        "high uncertainty",
+        "escalate to human",
+        "irreversible action",
+        "manual review"
+      ]
+    },
+    "memory-capture": {
+      "file": ".ona/skills/memory-capture.md",
+      "actions": ["capture", "record"],
+      "default_action": "capture",
+      "triggers": [
+        "capture memory",
+        "remember this pattern",
+        "record reusable lesson",
+        "save runtime memory",
+        "operator note"
+      ]
+    },
+    "council-review": {
+      "file": ".ona/skills/council-review.md",
+      "actions": ["review", "challenge"],
+      "default_action": "review",
+      "triggers": [
+        "review this decision",
+        "tradeoff analysis",
+        "seat review",
+        "challenge the recommendation",
+        "council review"
+      ]
+    }
+  }
+}
