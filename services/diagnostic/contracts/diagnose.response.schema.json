@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automindlab.dev/contracts/flowcommander/diagnose.response.schema.json",
+  "title": "FLOWCOMMANDER Diagnose Response",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "advisory",
+    "status",
+    "output",
+    "safe_action"
+  ],
+  "properties": {
+    "contract_version": { "type": "string" },
+    "advisory": { "type": "boolean", "const": true },
+    "status": { "enum": ["ok", "partial", "error"] },
+    "output": { "type": ["object", "null"] },
+    "uncertainty": { "type": ["string", "null"] },
+    "safe_action": { "type": "string" },
+    "escalation": { "type": "boolean" },
+    "metadata": { "type": "object" }
+  },
+  "additionalProperties": true
+}
