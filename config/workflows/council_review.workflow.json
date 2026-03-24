@@ -1,0 +1,12 @@
+{
+  "name": "council_review",
+  "description": "Structured small-seat council review before final host synthesis.",
+  "entry_skill": "council-review",
+  "steps": [
+    {"id": "define-decision", "type": "host", "output": "decision"},
+    {"id": "seat-review", "type": "worker", "skill": "council-review", "timeoutMs": 30000},
+    {"id": "host-synthesis", "type": "host", "skill": "council-query"},
+    {"id": "escalation-check", "type": "host", "skill": "escalate-to-human"}
+  ],
+  "outputs": ["seatReviews", "synthesis", "confidence", "escalate"]
+}
