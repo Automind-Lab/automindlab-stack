@@ -1,0 +1,11 @@
+{
+  "name": "browser_research",
+  "description": "Bounded browser-assisted research workflow for host-to-worker delegation.",
+  "entry_skill": "browser-research",
+  "steps": [
+    {"id": "define-goal", "type": "host", "output": "goal"},
+    {"id": "delegate-browse", "type": "worker", "skill": "browser-research", "timeoutMs": 30000},
+    {"id": "synthesize", "type": "host", "skill": "council-query"}
+  ],
+  "outputs": ["visited", "findings", "uncertainty", "escalate"]
+}
