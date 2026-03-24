@@ -1,0 +1,32 @@
+name: Feature request
+
+description: Propose a runtime, workflow, council, or specialist upgrade.
+
+title: "[feature] "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or opportunity
+      description: What should improve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Describe the suggested upgrade.
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Runtime impact
+      description: Mention host/worker, schemas, workflows, diagnostics, or memory if relevant.
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation ideas
+      description: How should this be tested or validated?
