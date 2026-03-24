@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automindlab.local/schemas/incident-report.schema.json",
+  "title": "Runtime Incident Report",
+  "type": "object",
+  "required": ["id", "summary", "severity", "status", "affectedScope", "nextAction"],
+  "properties": {
+    "id": {"type": "string"},
+    "summary": {"type": "string"},
+    "severity": {"type": "string", "enum": ["sev0", "sev1", "sev2", "sev3"]},
+    "status": {"type": "string", "enum": ["open", "mitigated", "resolved"]},
+    "affectedScope": {"type": "string", "enum": ["host", "worker", "diagnostic", "workflow", "repo"]},
+    "nextAction": {"type": "string"},
+    "notes": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
