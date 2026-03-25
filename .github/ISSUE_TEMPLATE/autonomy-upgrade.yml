@@ -1,0 +1,55 @@
+name: Enterprise autonomy upgrade request
+description: Request a policy-gated GitHub-driven upgrade for the AutoMindLab runtime
+title: "autonomy: "
+labels:
+  - autonomy:ready
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template for bounded, reviewable enterprise runtime improvements that can go through the GitHub autonomy flow.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What should change?
+      placeholder: Add a network policy pack for browser-worker research tasks
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: Which services, schemas, workflows, or docs are expected to change?
+      placeholder: config/policies/network/, docs/, .github/workflows/
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: How will we know the issue is done?
+      placeholder: Policy pack exists, docs are updated, and validation still passes
+    validations:
+      required: true
+  - type: dropdown
+    id: risk
+    attributes:
+      label: Risk level
+      options:
+        - low
+        - medium
+        - high
+    validations:
+      required: true
+  - type: checkboxes
+    id: guardrails
+    attributes:
+      label: Guardrails
+      options:
+        - label: This change should not modify secrets, credentials, tenant data, or production-only settings
+          required: true
+        - label: This change can be reviewed through a draft PR before merge
+          required: true
+        - label: This change should remain within documented policy and audit boundaries
+          required: true
