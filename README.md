@@ -36,21 +36,36 @@ AutoMindLab owns its own council, specialist agents, automation, and runtime-sid
 
 ```text
 automindlab-stack/
+├── .cursor/
+│   └── rules/
+│       └── agents.md           # Editor-side guidance for extending council and specialists
 ├── .github/                    # GitHub automation and dependency updates
-├── config/                     # Runtime bridge templates
+├── .ona/
+│   └── skills/                 # Reusable skill definitions (diagnostic, council, escalation, memory)
+├── config/
+│   ├── examples/               # Example request and response payloads
+│   ├── schemas/                # JSON schema validators
+│   └── workflows/              # Workflow configuration files
 ├── context/
 │   ├── BOOTSTRAP.md
 │   ├── council/
 │   │   ├── COUNCIL_OF_13.md
 │   │   ├── diagnostic/
 │   │   │   └── PUMP_SPECIALIST.md
-│   │   └── *.md               # Council seat definitions
-│   └── identity/             # Host and worker identity seeds
+│   │   └── *.md               # Council seat definitions (13 seats)
+│   └── identity/              # Host and worker identity seeds
+├── data/                       # Runtime data stores (adaptive skills outcomes)
 ├── deployments/
-│   └── openclaw/             # Optional host-side auxiliary services
+│   └── openclaw/              # Optional host-side auxiliary services
 ├── docs/
+│   ├── ADAPTIVE_SKILLS_OPERATIONS.md
+│   ├── FLOWCOMMANDER_INTEGRATION_CONTRACT.md
 │   ├── GITHUB_AUTOMATION.md
-│   └── OPENCLAW_HOST_AGENT_SYSTEM.md
+│   ├── MAINTENANCE_CHECKLIST.md
+│   ├── MEMORY_STRATEGY.md
+│   ├── OPENCLAW_HOST_AGENT_SYSTEM.md
+│   ├── REPO_HYGIENE.md
+│   └── WORKER_DELEGATION_PROTOCOL.md
 ├── lib/
 │   └── services/
 │       └── diagnostic_consultation_service.dart
@@ -60,6 +75,11 @@ automindlab-stack/
 │   └── worker-status.sh
 ├── services/
 │   └── diagnostic/
+│       ├── contracts/          # FLOWCOMMANDER contract schemas and README
+│       ├── test/               # Test suite (consultation, contract, schema, example tests)
+│       ├── consultation-service.js
+│       ├── package.json
+│       └── server.js
 └── Makefile
 ```
 
@@ -76,6 +96,9 @@ The intended topology is:
 
 ### FLOWCOMMANDER diagnostic consultation
 This repository packages the AutoMindLab-side diagnostic consultation surface for FLOWCOMMANDER and similar products.
+The diagnostic service exposes `POST /api/diagnose` and wraps all responses in a versioned contract envelope (`contract_version: 2026-03-24.v1`).
+Contract schemas live in `services/diagnostic/contracts/`.
+See `docs/FLOWCOMMANDER_INTEGRATION_CONTRACT.md` for the full request and response shapes.
 
 ## GitHub automation
 The repository includes:

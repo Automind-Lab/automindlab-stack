@@ -1,4 +1,4 @@
-# FLOWCOMMANDER ↔ AutoMindLab Contract (Scaffold)
+# FLOWCOMMANDER ↔ AutoMindLab Contract
 
 This directory defines the integration contract between:
 - FLOWCOMMANDER (consumer application)
@@ -8,8 +8,8 @@ This directory defines the integration contract between:
 
 - AutoMindLab output is ALWAYS advisory
 - No runtime response should be treated as authoritative
-- All responses must include `safe_action`
-- All responses must be parseable even on failure
+- All responses include `contract_version`, `advisory`, `status`, `output`, `safe_action`, `escalation`, and `metadata`
+- All responses are parseable even on failure (`status: "error"` returns a structured envelope with `output: null`)
 
 ## Versioning
 
@@ -23,19 +23,24 @@ Future changes must:
 - bump version
 - remain backward compatible where possible
 
-## Next Steps (Required Implementation)
+## Contract enforcement (implemented)
 
-1. Enforce request validation in `server.js`
-2. Wrap ALL responses in contract envelope
-3. Add runtime validation before response return
-4. Add contract tests
+- Request validation is enforced in `server.js` — missing `symptom` returns HTTP 400 with a structured envelope
+- All responses (success, partial, and error) are wrapped in the contract envelope
+- Contract tests in `test/contract.test.js` verify envelope shape on success and error paths
+- Formal JSON schemas in this directory validate both request and response shapes
+
+## Schemas
+
+- `diagnose.request.schema.json` — validates incoming FLOWCOMMANDER requests
+- `diagnose.response.schema.json` — validates all runtime responses
 
 ## Consumer Expectations (FLOWCOMMANDER)
 
-- Must validate contract envelope
-- Must fallback safely on invalid response
-- Must NOT persist advisory output as truth
+- Must parse the contract envelope before accessing `output`
+- Must fallback safely when `output` is null or `escalation` is true
+- Must NOT persist advisory output as a confirmed diagnosis without field verification
 
----
+## Full contract documentation
 
-This is a scaffold only. Enforcement must be implemented in runtime code.
+See `docs/FLOWCOMMANDER_INTEGRATION_CONTRACT.md` in the repository root for the complete request and response shapes, symptom values, and integration checklist.
