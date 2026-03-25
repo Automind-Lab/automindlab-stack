@@ -6,7 +6,10 @@ OPENCLAW_HOME="${OPENCLAW_HOME:-$HOME/.openclaw}"
 HOST_WORKSPACE="${AUTOMIND_HOST_WORKSPACE:-$OPENCLAW_HOME/workspace-automind-host}"
 WORKER_WORKSPACE="${AUTOMIND_WORKER_WORKSPACE:-$OPENCLAW_HOME/workspace-automind-worker}"
 
-command -v rsync >/dev/null 2>&1 || { echo "Error: rsync not found"; exit 1; }
+command -v rsync >/dev/null 2>&1 || {
+  echo "Error: rsync not found"
+  exit 1
+}
 mkdir -p "$HOST_WORKSPACE/context" "$WORKER_WORKSPACE/context"
 
 cp "$ROOT_DIR/AGENTS.md" "$HOST_WORKSPACE/AGENTS.md"

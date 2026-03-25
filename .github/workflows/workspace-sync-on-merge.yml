@@ -22,7 +22,7 @@ concurrency:
 
 jobs:
   sync:
-    if: vars.GITHUB_WORKSPACE_SYNC_ENABLED == 'true'
+    if: vars.AUTOMIND_WORKSPACE_SYNC_ENABLED == 'true'
     runs-on: self-hosted
     steps:
       - name: Check out repository
@@ -40,7 +40,9 @@ jobs:
 
       - name: Write workflow summary
         run: |
-          echo "## AutoMindLab workspace sync" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Ref: ${{ github.event_name == 'workflow_dispatch' && inputs.ref || github.ref_name }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Host workspace: ${AUTOMIND_HOST_WORKSPACE:-unset}" >> "$GITHUB_STEP_SUMMARY"
-          echo "- Worker workspace: ${AUTOMIND_WORKER_WORKSPACE:-unset}" >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "## AutoMindLab workspace sync"
+            echo "- Ref: ${{ github.event_name == 'workflow_dispatch' && inputs.ref || github.ref_name }}"
+            echo "- Host workspace: ${AUTOMIND_HOST_WORKSPACE:-unset}"
+            echo "- Worker workspace: ${AUTOMIND_WORKER_WORKSPACE:-unset}"
+          } >> "$GITHUB_STEP_SUMMARY"

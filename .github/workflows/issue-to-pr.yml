@@ -125,7 +125,7 @@ jobs:
     if: |
       needs.plan.outputs.dry_run != 'true' &&
       needs.plan.outputs.executor_allowed == 'true' &&
-      vars.GITHUB_AUTONOMY_EXECUTION_ENABLED == 'true'
+      vars.AUTOMIND_AUTONOMY_EXECUTION_ENABLED == 'true'
     runs-on: self-hosted
     steps:
       - name: Check out repository
