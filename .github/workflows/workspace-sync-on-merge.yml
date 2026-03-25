@@ -1,0 +1,46 @@
+name: AutoMindLab Workspace Sync on Merge
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Git ref to sync from
+        required: false
+        default: main
+        type: string
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: automindlab-workspace-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: vars.GITHUB_WORKSPACE_SYNC_ENABLED == 'true'
+    runs-on: self-hosted
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.ref || github.ref }}
+
+      - name: Run workspace sync
+        env:
+          AUTOMIND_HOST_WORKSPACE: ${{ vars.AUTOMIND_HOST_WORKSPACE }}
+          AUTOMIND_WORKER_WORKSPACE: ${{ vars.AUTOMIND_WORKER_WORKSPACE }}
+          OPENCLAW_HOME: ${{ vars.OPENCLAW_HOME }}
+        run: |
+          bash scripts/sync-openclaw-workspaces.sh
+
+      - name: Write workflow summary
+        run: |
+          echo "## AutoMindLab workspace sync" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Ref: ${{ github.event_name == 'workflow_dispatch' && inputs.ref || github.ref_name }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Host workspace: ${AUTOMIND_HOST_WORKSPACE:-unset}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Worker workspace: ${AUTOMIND_WORKER_WORKSPACE:-unset}" >> "$GITHUB_STEP_SUMMARY"
