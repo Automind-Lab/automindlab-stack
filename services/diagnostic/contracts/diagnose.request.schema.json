@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automindlab.dev/contracts/flowcommander/diagnose.request.schema.json",
+  "title": "FLOWCOMMANDER Diagnose Request",
+  "type": "object",
+  "required": ["contract_version", "symptom", "responses"],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "const": "2026-03-24.v1"
+    },
+    "symptom": {
+      "type": "string",
+      "minLength": 1
+    },
+    "responses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["stepKey", "prompt", "responseValue"],
+        "properties": {
+          "stepKey": { "type": "string", "minLength": 1 },
+          "prompt": { "type": "string", "minLength": 1 },
+          "responseValue": { "type": "string" },
+          "notes": { "type": ["string", "null"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "siteContext": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "technicianContext": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "environmentalContext": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "safetyContext": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "partsContext": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
