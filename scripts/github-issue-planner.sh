@@ -12,7 +12,7 @@ RUN_ID="${GITHUB_RUN_ID:-local}"
 
 issue_json="$(gh issue view "$ISSUE_NUMBER" --repo "$REPO_FULL_NAME" --json number,title,body,labels,url)"
 
-python3 - <<'PY' "$issue_json" "$RUN_ID"
+python3 - "$issue_json" "$RUN_ID" <<'PY'
 import json
 import re
 import sys

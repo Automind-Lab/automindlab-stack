@@ -20,10 +20,11 @@ if [ -z "$EXECUTOR" ]; then
   exit 1
 fi
 
-python3 - <<'PY' "$PLAN_PATH"
+python3 - "$PLAN_PATH" <<'PY'
 import json
 import sys
 from pathlib import Path
+
 plan = json.loads(Path(sys.argv[1]).read_text(encoding='utf-8'))
 print(f"Executor scope: {plan['scope']}")
 print(f"Issue: #{plan['issue_number']}")

@@ -12,7 +12,7 @@ if [ ! -f "$PLAN_PATH" ]; then
   exit 1
 fi
 
-python3 - <<'PY' "$PLAN_PATH"
+python3 - "$PLAN_PATH" <<'PY'
 import json
 import sys
 from pathlib import Path

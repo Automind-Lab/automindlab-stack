@@ -1,0 +1,30 @@
+consumer: FLOWCOMMANDER
+mode: manual_review_only
+contract_version: 2026-03-25.v1
+
+review_paths:
+  - services/diagnostic/
+  - services/diagnostic/contracts/
+  - docs/FLOWCOMMANDER_INTEGRATION_CONTRACT.md
+  - config/examples/flowcommander-diagnostic-request.example.json
+  - config/examples/flowcommander-diagnostic-response.example.json
+  - context/council/diagnostic/PUMP_SPECIALIST.md
+
+default_skip_paths:
+  - context/council/COUNCIL_OF_13.md
+  - .ona/skills/
+  - .github/workflows/
+  - deployments/
+  - ops/
+  - docs/GITHUB_AUTONOMY.md
+
+sync_rules:
+  - Never bulk-copy the parent stack.
+  - Cherry-pick changes manually.
+  - Preserve FLOWCOMMANDER naming and identity.
+  - Record the parent commit used for each downstream sync.
+  - Re-run downstream tests after every sync review.
+
+notes:
+  - This manifest is advisory and does not automate downstream updates.
+  - Downstream repos remain independently owned and versioned.
