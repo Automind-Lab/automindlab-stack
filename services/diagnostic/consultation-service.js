@@ -266,7 +266,7 @@ class DiagnosticConsultationService {
         consultationId: `fallback_${Date.now()}`,
         dataQuality: 'poor',
         limitations: ['Runtime fallback engaged', errorMessage],
-        originalSymptom: this.normalizeSymptom(symptom),
+        originalSymptom: symptom,
         councilSeatsConsulted: [],
       },
     };
