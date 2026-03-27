@@ -45,10 +45,20 @@ body=$(cat <<EOF
 EOF
 )
 
-"$GH_BIN" pr create \
-  --draft \
-  --base "$default_branch" \
-  --head "$branch" \
-  --title "$title" \
-  --body "$body" \
-  >/dev/null 2>&1 || true
+for attempt in 1 2 3; do
+  if "$GH_BIN" pr create \
+    --draft \
+    --base "$default_branch" \
+    --head "$branch" \
+    --title "$title" \
+    --body "$body" \
+    >/dev/null 2>&1; then
+    exit 0
+  fi
+
+  sleep 2
+  existing_url="$("$GH_BIN" pr list --head "$branch" --state all --json url --jq '.[0].url // ""' 2>/dev/null || true)"
+  if [[ -n "$existing_url" ]]; then
+    exit 0
+  fi
+done
