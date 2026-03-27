@@ -49,6 +49,8 @@ openclaw gateway restart
 The host-to-worker handoff is documented in `docs/WORKER_DELEGATION_PROTOCOL.md`.
 Use that protocol whenever the host delegates isolated execution to the worker.
 
+The runtime profile source of truth also lives in `docs/RUNTIME_PROFILE_COMPATIBILITY.md` and `config/runtime-profiles/openclaw.enterprise-host-worker.json`.
+
 ## Verification
 
 ```bash

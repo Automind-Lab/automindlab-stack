@@ -1,6 +1,6 @@
 # Work In Progress
 
-Last updated: 2026-03-27 13:01 UTC
+Last updated: 2026-03-27 13:49 UTC
 
 ## Current focus
 
@@ -25,10 +25,12 @@ Last updated: 2026-03-27 13:01 UTC
 - tighten workflow, GitHub automation, and downstream contract validation around the current repo surfaces
 - add a reusable fixture-based OpenClaw smoke harness so host/worker proof no longer depends entirely on a live local install
 - complete repo-side proof checks and record the remaining live-gateway gap honestly
+- add governed capability-intake catalogs so external parity work cannot bypass enterprise review
+- add explicit OpenClaw/NemoClaw runtime-profile contracts with typed evidence status
 
 ## Next milestone
 
-- review the diff and package the branch for merge
+- review the diff and package the branch for push and merge
 - optionally rerun runtime doctor, worker status, and bootstrap recovery on a compatible OpenClaw host if live-gateway proof is required
 
 ## Risks and watchouts
@@ -36,4 +38,5 @@ Last updated: 2026-03-27 13:01 UTC
 - do not copy BMO local workstation UX into the enterprise runtime repo
 - do not weaken host/worker separation while adding recovery helpers
 - do not claim parity for any capability that is still doc-only or unvalidated
+- do not imply NemoClaw is implemented beyond the contract/evidence level declared in `config/runtime-profiles/`
 - be explicit that local proof now includes a reusable OpenClaw fixture smoke harness plus Git Bash shell checks, but still does not prove a real gateway instance because `openclaw` and seeded live workspaces are absent on this machine

@@ -1,0 +1,77 @@
+{
+  "profileVersion": "2026-03-27.v1",
+  "profileId": "nemoclaw.enterprise-host-worker",
+  "runtimeName": "NemoClaw",
+  "implementationStatus": "contract-validated",
+  "description": "AutoMindLab enterprise host and worker contract for NemoClaw-aligned runtimes.",
+  "deploymentPattern": "enterprise-host-worker",
+  "artifacts": {
+    "primaryDocs": [
+      "AGENTS.md",
+      "docs/WORKER_DELEGATION_PROTOCOL.md",
+      "docs/RUNTIME_PROFILE_COMPATIBILITY.md"
+    ],
+    "validators": [
+      "scripts/validate-runtime-topology-profiles.mjs"
+    ],
+    "bootstrapScript": null,
+    "doctorScript": null
+  },
+  "routing": {
+    "hostReceivesExternalChannels": true,
+    "workerAcceptsExternalChannels": false,
+    "delegationTaskSchema": "config/schemas/worker-task.schema.json",
+    "delegationResultSchema": "config/schemas/worker-result.schema.json",
+    "escalationRequiredOnIrreversibleActions": true
+  },
+  "agents": [
+    {
+      "id": "automind-host",
+      "role": "host",
+      "defaultAgent": true,
+      "sandboxMode": "off",
+      "sandboxScope": "none",
+      "capabilities": [
+        "Owns front-door channels and operator interaction.",
+        "Routes council, specialist, and service-facing runtime work.",
+        "Delegates isolated execution to automind-worker when sandboxing is required."
+      ],
+      "constraints": [
+        "Must not execute untrusted code directly.",
+        "Must not persist business records owned by downstream consumer products."
+      ]
+    },
+    {
+      "id": "automind-worker",
+      "role": "worker",
+      "defaultAgent": false,
+      "sandboxMode": "all",
+      "sandboxScope": "agent",
+      "capabilities": [
+        "Executes delegated isolated tasks inside the agent sandbox.",
+        "Returns typed outputs with explicit uncertainty and escalation flags."
+      ],
+      "constraints": [
+        "Must not accept requests directly from external channels.",
+        "Must not become the default agent.",
+        "Must not persist business records or bypass host review."
+      ]
+    }
+  ],
+  "serviceSurfaces": [
+    {
+      "name": "diagnostic-consultation",
+      "type": "runtime-contract",
+      "entrypoint": "docs/RUNTIME_PROFILE_COMPATIBILITY.md",
+      "contractSchema": "config/schemas/worker-result.schema.json",
+      "owner": "automindlab-stack",
+      "advisoryOnly": true
+    }
+  ],
+  "approvalBoundaries": [
+    "Only the host may front external channels.",
+    "The worker remains isolated and advisory-only.",
+    "Any future NemoClaw bootstrap path must pass explicit runtime-owner review before it is treated as implemented."
+  ],
+  "notes": "This profile is contract-validated only. The repo does not claim a shipped NemoClaw gateway, bootstrap script, or live runtime proof yet."
+}

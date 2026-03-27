@@ -19,6 +19,8 @@ Read these first when operating AutoMindLab from this repo:
 8. `WORK_IN_PROGRESS.md`
 9. `.ona/skills/INDEX.md`
 10. `docs/NETWORK_POLICY.md` when the task touches external access or approvals
+11. `docs/CAPABILITY_INTAKE_POLICY.md` when the task evaluates outside capabilities
+12. `docs/RUNTIME_PROFILE_COMPATIBILITY.md` when the task changes runtime topology or platform support
 
 ## What this repository owns
 
@@ -29,6 +31,8 @@ Read these first when operating AutoMindLab from this repo:
 - runtime diagnostics, recovery flows, and workflow validation
 - GitHub automation for validation and repository health
 - GitHub autonomy contracts, policy, and self-test coverage
+- governed capability-intake records for external tools, skills, and source repos
+- explicit OpenClaw and NemoClaw runtime topology profiles
 - reusable service contracts for downstream consumer products
 
 ## Boundary model
@@ -85,6 +89,11 @@ These files exist to make startup order, current state, recovery steps, and reus
   - `config/github/automation-contract.json`
   - `.github/autonomy/execution-policy.json`
   - `config/sync/downstreams/flowcommander.sync-manifest.json`
+- intake and runtime profiles
+  - `config/intake/`
+  - `config/runtime-profiles/`
+  - `docs/CAPABILITY_INTAKE_POLICY.md`
+  - `docs/RUNTIME_PROFILE_COMPATIBILITY.md`
 - contracts and services
   - `config/schemas/`
   - `config/examples/`
@@ -106,6 +115,8 @@ These files exist to make startup order, current state, recovery steps, and reus
 - `node scripts/validate-github-automation.mjs`
 - `node scripts/github-autonomy-selftest.mjs`
 - `node scripts/validate-downstream-sync.mjs`
+- `node scripts/validate-capability-intake.mjs`
+- `node scripts/validate-runtime-topology-profiles.mjs`
 - `node scripts/openclaw-fixture-smoke.mjs`
 - `node scripts/automind-skill-pack.mjs list`
 - `node scripts/automind-routines.mjs list`
@@ -124,6 +135,18 @@ The intended topology is:
 
 - `automind-host` = host-facing conversational runtime, sandbox `off`
 - `automind-worker` = dedicated sandbox worker, sandbox `all`
+
+### Runtime profile compatibility
+
+Runtime ownership is also expressed as typed profile contracts:
+
+- `config/runtime-profiles/openclaw.enterprise-host-worker.json`
+- `config/runtime-profiles/nemoclaw.enterprise-host-worker.json`
+- `config/schemas/runtime-topology-profile.schema.json`
+
+OpenClaw is currently `fixture-validated`.
+NemoClaw is currently `contract-validated` only.
+See `docs/RUNTIME_PROFILE_COMPATIBILITY.md` for the evidence boundary.
 
 ### FLOWCOMMANDER diagnostic consultation
 
@@ -157,6 +180,16 @@ The current FLOWCOMMANDER sync review manifest is tracked in:
 
 - `config/sync/downstreams/flowcommander.sync-manifest.json`
 - `config/schemas/downstream-sync-manifest.schema.json`
+
+### Capability intake contract
+
+External capabilities are governed by:
+
+- `config/intake/candidates.json`
+- `config/intake/approved.json`
+- `config/intake/rejected.json`
+- `config/schemas/capability-intake-catalog.schema.json`
+- `docs/CAPABILITY_INTAKE_POLICY.md`
 
 ## Translation rules
 

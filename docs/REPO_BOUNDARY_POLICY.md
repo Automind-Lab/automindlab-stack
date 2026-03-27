@@ -10,6 +10,7 @@ This repo should contain:
 - council and specialist context
 - enterprise runbooks, diagnostics, and recovery routines
 - reusable service contracts and schemas
+- governed intake records for external capabilities
 - operator-visible policy and approval guidance
 - validation workflows that match the current repo surfaces
 
@@ -39,6 +40,8 @@ When reviewing a useful `bmo-stack` capability:
 2. translate it if the underlying need is valid but the BMO implementation is local or consumer-facing
 3. reject it if it belongs to a local operator shell, consumer product UX, or a different owner repo
 
+Record the decision in `config/intake/` before treating the capability as approved.
+
 ## Anti-patterns
 
 Avoid:
@@ -47,6 +50,7 @@ Avoid:
 - copying BMO docs or routines without translating ownership and safety boundaries
 - claiming parity for capabilities that do not exist here in reviewable form
 - letting runtime policy live only in issue comments or tribal knowledge
+- adopting external capabilities without an intake record
 
 ## Desired model
 

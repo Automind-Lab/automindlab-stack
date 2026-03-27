@@ -15,6 +15,8 @@ This guide keeps AutoMindLab easy to review and maintain.
 - run `make diagnostic-ci` if the diagnostic service changed
 - run `make github-automation-validate` when GitHub workflow or autonomy surfaces changed
 - run `make downstream-sync-validate` when downstream contracts changed
+- run `make capability-intake-validate` when intake catalogs changed
+- run `make runtime-profile-validate` when runtime profiles changed
 - ensure new skills, packs, and workflows are documented
 - ensure new JSON config files are parseable and covered by validation workflows
 

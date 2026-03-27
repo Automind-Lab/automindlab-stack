@@ -9,6 +9,8 @@ This is the operator runbook for the AutoMindLab enterprise runtime repo.
 - `bmo-stack` is a reference implementation for practical patterns, not the owner path for AutoMindLab runtime behavior.
 - `context/` is the canonical runtime context.
 - `config/` holds machine-readable routines, skill packs, schemas, examples, and workflow definitions.
+- `config/intake/` is the source of truth for external capability review state.
+- `config/runtime-profiles/` is the source of truth for OpenClaw/NemoClaw runtime topology contracts.
 
 ## Restart recovery protocol
 
@@ -26,6 +28,8 @@ Read these in order at session start:
 10. `.ona/skills/INDEX.md`
 11. `docs/REPO_BOUNDARY_POLICY.md` for donor or downstream translation work
 12. `docs/NETWORK_POLICY.md` when the task touches external access or automation
+13. `docs/CAPABILITY_INTAKE_POLICY.md` when reviewing outside tools, skills, or source repos
+14. `docs/RUNTIME_PROFILE_COMPATIBILITY.md` when runtime topology or platform support changes
 
 Then:
 
@@ -69,7 +73,9 @@ Use these before ad hoc debugging when they fit:
 6. `make skill-pack`
 7. `make github-automation-validate`
 8. `make downstream-sync-validate`
-9. `make runtime-fixture-smoke`
+9. `make capability-intake-validate`
+10. `make runtime-profile-validate`
+11. `make runtime-fixture-smoke`
 
 ## Verification protocol
 
@@ -79,6 +85,8 @@ Before claiming completion:
 - verify the requested capability exists in AutoMindLab-native form
 - run the relevant validators and tests
 - confirm contracts and docs still match runtime behavior
+- confirm new external capabilities have intake records before calling them approved
+- confirm runtime profile status still matches the actual evidence level
 - run `node scripts/openclaw-fixture-smoke.mjs` when host/worker setup or workspace seeding changed
 - state blockers and caveats explicitly
 

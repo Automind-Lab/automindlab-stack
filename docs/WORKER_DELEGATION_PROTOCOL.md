@@ -77,5 +77,6 @@ Example:
 
 - `AGENTS.md`
 - `docs/OPENCLAW_HOST_AGENT_SYSTEM.md`
+- `docs/RUNTIME_PROFILE_COMPATIBILITY.md`
 - `config/examples/worker-task.example.json`
 - `config/examples/worker-result.example.json`
