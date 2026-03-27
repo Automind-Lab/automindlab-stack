@@ -51,7 +51,7 @@ services through explicit adapters.
 
 ## Companion registry
 
-See `config/workflows/nvidia-blueprints.registry.json`.
+See `config/registries/nvidia-blueprints.registry.json`.
 
 This registry is meant to be a planning artifact that downstream services and
 operators can extend as the integrations become real.
