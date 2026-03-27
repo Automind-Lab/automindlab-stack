@@ -34,6 +34,7 @@ jobs:
       issue_number: ${{ steps.issue.outputs.issue_number }}
       executor_allowed: ${{ steps.plan.outputs.executor_allowed }}
       branch_name: ${{ steps.plan.outputs.branch_name }}
+      policy_decision: ${{ steps.policy.outputs.policy_decision }}
       dry_run: ${{ steps.flags.outputs.dry_run }}
     steps:
       - name: Check out repository
@@ -72,49 +73,33 @@ jobs:
             "${{ github.repository }}" \
             "${{ steps.issue.outputs.issue_number }}" \
             > .github/autonomy/plan.json
-          python3 - <<'PY' >> "$GITHUB_OUTPUT"
-          import json
-          from pathlib import Path
-          plan = json.loads(Path('.github/autonomy/plan.json').read_text(encoding='utf-8'))
-          print(f"executor_allowed={'true' if plan['executor_allowed'] else 'false'}")
-          print(f"branch_name={plan['branch_name']}")
-          PY
+          node - <<'NODE' >> "$GITHUB_OUTPUT"
+          const fs = require("node:fs");
+          const plan = JSON.parse(fs.readFileSync(".github/autonomy/plan.json", "utf8"));
+          console.log(`executor_allowed=${plan.executor_allowed ? "true" : "false"}`);
+          console.log(`branch_name=${plan.branch_name}`);
+          NODE
 
       - name: Run policy check
+        id: policy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           bash scripts/github-policy-check.sh .github/autonomy/plan.json > .github/autonomy/policy.json
+          node - <<'NODE' >> "$GITHUB_OUTPUT"
+          const fs = require("node:fs");
+          const policy = JSON.parse(fs.readFileSync(".github/autonomy/policy.json", "utf8"));
+          console.log(`policy_decision=${policy.decision}`);
+          NODE
 
       - name: Post plan and policy summary
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python3 - <<'PY' > .github/autonomy/plan-comment.md
-          import json
-          from pathlib import Path
-          plan = json.loads(Path('.github/autonomy/plan.json').read_text(encoding='utf-8'))
-          policy = json.loads(Path('.github/autonomy/policy.json').read_text(encoding='utf-8'))
-          print('## AutoMindLab autonomy plan')
-          print('')
-          print(f"- Issue: #{plan['issue_number']}")
-          print(f"- Scope: `{plan['scope']}`")
-          print(f"- Risk: `{plan['risk']}`")
-          print(f"- Proposed branch: `{plan['branch_name']}`")
-          print(f"- Policy decision: `{policy['decision']}`")
-          print('')
-          print('### Suggested targets')
-          for item in plan['suggested_targets']:
-              print(f"- `{item}`")
-          print('')
-          print('### Checks to run')
-          for item in plan['checks']:
-              print(f"- `{item}`")
-          print('')
-          print('### Policy notes')
-          for item in policy['notes']:
-              print(f"- {item}")
-          PY
+          node scripts/render-github-plan-comment.mjs \
+            .github/autonomy/plan.json \
+            .github/autonomy/policy.json \
+            > .github/autonomy/plan-comment.md
           gh issue comment "${{ steps.issue.outputs.issue_number }}" \
             --repo "${{ github.repository }}" \
             --body-file .github/autonomy/plan-comment.md
@@ -130,6 +115,7 @@ jobs:
     if: |
       needs.plan.outputs.dry_run != 'true' &&
       needs.plan.outputs.executor_allowed == 'true' &&
+      needs.plan.outputs.policy_decision == 'allow' &&
       vars.AUTOMIND_AUTONOMY_EXECUTION_ENABLED == 'true'
     runs-on: self-hosted
     steps:
@@ -181,29 +167,11 @@ jobs:
             echo "No diff to open as PR."
             exit 0
           fi
-          python3 - <<'PY' > .github/autonomy/pr-body.md
-          import json
-          from pathlib import Path
-          plan = json.loads(Path('.github/autonomy/plan.json').read_text(encoding='utf-8'))
-          policy = json.loads(Path('.github/autonomy/policy.json').read_text(encoding='utf-8'))
-          verify = json.loads(Path('.github/autonomy/verify.json').read_text(encoding='utf-8'))
-          print('## Summary')
-          print(plan['summary'])
-          print('')
-          print(f"Closes #{plan['issue_number']}")
-          print('')
-          print('## Policy')
-          print(f"- Decision: {policy['decision']}")
-          for item in policy['notes']:
-              print(f"- {item}")
-          print('')
-          print('## Verification')
-          for item in verify['checks']:
-              print(f"- {item['name']}: {item['status']}")
-          print('')
-          print('## Rollback')
-          print('- Revert this PR or remove the triggering autonomy label before rerun.')
-          PY
+          node scripts/render-github-pr-body.mjs \
+            .github/autonomy/plan.json \
+            .github/autonomy/policy.json \
+            .github/autonomy/verify.json \
+            > .github/autonomy/pr-body.md
           gh pr create \
             --repo "${{ github.repository }}" \
             --base "${{ github.event.repository.default_branch }}" \

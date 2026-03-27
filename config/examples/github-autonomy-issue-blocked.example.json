@@ -1,0 +1,14 @@
+{
+  "number": 102,
+  "title": "Runtime: change production worker bindings and update .env handling",
+  "body": "Adjust the runtime worker binding setup, refresh gateway restart steps, and modify production token handling for the OpenClaw host.",
+  "url": "https://github.com/Automind-Lab/automindlab-stack/issues/102",
+  "labels": [
+    {
+      "name": "autonomy:ready"
+    },
+    {
+      "name": "risk:high"
+    }
+  ]
+}

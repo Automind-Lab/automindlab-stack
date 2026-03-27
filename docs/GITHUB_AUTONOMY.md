@@ -6,6 +6,13 @@ This document defines the GitHub-first execution model for `automindlab-stack`.
 
 Operate enterprise runtime upgrades from GitHub issues and pull requests instead of ad hoc local work.
 
+## Contract surfaces
+
+- `config/github/automation-contract.json`
+- `.github/autonomy/execution-policy.json`
+- `scripts/validate-github-automation.mjs`
+- `scripts/github-autonomy-selftest.mjs`
+
 ## Control loop
 
 1. Open or label an issue.
@@ -40,7 +47,6 @@ The execution and sync jobs must run on a self-hosted runner that has:
 - gh
 - bash
 - node
-- python3
 - rsync
 - access to the local OpenClaw workspaces
 - any local executor command referenced by `AUTOMINDLAB_GITHUB_AUTONOMY_EXECUTOR`
@@ -52,6 +58,7 @@ The execution and sync jobs must run on a self-hosted runner that has:
 - Always run policy evaluation before execution.
 - Always verify before opening a PR.
 - Always preserve protected runtime state during workspace sync.
+- Scopes blocked by `.github/autonomy/execution-policy.json` require human review even if the issue carries `autonomy:ready`.
 
 ## Current scaffold
 
@@ -64,3 +71,9 @@ The execution and sync jobs must run on a self-hosted runner that has:
 - `scripts/validate-repo-operating-system.mjs`
 - `scripts/validate-workflows.mjs`
 - `scripts/sync-openclaw-workspaces.sh`
+
+## Validation
+
+- `node scripts/validate-github-automation.mjs`
+- `node scripts/github-autonomy-selftest.mjs`
+- `node scripts/validate-downstream-sync.mjs`

@@ -129,6 +129,9 @@ if have_cmd node; then
   run_check "routine pack validator" node "$ROOT_DIR/scripts/automind-routines.mjs" validate
   run_check "workflow validator" node "$ROOT_DIR/scripts/validate-workflows.mjs"
   run_check "worker delegation contract validator" node "$ROOT_DIR/scripts/validate-runtime-contracts.mjs"
+  run_check "github automation validator" node "$ROOT_DIR/scripts/validate-github-automation.mjs"
+  run_check "github autonomy self-test" node "$ROOT_DIR/scripts/github-autonomy-selftest.mjs"
+  run_check "downstream sync validator" node "$ROOT_DIR/scripts/validate-downstream-sync.mjs"
   run_check "diagnostic consultation syntax" node --check "$ROOT_DIR/services/diagnostic/consultation-service.js"
   run_check "diagnostic server syntax" node --check "$ROOT_DIR/services/diagnostic/server.js"
 else

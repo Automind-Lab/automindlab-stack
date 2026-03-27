@@ -27,9 +27,14 @@ jobs:
           test -f docs/WORKER_DELEGATION_PROTOCOL.md
           test -f docs/NETWORK_POLICY.md
           test -f docs/REPO_BOUNDARY_POLICY.md
+          test -f docs/GITHUB_AUTOMATION.md
+          test -f docs/GITHUB_AUTONOMY.md
+          test -f docs/DOWNSTREAM_SYNC_CONTRACT.md
 
       - name: Validate repo operating system
-        run: node scripts/validate-repo-operating-system.mjs
+        run: |
+          node scripts/validate-repo-operating-system.mjs
+          node scripts/validate-github-automation.mjs
 
       - name: Run memory schema sanity test
         run: node --test services/diagnostic/test/memory-schema.test.js

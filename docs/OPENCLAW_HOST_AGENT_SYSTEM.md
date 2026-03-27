@@ -55,6 +55,7 @@ Use that protocol whenever the host delegates isolated execution to the worker.
 openclaw agents list --bindings
 openclaw agents bindings
 openclaw sandbox explain
+node scripts/openclaw-fixture-smoke.mjs
 ```
 
 Expected shape:
@@ -62,6 +63,7 @@ Expected shape:
 - `automind-host` shows effective sandbox mode `off`
 - `automind-worker` exists as a separate worker agent
 - external bindings remain on the host agent
+- fixture smoke passes when using the repo-provided mock OpenClaw harness
 
 ## Optional auxiliary services
 
