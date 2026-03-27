@@ -58,6 +58,13 @@ Use the intake system to decide whether a capability should:
 Local BMO operator UX does not become approved here by default.
 That includes the direct BMO Windows desktop shell: the reusable manifest and approval-policy pattern may be translated here, but the desktop application itself remains rejected as a source-of-truth surface.
 
+The same rule applies to other donor repos:
+
+- `agentmail-to` may enter as runtime-owned email contracts, setup guides, and validation paths
+- `millionco/expect` may enter as browser-proof planning contracts and artifact policies
+- `slavingia/skills` may enter only as curated bundle and discoverability ideas
+- `MoneyPrinterV2` does not become approved just because it automates outreach or monetization flows
+
 ## Operator guidance
 
 - do not treat a capability as available just because it exists in a donor repo

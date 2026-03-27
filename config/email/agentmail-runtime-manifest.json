@@ -1,0 +1,116 @@
+{
+  "manifestVersion": "2026-03-27.v1",
+  "manifestId": "automindlab-agentmail-runtime",
+  "provider": "agentmail",
+  "description": "Runtime-owned AgentMail contract for AutoMindLab operator and agent mailboxes. This manifest records declared inboxes, domain intent, approval boundaries, and the service-envelope shape used by downstream products.",
+  "requiredEnv": [
+    "AGENTMAIL_API_KEY",
+    "AGENTMAIL_BASE_URL"
+  ],
+  "domains": [
+    {
+      "id": "prismtek-dev",
+      "domain": "prismtek.dev",
+      "purpose": "Custom domain intended for production-grade email routing once DNS and provider verification are complete.",
+      "routingMode": "custom-domain",
+      "evidenceStatus": "user-declared",
+      "ownerSurface": "shared",
+      "requiredOperations": [
+        "domains.create",
+        "domains.verify",
+        "dns.zonefile.apply",
+        "mailbox.routing"
+      ],
+      "notes": "Declared by the repo owner. No API or DNS verification proof is checked into this repo yet."
+    }
+  ],
+  "mailboxes": [
+    {
+      "id": "prismtek-agentmail",
+      "address": "prismtek@agentmail.to",
+      "purpose": "Primary operator mailbox for runtime approvals, diagnostics, and human-visible coordination.",
+      "role": "operator-primary",
+      "ownerSurface": "host",
+      "approvalMode": "prompt",
+      "evidenceStatus": "user-declared",
+      "domainRef": null,
+      "allowedOperations": [
+        "list-messages",
+        "get-message",
+        "list-threads",
+        "send",
+        "reply",
+        "reply-all",
+        "forward"
+      ],
+      "requiredScopes": [
+        "agentmail:inboxes",
+        "agentmail:messages",
+        "agentmail:threads"
+      ],
+      "notes": "User-declared mailbox. This repo does not claim live connectivity until AGENTMAIL_API_KEY-backed proof exists."
+    },
+    {
+      "id": "bmo-tron-agentmail",
+      "address": "bmo-tron@agentmail.to",
+      "purpose": "Dedicated agent mailbox for BMO-adjacent runtime messaging that still remains under host review.",
+      "role": "downstream-agent",
+      "ownerSurface": "host",
+      "approvalMode": "prompt",
+      "evidenceStatus": "user-declared",
+      "domainRef": null,
+      "allowedOperations": [
+        "list-messages",
+        "get-message",
+        "list-threads",
+        "send",
+        "reply"
+      ],
+      "requiredScopes": [
+        "agentmail:inboxes",
+        "agentmail:messages",
+        "agentmail:threads"
+      ],
+      "notes": "Supports a real agent identity while preserving host ownership of irreversible or externally visible actions."
+    }
+  ],
+  "webhooks": [
+    {
+      "id": "agentmail-inbound-events",
+      "eventTypes": [
+        "message.received",
+        "thread.updated"
+      ],
+      "targetSurface": "Future runtime-side inbound mail processor or downstream inbox bridge.",
+      "deliveryMode": "planned",
+      "evidenceStatus": "planned",
+      "notes": "Do not configure until a typed inbound processor and operator-visible escalation path exist."
+    }
+  ],
+  "serviceSurfaces": [
+    {
+      "name": "AgentMail message operation envelope",
+      "type": "runtime-contract",
+      "manifestPath": "docs/AGENTMAIL_RUNTIME_CONTRACT.md",
+      "requestSchema": "config/schemas/agentmail-message-request.schema.json",
+      "responseSchema": "config/schemas/agentmail-message-result.schema.json",
+      "owner": "AutoMindLab runtime owner",
+      "advisoryOnly": false
+    },
+    {
+      "name": "AgentMail runtime manifest",
+      "type": "operator-contract",
+      "manifestPath": "config/email/agentmail-runtime-manifest.json",
+      "requestSchema": null,
+      "responseSchema": "config/schemas/agentmail-runtime-manifest.schema.json",
+      "owner": "AutoMindLab runtime owner",
+      "advisoryOnly": true
+    }
+  ],
+  "approvalBoundaries": [
+    "Do not send or reply from any mailbox until the operator has confirmed the mailbox and provider credentials are live.",
+    "Do not treat user-declared mailboxes or domains as production-ready evidence.",
+    "Domain verification and webhook configuration require operator-visible review because they affect external routing."
+  ],
+  "notes": "This manifest translates the AgentMail provider surface into runtime-owned contracts and runbooks. It does not store secrets and does not claim live message delivery without separate proof."
+}

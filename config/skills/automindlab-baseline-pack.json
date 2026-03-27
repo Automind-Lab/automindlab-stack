@@ -29,6 +29,14 @@
       "why": "Translate operator-facing patterns into typed enterprise manifests and approval policy instead of ad hoc shells."
     },
     {
+      "name": "agentmail-ops",
+      "why": "Keep runtime-owned email identities, domain routing, and outbound approval boundaries explicit and reviewable."
+    },
+    {
+      "name": "browser-validation",
+      "why": "Turn repo changes into proof-oriented browser validation plans for downstream enterprise surfaces."
+    },
+    {
       "name": "diagnostic-consultation",
       "why": "Run the pump-station consultation flow in a repeatable, contract-safe way."
     },
@@ -69,6 +77,11 @@
       "name": "deep-filesystem-analysis",
       "why": "Useful for repo-scale diagnostics or migrations that exceed the default file surface.",
       "approval": "Prefer workspace-scoped access and avoid broad host-level writes."
+    },
+    {
+      "name": "curated-skill-bundle-registry",
+      "why": "Useful when multiple enterprise engagements need a stable packaged skill baseline without copying donor skill repos directly.",
+      "approval": "Keep bundle catalogs local, validated, and limited to skills already present in the repo."
     }
   ]
 }

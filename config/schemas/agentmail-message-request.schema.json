@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automindlab.dev/schemas/agentmail-message-request.schema.json",
+  "title": "AgentMail Message Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "requestId",
+    "requestedBy",
+    "mailboxId",
+    "operation",
+    "approvalMode",
+    "payload"
+  ],
+  "properties": {
+    "requestId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requestedBy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mailboxId": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "operation": {
+      "type": "string",
+      "enum": ["send", "reply", "reply-all", "forward", "list-messages", "get-message", "list-threads"]
+    },
+    "approvalMode": {
+      "type": "string",
+      "enum": ["allow", "prompt", "deny"]
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "to": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
+          }
+        },
+        "cc": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
+          }
+        },
+        "bcc": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
+          }
+        },
+        "subject": {
+          "type": "string"
+        },
+        "bodyText": {
+          "type": "string"
+        },
+        "bodyHtml": {
+          "type": "string"
+        },
+        "messageId": {
+          "type": "string"
+        },
+        "threadId": {
+          "type": "string"
+        },
+        "query": {
+          "type": "string"
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  }
+}

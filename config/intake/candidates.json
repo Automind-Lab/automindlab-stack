@@ -27,6 +27,31 @@
       "boundaryDecision": "Translate only into reusable runtime contracts, validators, or runbooks. Do not import product UI or local operator shell behavior.",
       "decisionDate": "2026-03-27",
       "decisionOwner": "AutoMindLab runtime owner"
+    },
+    {
+      "id": "agentmail-inbound-webhook-processor",
+      "name": "AgentMail inbound webhook processor",
+      "sourceRepoOrSource": "agentmail-to webhook and inbound-event capabilities",
+      "capabilityType": "service-surface",
+      "adoptionMode": "wrap",
+      "owner": "AutoMindLab runtime architecture",
+      "riskLevel": "medium",
+      "networkScope": "api-write",
+      "storageScope": "service-contracts",
+      "secretScope": "runtime-secrets",
+      "tenantScope": "platform-shared",
+      "rolloutRing": "sandbox",
+      "approvalRequirements": [
+        "runtime-owner-review",
+        "security-review",
+        "operator-visible-escalation-path"
+      ],
+      "rollbackNotes": "Keep webhook delivery in planned status until a typed inbound processor and host-reviewed escalation path exist.",
+      "reviewNotes": "Candidate only. The manifest may describe planned webhooks, but the runtime does not yet expose a production inbound processor.",
+      "enterpriseJustification": "Could eventually enable inbound email-driven enterprise workflows once host ownership, schemas, and escalation are fully implemented.",
+      "boundaryDecision": "Do not configure inbound webhooks in production until a typed runtime service owns them and operators can review inbound actions.",
+      "decisionDate": "2026-03-27",
+      "decisionOwner": "AutoMindLab runtime owner"
     }
   ]
 }

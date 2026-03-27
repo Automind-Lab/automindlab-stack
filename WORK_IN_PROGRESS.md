@@ -1,6 +1,6 @@
 # Work In Progress
 
-Last updated: 2026-03-27 14:05 UTC
+Last updated: 2026-03-27 15:09 UTC
 
 ## Current focus
 
@@ -28,11 +28,15 @@ Last updated: 2026-03-27 14:05 UTC
 - add governed capability-intake catalogs so external parity work cannot bypass enterprise review
 - add explicit OpenClaw/NemoClaw runtime-profile contracts with typed evidence status
 - translate BMO's new workstation manifest and approval model into enterprise-neutral operator contracts instead of a local Windows shell
+- translate `agentmail-to` into runtime-owned email contracts, OpenClaw setup guidance, and read-only live proof
+- translate `millionco/expect` into manifest-backed browser-proof planning for downstream enterprise surfaces
+- translate donor skill-pack ideas into curated enterprise skill bundles rather than copying donor repo ownership
+- add platform ownership and positioning guidance so the stack stays partner-owned and reusable
 
 ## Next milestone
 
-- commit and push the operator-surface translation work
-- continue the next BMO delta pass after the workstation-pattern tranche
+- commit and push the donor-translation tranche
+- gather optional live AgentMail proof once credentials are available
 - optionally rerun runtime doctor, worker status, and bootstrap recovery on a compatible OpenClaw host if live-gateway proof is required
 
 ## Risks and watchouts
@@ -42,4 +46,4 @@ Last updated: 2026-03-27 14:05 UTC
 - do not claim parity for any capability that is still doc-only or unvalidated
 - do not imply NemoClaw is implemented beyond the contract/evidence level declared in `config/runtime-profiles/`
 - do not let manifest-backed operator actions become a back door to unrestricted host execution
-- be explicit that local proof now includes a reusable OpenClaw fixture smoke harness plus Git Bash shell checks, but still does not prove a real gateway instance because `openclaw` and seeded live workspaces are absent on this machine
+- be explicit that local proof now includes AgentMail contract and live-check scaffolding plus a reusable OpenClaw fixture smoke harness and Git Bash shell checks, but still does not prove a real gateway instance or real inbox readiness because `openclaw`, seeded live workspaces, and AgentMail credentials are absent on this machine

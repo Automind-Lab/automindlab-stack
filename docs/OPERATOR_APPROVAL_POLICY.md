@@ -34,6 +34,7 @@ This document explains the approval posture for manifest-backed operator actions
 - governance validation: `allow`
 - runtime reconfiguration: `prompt`
 - repo mutation: `prompt`
+- authenticated provider reads: `prompt`
 - system install and elevation: `deny`
 
 ## Blocked command classes

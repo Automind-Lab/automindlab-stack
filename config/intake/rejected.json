@@ -51,6 +51,30 @@
       "boundaryDecision": "Reject the desktop shell as a source-of-truth surface here. Keep only enterprise-neutral contracts and validators.",
       "decisionDate": "2026-03-27",
       "decisionOwner": "AutoMindLab runtime owner"
+    },
+    {
+      "id": "moneyprinter-growth-and-outreach-stack",
+      "name": "MoneyPrinterV2 growth-hack, outreach, and content-factory stack",
+      "sourceRepoOrSource": "FujiwaraChoki/MoneyPrinterV2",
+      "capabilityType": "source-repo",
+      "adoptionMode": "reject",
+      "owner": "AutoMindLab runtime governance",
+      "riskLevel": "high",
+      "networkScope": "external-web",
+      "storageScope": "downstream-owned",
+      "secretScope": "downstream-secrets",
+      "tenantScope": "downstream-owned",
+      "rolloutRing": "design",
+      "approvalRequirements": [
+        "runtime-owner-review",
+        "product-owner-review"
+      ],
+      "rollbackNotes": "Keep this stack out of the runtime owner repo. If a downstream product needs campaign or content automation, scope it there under separate review.",
+      "reviewNotes": "Rejected because it optimizes for growth automation, social posting, and outreach behavior that does not belong in the enterprise runtime source of truth.",
+      "enterpriseJustification": "None for this repo. The durable moat is runtime ownership and reusable contracts, not bundled growth hacks.",
+      "boundaryDecision": "Do not import outreach bots, social factories, or affiliate-style automation into `automindlab-stack`.",
+      "decisionDate": "2026-03-27",
+      "decisionOwner": "AutoMindLab runtime owner"
     }
   ]
 }

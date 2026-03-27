@@ -1,0 +1,12 @@
+{
+  "name": "agentmail_runtime_review",
+  "description": "Review runtime-owned email identities, custom-domain intent, and approval boundaries before claiming live mail readiness.",
+  "entry_skill": "agentmail-ops",
+  "steps": [
+    {"id": "collect-declared-state", "type": "host", "output": "declaredMailState"},
+    {"id": "validate-contracts", "type": "host", "skill": "agentmail-ops"},
+    {"id": "bounded-mail-review", "type": "worker", "skill": "agentmail-ops", "timeoutMs": 30000},
+    {"id": "escalation-check", "type": "host", "skill": "escalate-to-human"}
+  ],
+  "outputs": ["mailboxes", "domains", "evidenceStatus", "approvalBoundaries", "uncertainty", "escalate"]
+}

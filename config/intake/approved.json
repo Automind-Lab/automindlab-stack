@@ -75,6 +75,77 @@
       "boundaryDecision": "Translate the action map and approval policy into repo-owned contracts. Do not import the BMO Windows UI or local task shell directly.",
       "decisionDate": "2026-03-27",
       "decisionOwner": "AutoMindLab runtime owner"
+    },
+    {
+      "id": "agentmail-runtime-contract-pattern",
+      "name": "AgentMail runtime contract and OpenClaw email setup pattern",
+      "sourceRepoOrSource": "agentmail-to API, SDK, docs, and OpenClaw integration guidance",
+      "capabilityType": "service-surface",
+      "adoptionMode": "wrap",
+      "owner": "AutoMindLab runtime owner",
+      "riskLevel": "medium",
+      "networkScope": "api-read",
+      "storageScope": "service-contracts",
+      "secretScope": "operator-provided",
+      "tenantScope": "platform-shared",
+      "rolloutRing": "staging",
+      "approvalRequirements": [
+        "runtime-owner-review",
+        "operator-visible-validation"
+      ],
+      "rollbackNotes": "Downgrade evidence state to declared-only and remove live-check usage if the provider path or approval boundary drifts.",
+      "reviewNotes": "Approved in wrapped form only. The repo owns typed manifests, examples, setup guidance, and read-only proof paths, not unmanaged outbound automation.",
+      "enterpriseJustification": "Provides a durable email identity and routing surface for OpenClaw-compatible enterprise runtimes while keeping approval and proof explicit.",
+      "boundaryDecision": "Wrap AgentMail as runtime-owned contracts and host-reviewed operations. Do not let worker or downstream shells own direct email sends.",
+      "decisionDate": "2026-03-27",
+      "decisionOwner": "AutoMindLab runtime owner"
+    },
+    {
+      "id": "expect-browser-proof-pattern",
+      "name": "Expect-style diff-aware browser proof planning",
+      "sourceRepoOrSource": "millionco/expect",
+      "capabilityType": "workflow-pattern",
+      "adoptionMode": "curate",
+      "owner": "AutoMindLab runtime governance",
+      "riskLevel": "medium",
+      "networkScope": "none",
+      "storageScope": "service-contracts",
+      "secretScope": "none",
+      "tenantScope": "platform-shared",
+      "rolloutRing": "production",
+      "approvalRequirements": [
+        "runtime-owner-review",
+        "operator-visible-proof-policy"
+      ],
+      "rollbackNotes": "Narrow or remove the manifest if it stops mapping cleanly to downstream proof expectations.",
+      "reviewNotes": "Approved as a manifest-backed proof-planning contract, not as a local browser shell or opaque TUI.",
+      "enterpriseJustification": "Improves downstream UI trust by tying repo diffs to explicit browser-proof requirements and artifacts.",
+      "boundaryDecision": "Translate the change-detection and proof-planning pattern into repo-owned manifests and planner scripts. Do not import donor UX directly.",
+      "decisionDate": "2026-03-27",
+      "decisionOwner": "AutoMindLab runtime owner"
+    },
+    {
+      "id": "skills-curated-bundle-pattern",
+      "name": "Curated skill-bundle and discoverability pattern",
+      "sourceRepoOrSource": "slavingia/skills",
+      "capabilityType": "skill",
+      "adoptionMode": "inspire",
+      "owner": "AutoMindLab runtime governance",
+      "riskLevel": "low",
+      "networkScope": "none",
+      "storageScope": "repo-only",
+      "secretScope": "none",
+      "tenantScope": "platform-shared",
+      "rolloutRing": "production",
+      "approvalRequirements": [
+        "runtime-owner-review"
+      ],
+      "rollbackNotes": "Retire or narrow the bundle catalog if it begins to reference external or unreviewed skills.",
+      "reviewNotes": "Approved only as an inspiration source for local, validated skill bundles. Donor narratives and business framing do not carry over.",
+      "enterpriseJustification": "Helps package repeatable enterprise capabilities for reuse across engagements without diluting ownership boundaries.",
+      "boundaryDecision": "Keep bundle catalogs local to AutoMindLab and validated against the repo's actual skills. Do not adopt donor skill content as source of truth.",
+      "decisionDate": "2026-03-27",
+      "decisionOwner": "AutoMindLab runtime owner"
     }
   ]
 }

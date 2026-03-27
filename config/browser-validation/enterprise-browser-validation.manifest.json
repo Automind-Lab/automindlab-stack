@@ -1,0 +1,136 @@
+{
+  "version": "2026-03-27.v1",
+  "manifestId": "automindlab-enterprise-browser-validation",
+  "description": "Diff-aware browser validation planning for downstream operator, email, and admin surfaces influenced by this repo. This is the enterprise translation of expect-style browser proof: reviewable manifests, explicit artifacts, and path-to-suite mapping instead of an opaque local TUI.",
+  "plannerMode": "diff-aware",
+  "defaultEvidence": [
+    "screenshot",
+    "console-log",
+    "trace"
+  ],
+  "targets": [
+    {
+      "id": "downstream-operator-surface",
+      "name": "Downstream operator or runtime admin surface",
+      "baseUrlEnv": "OPERATOR_SURFACE_BASE_URL",
+      "owner": "Downstream product owner with AutoMindLab runtime owner review",
+      "requiresAuthSession": true,
+      "supportedArtifacts": [
+        "screenshot",
+        "console-log",
+        "trace",
+        "video"
+      ],
+      "suites": [
+        {
+          "id": "operator-surface-regression",
+          "description": "Validate operator/admin flows after manifest, approval-policy, or runtime-doc changes.",
+          "pathPrefixes": [
+            "config/operator/",
+            "docs/OPERATOR_",
+            "scripts/run-operator-action.mjs",
+            ".ona/skills/operator-surface-review.md"
+          ],
+          "routeHints": [
+            "/ops",
+            "/admin",
+            "/runtime"
+          ],
+          "riskLevel": "medium",
+          "approvalMode": "prompt",
+          "steps": [
+            "Open the authenticated operator surface.",
+            "Navigate to the operator or runtime-admin route suggested by routeHints.",
+            "Exercise the action or view that corresponds to the changed operator manifest or approval policy.",
+            "Capture a screenshot and console log proving the reviewed state."
+          ],
+          "requiredArtifacts": [
+            "screenshot",
+            "console-log",
+            "trace"
+          ],
+          "alwaysInclude": false,
+          "notes": "Use this when operator contracts, approval policy, or manifest-backed actions changed."
+        }
+      ]
+    },
+    {
+      "id": "downstream-email-surface",
+      "name": "Downstream inbox, thread, or email-admin surface",
+      "baseUrlEnv": "AGENTMAIL_SURFACE_BASE_URL",
+      "owner": "Runtime owner with downstream product owner review",
+      "requiresAuthSession": true,
+      "supportedArtifacts": [
+        "screenshot",
+        "console-log",
+        "trace",
+        "video",
+        "network-log"
+      ],
+      "suites": [
+        {
+          "id": "agentmail-routing-regression",
+          "description": "Validate inbox, thread, and mailbox-routing surfaces after AgentMail contract or policy changes.",
+          "pathPrefixes": [
+            "config/email/",
+            "docs/AGENTMAIL_RUNTIME_CONTRACT.md",
+            "scripts/validate-agentmail-runtime.mjs",
+            "scripts/agentmail-doctor.mjs",
+            ".ona/skills/agentmail-ops.md"
+          ],
+          "routeHints": [
+            "/inbox",
+            "/messages",
+            "/threads",
+            "/settings/email"
+          ],
+          "riskLevel": "high",
+          "approvalMode": "prompt",
+          "steps": [
+            "Open the authenticated email surface using a real operator session.",
+            "Verify the expected mailbox identity is visible and correctly labeled.",
+            "Open a representative thread or compose flow without sending irreversible traffic unless separately approved.",
+            "Capture screenshot, console log, and network log proof for the reviewed state."
+          ],
+          "requiredArtifacts": [
+            "screenshot",
+            "console-log",
+            "network-log",
+            "trace"
+          ],
+          "alwaysInclude": false,
+          "notes": "This suite is for email runtime and mailbox contract changes. It does not authorize live outbound sends by itself."
+        },
+        {
+          "id": "browser-validation-contract-regression",
+          "description": "Validate the downstream proof surface when browser-validation planning itself changed.",
+          "pathPrefixes": [
+            "config/browser-validation/",
+            "docs/BROWSER_VALIDATION_CONTRACT.md",
+            "scripts/validate-browser-validation.mjs",
+            "scripts/plan-browser-validation.mjs",
+            ".ona/skills/browser-validation.md"
+          ],
+          "routeHints": [
+            "/qa",
+            "/ops/browser-validation"
+          ],
+          "riskLevel": "medium",
+          "approvalMode": "prompt",
+          "steps": [
+            "Open the downstream validation or QA surface.",
+            "Confirm the target routes and artifact capture flow still match the manifest.",
+            "Capture proof artifacts required by the changed suite."
+          ],
+          "requiredArtifacts": [
+            "screenshot",
+            "console-log",
+            "trace"
+          ],
+          "alwaysInclude": false,
+          "notes": "Use this to prove the proof-gathering surface did not drift from the manifest."
+        }
+      ]
+    }
+  ]
+}

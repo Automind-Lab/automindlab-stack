@@ -72,6 +72,30 @@
         "desktop translation"
       ]
     },
+    "agentmail-ops": {
+      "file": ".ona/skills/agentmail-ops.md",
+      "actions": ["review", "doctor"],
+      "default_action": "review",
+      "triggers": [
+        "agentmail",
+        "mailbox contract",
+        "email runtime",
+        "inbox setup",
+        "domain routing"
+      ]
+    },
+    "browser-validation": {
+      "file": ".ona/skills/browser-validation.md",
+      "actions": ["plan", "review"],
+      "default_action": "plan",
+      "triggers": [
+        "browser validation",
+        "ui regression plan",
+        "expect-style testing",
+        "proof artifacts",
+        "browser test plan"
+      ]
+    },
     "council-query": {
       "file": ".ona/skills/council-query.md",
       "actions": ["synthesize", "route"],

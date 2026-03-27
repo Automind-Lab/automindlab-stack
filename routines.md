@@ -17,7 +17,13 @@ The machine-readable source lives in `config/routines/automindlab-core-routines.
    Verify workflow files still match the skills registry and routing rules.
 6. `make operator-surface-validate`
    Verify manifest-backed operator actions, shortcuts, and approval modes.
-7. `make skill-pack`
+7. `make agentmail-runtime-validate`
+   Verify runtime-owned email identities, approval boundaries, and message envelopes.
+8. `make browser-validation-validate`
+   Verify diff-aware browser validation manifests for downstream enterprise surfaces.
+9. `make enterprise-skill-bundles-validate`
+   Verify curated enterprise skill bundles before widening adoption across engagements.
+10. `make skill-pack`
    Inspect the current enterprise baseline skill pack before adding more capability.
 
 ## Translation reminder

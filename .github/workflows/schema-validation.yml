@@ -28,3 +28,6 @@ jobs:
           node scripts/validate-capability-intake.mjs
           node scripts/validate-runtime-topology-profiles.mjs
           node scripts/validate-operator-surfaces.mjs
+          node scripts/validate-agentmail-runtime.mjs
+          node scripts/validate-browser-validation.mjs
+          node scripts/validate-enterprise-skill-bundles.mjs

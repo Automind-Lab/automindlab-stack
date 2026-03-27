@@ -1,0 +1,16 @@
+{
+  "requestId": "req-agentmail-001",
+  "provider": "agentmail",
+  "mailboxId": "bmo-tron-agentmail",
+  "operation": "send",
+  "status": "blocked",
+  "messageId": null,
+  "threadId": null,
+  "result": null,
+  "uncertainty": {
+    "level": "high",
+    "reason": "Mailbox and domain state are user-declared only. No live AgentMail API proof or DNS verification evidence is present in this repo."
+  },
+  "escalate": true,
+  "safeAction": "Verify AGENTMAIL_API_KEY, confirm mailbox provisioning in AgentMail, and validate prismtek.dev domain routing before first live outbound send."
+}
