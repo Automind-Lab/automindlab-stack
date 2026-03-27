@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "owner_stack": "automindlab-stack",
+  "items": [
+    {
+      "id": "nvidia-multi-agent-intelligent-warehouse",
+      "title": "Multi-Agent Intelligent Warehouse",
+      "source": "https://build.nvidia.com/nvidia/multi-agent-intelligent-warehouse",
+      "mode": "core-enterprise-integration",
+      "target_surface": "future warehouse service / specialist runtime",
+      "status": "planned"
+    },
+    {
+      "id": "nvidia-nemotron-voice-agent",
+      "title": "Nemotron Voice Agent",
+      "source": "https://github.com/NVIDIA-AI-Blueprints/nemotron-voice-agent",
+      "mode": "shared-service",
+      "target_surface": "future voice ingress / service gateway",
+      "status": "planned"
+    },
+    {
+      "id": "nvidia-pdf-to-podcast",
+      "title": "PDF to Podcast",
+      "source": "https://github.com/NVIDIA-AI-Blueprints/pdf-to-podcast",
+      "mode": "optional-service",
+      "target_surface": "utility service / async job",
+      "status": "planned"
+    },
+    {
+      "id": "nvidia-retail-shopping-assistant",
+      "title": "Retail Shopping Assistant",
+      "source": "https://github.com/NVIDIA-AI-Blueprints/retail-shopping-assistant/",
+      "mode": "pattern-only",
+      "target_surface": "reference architecture",
+      "status": "planned"
+    },
+    {
+      "id": "nvidia-data-flywheel",
+      "title": "Data Flywheel",
+      "source": "https://github.com/mlrun/nvidia-data-flywheel",
+      "mode": "core-enterprise-integration",
+      "target_surface": "analytics + optimization pipeline",
+      "status": "planned"
+    },
+    {
+      "id": "nvidia-omniverse-dsx",
+      "title": "Omniverse DSX Blueprint for AI Factories",
+      "source": "https://github.com/NVIDIA-Omniverse-blueprints/omniverse-dsx-blueprint-for-ai-factories",
+      "mode": "external-platform-integration",
+      "target_surface": "platform / infrastructure integration docs",
+      "status": "planned"
+    },
+    {
+      "id": "bubbleran-telco-network-configuration",
+      "title": "Telco Network Configuration",
+      "source": "https://github.com/bubbleran/Telco-Network-Configuration",
+      "mode": "vertical-specialist-integration",
+      "target_surface": "telco specialist seed docs / adapters",
+      "status": "planned"
+    },
+    {
+      "id": "nvidia-safety-for-agentic-ai",
+      "title": "Safety for Agentic AI",
+      "source": "https://github.com/NVIDIA-AI-Blueprints/safety-for-agentic-ai",
+      "mode": "shared-core-dependency",
+      "target_surface": "eval pipeline + runtime guardrails",
+      "status": "planned"
+    },
+    {
+      "id": "nvidia-earth2-weather-analytics",
+      "title": "Earth-2 Weather Analytics",
+      "source": "https://github.com/NVIDIA-Omniverse-blueprints/earth2-weather-analytics",
+      "mode": "external-specialist-integration",
+      "target_surface": "future weather specialist or service adapter",
+      "status": "planned"
+    },
+    {
+      "id": "nvidia-aiq",
+      "title": "AIQ / Research Assistant Patterns",
+      "source": "https://github.com/NVIDIA-AI-Blueprints/aiq",
+      "mode": "core-enterprise-integration",
+      "target_surface": "future research/report service",
+      "status": "planned"
+    },
+    {
+      "id": "viavi-es-blueprint-rsg",
+      "title": "VIAVI ES Blueprint / RSG",
+      "source": "https://github.com/VIAVI-CTOO/es-blueprint-rsg/blob/main/README.md",
+      "mode": "vertical-specialist-integration",
+      "target_surface": "telco specialist seed docs / adapters",
+      "status": "planned"
+    }
+  ]
+}
