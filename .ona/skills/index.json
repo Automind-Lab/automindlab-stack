@@ -12,6 +12,54 @@
         "browser worker"
       ]
     },
+    "runtime-doctoring": {
+      "file": ".ona/skills/runtime-doctoring.md",
+      "actions": ["inspect", "doctor"],
+      "default_action": "inspect",
+      "triggers": [
+        "runtime doctor",
+        "health check",
+        "runtime ready",
+        "doctor the repo",
+        "diagnose runtime state"
+      ]
+    },
+    "host-worker-routing-check": {
+      "file": ".ona/skills/host-worker-routing-check.md",
+      "actions": ["verify", "route-check"],
+      "default_action": "verify",
+      "triggers": [
+        "host worker routing",
+        "binding owner",
+        "routing verification",
+        "worker split check",
+        "front door binding"
+      ]
+    },
+    "bootstrap-recovery": {
+      "file": ".ona/skills/bootstrap-recovery.md",
+      "actions": ["recover", "reseed"],
+      "default_action": "recover",
+      "triggers": [
+        "bootstrap recovery",
+        "workspace drift",
+        "reseed the workspace",
+        "broken bootstrap",
+        "recover seeded context"
+      ]
+    },
+    "workflow-validation": {
+      "file": ".ona/skills/workflow-validation.md",
+      "actions": ["validate", "lint"],
+      "default_action": "validate",
+      "triggers": [
+        "validate workflow",
+        "workflow config",
+        "routing workflow",
+        "workflow lint",
+        "check workflow json"
+      ]
+    },
     "council-query": {
       "file": ".ona/skills/council-query.md",
       "actions": ["synthesize", "route"],

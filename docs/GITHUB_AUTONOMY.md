@@ -39,6 +39,7 @@ The execution and sync jobs must run on a self-hosted runner that has:
 - git
 - gh
 - bash
+- node
 - python3
 - rsync
 - access to the local OpenClaw workspaces
@@ -60,4 +61,6 @@ The execution and sync jobs must run on a self-hosted runner that has:
 - `scripts/github-policy-check.sh`
 - `scripts/github-change-executor.sh`
 - `scripts/github-verifier.sh`
+- `scripts/validate-repo-operating-system.mjs`
+- `scripts/validate-workflows.mjs`
 - `scripts/sync-openclaw-workspaces.sh`

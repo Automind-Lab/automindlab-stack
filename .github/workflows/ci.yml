@@ -38,22 +38,32 @@ jobs:
           grep -q 'Council Composition & Influence' context/council/diagnostic/PUMP_SPECIALIST.md
           grep -q 'The Pump Specialist is a specialist agent, not a numbered council seat.' context/council/diagnostic/PUMP_SPECIALIST.md
 
-      - name: Verify module resolution
+      - name: Validate repo operating system and workflow surfaces
         run: |
-          node -e "require('./services/diagnostic/consultation-service')"
+          node scripts/validate-repo-operating-system.mjs
+          node scripts/validate-ona-skills.mjs
+          node scripts/automind-skill-pack.mjs validate
+          node scripts/automind-routines.mjs validate
+          node scripts/validate-workflows.mjs
+          node scripts/validate-runtime-contracts.mjs
+
+      - name: Verify module resolution
+        run: node -e "require('./services/diagnostic/consultation-service')"
+
+      - name: Check shell script syntax
+        run: |
+          bash -n scripts/bootstrap-recovery.sh
+          bash -n scripts/configure-openclaw-agents.sh
+          bash -n scripts/github-change-executor.sh
+          bash -n scripts/github-issue-planner.sh
+          bash -n scripts/github-policy-check.sh
+          bash -n scripts/github-verifier.sh
+          bash -n scripts/runtime-doctor.sh
+          bash -n scripts/sync-openclaw-workspaces.sh
+          bash -n scripts/worker-status.sh
 
       - name: Install diagnostic service dependencies
-        run: |
-          npm install --prefix services/diagnostic
+        run: npm install --prefix services/diagnostic
 
       - name: Run diagnostic service tests
-        run: |
-          npm test --prefix services/diagnostic
-
-      - name: Validate key files exist
-        run: |
-          test -f docs/OPENCLAW_HOST_AGENT_SYSTEM.md
-          test -f scripts/configure-openclaw-agents.sh
-          test -f lib/services/diagnostic_consultation_service.dart
-          test -f .ona/skills/diagnostic-consultation.md
-          test -f .cursor/rules/agents.md
+        run: npm test --prefix services/diagnostic

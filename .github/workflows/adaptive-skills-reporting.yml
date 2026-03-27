@@ -13,17 +13,17 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up Node
+        uses: actions/setup-node@v6
         with:
-          python-version: '3.11'
+          node-version: '20'
 
-      - name: Validate adaptive store schema file exists
+      - name: Validate adaptive store and helpers exist
         run: |
           test -f config/schemas/adaptive-skills-store.schema.json
           test -f data/adaptive-skills-store.json
-          test -f scripts/skill_stats.py
+          test -f scripts/skill-stats.mjs
+          test -f config/skills/automindlab-baseline-pack.json
 
       - name: Run adaptive skill stats report
-        run: |
-          python3 scripts/skill_stats.py
+        run: node scripts/skill-stats.mjs

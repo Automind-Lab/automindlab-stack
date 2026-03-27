@@ -1,0 +1,27 @@
+{
+  "taskId": "routing-check-20260327-001",
+  "status": "partial",
+  "output": {
+    "hostAgent": "automind-host",
+    "workerAgent": "automind-worker",
+    "bindingOwner": "automind-host",
+    "issues": [
+      "Worker workspace was missing the latest runbook copy before reseed."
+    ]
+  },
+  "uncertainty": {
+    "level": "medium",
+    "reason": "Bindings look correct, but the seeded workspace was not fully current before recovery.",
+    "missingContext": ["Fresh gateway restart confirmation"]
+  },
+  "escalate": true,
+  "safeAction": "Route the result to a human operator before claiming the runtime is fully ready.",
+  "escalation": {
+    "reason": "Runtime recovery changed a seeded workspace and still needs operator-visible verification.",
+    "missingContext": [
+      "Gateway restart result",
+      "Post-restart binding snapshot"
+    ],
+    "safeAction": "Run worker-status after restart and review the routing snapshot."
+  }
+}

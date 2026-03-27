@@ -1,0 +1,12 @@
+{
+  "name": "host_worker_routing",
+  "description": "Structured host/worker verification flow before claiming runtime routing is healthy.",
+  "entry_skill": "host-worker-routing-check",
+  "steps": [
+    {"id": "collect-runtime-state", "type": "host", "output": "runtimeState"},
+    {"id": "verify-routing", "type": "worker", "skill": "host-worker-routing-check", "timeoutMs": 30000},
+    {"id": "doctor-followup", "type": "host", "skill": "runtime-doctoring"},
+    {"id": "escalation-check", "type": "host", "skill": "escalate-to-human"}
+  ],
+  "outputs": ["hostAgent", "workerAgent", "bindingOwner", "issues", "escalate"]
+}

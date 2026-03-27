@@ -18,5 +18,8 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Run example contract tests
+      - name: Validate worker delegation examples
+        run: node scripts/validate-runtime-contracts.mjs
+
+      - name: Run diagnostic example contract tests
         run: node --test services/diagnostic/test/example-contracts.test.js

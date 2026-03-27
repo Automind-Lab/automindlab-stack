@@ -1,0 +1,12 @@
+{
+  "name": "bootstrap_recovery",
+  "description": "Structured recovery flow for reseeding AutoMindLab host and worker state after drift or broken bootstrap.",
+  "entry_skill": "bootstrap-recovery",
+  "steps": [
+    {"id": "capture-drift", "type": "host", "output": "drift"},
+    {"id": "reseed-runtime", "type": "worker", "skill": "bootstrap-recovery", "timeoutMs": 30000},
+    {"id": "verify-routing", "type": "host", "skill": "host-worker-routing-check"},
+    {"id": "escalation-check", "type": "host", "skill": "escalate-to-human"}
+  ],
+  "outputs": ["restoredSurfaces", "manualFollowups", "uncertainty", "escalate"]
+}

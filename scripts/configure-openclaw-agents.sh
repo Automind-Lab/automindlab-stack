@@ -10,74 +10,73 @@ HOST_AGENT_ID="${AUTOMIND_HOST_AGENT_ID:-automind-host}"
 WORKER_AGENT_ID="${AUTOMIND_WORKER_AGENT_ID:-automind-worker}"
 
 command -v openclaw >/dev/null 2>&1 || { echo "Error: openclaw not found"; exit 1; }
-command -v python3 >/dev/null 2>&1 || { echo "Error: python3 not found"; exit 1; }
+command -v node >/dev/null 2>&1 || { echo "Error: node not found"; exit 1; }
 command -v rsync >/dev/null 2>&1 || { echo "Error: rsync not found"; exit 1; }
 
-mkdir -p "$HOST_WORKSPACE/context" "$WORKER_WORKSPACE/context"
+bash "$ROOT_DIR/scripts/sync-openclaw-workspaces.sh"
 
-cp "$ROOT_DIR/AGENTS.md" "$HOST_WORKSPACE/AGENTS.md"
-cp "$ROOT_DIR/context/BOOTSTRAP.md" "$HOST_WORKSPACE/BOOTSTRAP.md"
-rsync -a "$ROOT_DIR/context/" "$HOST_WORKSPACE/context/"
-rsync -a --delete "$HOST_WORKSPACE/" "$WORKER_WORKSPACE/"
+node - "$CONFIG_PATH" "$HOST_WORKSPACE" "$WORKER_WORKSPACE" "$HOST_AGENT_ID" "$WORKER_AGENT_ID" <<'NODE'
+const fs = require("node:fs");
 
-python3 - "$CONFIG_PATH" "$HOST_WORKSPACE" "$WORKER_WORKSPACE" "$HOST_AGENT_ID" "$WORKER_AGENT_ID" <<'PY'
-import json
-import sys
-from pathlib import Path
+const [configPath, hostWorkspace, workerWorkspace, hostAgentId, workerAgentId] = process.argv.slice(2);
+let config = {};
 
-config_path = Path(sys.argv[1])
-host_workspace = sys.argv[2].replace(str(Path.home()), "~")
-worker_workspace = sys.argv[3].replace(str(Path.home()), "~")
-host_agent_id = sys.argv[4]
-worker_agent_id = sys.argv[5]
+if (fs.existsSync(configPath)) {
+  const raw = fs.readFileSync(configPath, "utf8").trim();
+  config = raw ? JSON.parse(raw) : {};
+}
 
-if config_path.exists():
-    text = config_path.read_text().strip()
-    config = json.loads(text) if text else {}
-else:
-    config = {}
+config.agents ??= {};
+config.agents.list = Array.isArray(config.agents.list) ? config.agents.list : [];
+config.agents.defaults ??= {};
+config.agents.defaults.workspace = hostWorkspace;
+config.agents.defaults.sandbox = { mode: "off" };
 
-agents = config.setdefault("agents", {})
-agent_list = agents.setdefault("list", [])
-defaults = agents.setdefault("defaults", {})
-defaults["workspace"] = host_workspace
-defaults["sandbox"] = {"mode": "off"}
+const agentList = config.agents.list;
 
-def upsert(agent):
-    for idx, item in enumerate(agent_list):
-        if item.get("id") == agent["id"]:
-            merged = dict(item)
-            merged.update(agent)
-            agent_list[idx] = merged
-            return
-    agent_list.append(agent)
+function upsert(agent) {
+  const index = agentList.findIndex((item) => item.id === agent.id);
+  if (index >= 0) {
+    agentList[index] = { ...agentList[index], ...agent };
+  } else {
+    agentList.push(agent);
+  }
+}
 
 upsert({
-    "id": host_agent_id,
-    "default": True,
-    "workspace": host_workspace,
-    "sandbox": {"mode": "off"},
-})
+  id: hostAgentId,
+  default: true,
+  workspace: hostWorkspace,
+  sandbox: { mode: "off" },
+});
 
 upsert({
-    "id": worker_agent_id,
-    "workspace": worker_workspace,
-    "sandbox": {
-        "mode": "all",
-        "scope": "agent",
-        "docker": {"network": "bridge"},
-    },
-})
+  id: workerAgentId,
+  default: false,
+  workspace: workerWorkspace,
+  sandbox: {
+    mode: "all",
+    scope: "agent",
+    docker: { network: "bridge" },
+  },
+});
 
-config_path.parent.mkdir(parents=True, exist_ok=True)
-config_path.write_text(json.dumps(config, indent=2) + "\n")
-PY
+for (const agent of agentList) {
+  if (agent.id !== hostAgentId && agent.default === true) {
+    agent.default = false;
+  }
+}
+
+fs.mkdirSync(path.dirname(configPath), { recursive: true });
+fs.writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`);
+NODE
 
 openclaw agents set-identity --workspace "$HOST_WORKSPACE" --from-identity \
-  || echo "Warning: host identity seeding failed — verify workspace manually"
+  || echo "Warning: host identity seeding failed; verify workspace manually"
 openclaw agents set-identity --workspace "$WORKER_WORKSPACE" --from-identity \
-  || echo "Warning: worker identity seeding failed — verify workspace manually"
+  || echo "Warning: worker identity seeding failed; verify workspace manually"
 
 openclaw config validate >/dev/null
 
 echo "Configured OpenClaw host/worker split for AutoMindLab."
+echo "Next step: restart the gateway and run ./scripts/worker-status.sh"
