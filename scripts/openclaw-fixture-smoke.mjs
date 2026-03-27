@@ -169,7 +169,7 @@ const env = {
 
 fs.mkdirSync(openclawHome, { recursive: true });
 
-runBash("./scripts/configure-openclaw-agents.sh", env);
+runBash("bash ./scripts/configure-openclaw-agents.sh", env);
 
 const config = JSON.parse(fs.readFileSync(env.OPENCLAW_CONFIG, "utf8"));
 const host = config.agents?.list?.find((item) => item.id === "automind-host");
@@ -185,17 +185,17 @@ for (const file of ["AGENTS.md", "RUNBOOK.md", "TASK_STATE.md", "WORK_IN_PROGRES
   assert(fs.existsSync(path.join(env.AUTOMIND_WORKER_WORKSPACE, file)), `worker workspace missing ${file}`);
 }
 
-const workerStatusOutput = runBash("./scripts/worker-status.sh", env);
+const workerStatusOutput = runBash("bash ./scripts/worker-status.sh", env);
 assert(workerStatusOutput.includes("Configured host agent: automind-host"), "worker status should report the configured host agent");
 assert(workerStatusOutput.includes("Configured worker agent: automind-worker"), "worker status should report the configured worker agent");
 
-const runtimeDoctorOutput = runBash("./scripts/runtime-doctor.sh", env);
+const runtimeDoctorOutput = runBash("bash ./scripts/runtime-doctor.sh", env);
 assert(runtimeDoctorOutput.includes("PASS openclaw config validate"), "runtime doctor should validate the openclaw config in fixture mode");
 assert(runtimeDoctorOutput.includes("PASS workspace present"), "runtime doctor should see seeded workspaces");
 
-const dryRunOutput = runBash("./scripts/bootstrap-recovery.sh --dry-run", env);
+const dryRunOutput = runBash("bash ./scripts/bootstrap-recovery.sh --dry-run", env);
 assert(dryRunOutput.includes("Dry run: true"), "bootstrap recovery dry-run should report dry-run mode");
 
-runBash("./scripts/bootstrap-recovery.sh", env);
+runBash("bash ./scripts/bootstrap-recovery.sh", env);
 
 console.log("OpenClaw fixture smoke passed");
