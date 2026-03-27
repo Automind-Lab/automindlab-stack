@@ -20,16 +20,17 @@ if [ -z "$EXECUTOR" ]; then
   exit 1
 fi
 
-python3 - "$PLAN_PATH" <<'PY'
-import json
-import sys
-from pathlib import Path
-
-plan = json.loads(Path(sys.argv[1]).read_text(encoding='utf-8'))
-print(f"Executor scope: {plan['scope']}")
-print(f"Issue: #{plan['issue_number']}")
-print('This scaffold will now hand off to the configured local executor.')
-PY
+node - "$PLAN_PATH" <<'NODE'
+const fs = require("node:fs");
+const plan = JSON.parse(fs.readFileSync(process.argv[2], "utf8"));
+if (plan.execution_mode === "blocked" || plan.executor_allowed !== true) {
+  console.error("Blocked or disallowed plans must not be executed automatically.");
+  process.exit(1);
+}
+console.log(`Executor scope: ${plan.scope}`);
+console.log(`Issue: #${plan.issue_number}`);
+console.log("This scaffold will now hand off to the configured local executor.");
+NODE
 
 # The configured executor should apply a bounded change based on the current checkout.
 # Example: /usr/local/bin/automindlab-github-executor --plan "$PLAN_PATH"

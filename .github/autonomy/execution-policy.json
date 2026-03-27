@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "allowed_scopes": [
+    "docs",
+    "downstream"
+  ],
+  "blocked_scopes": [
+    "automation",
+    "runtime"
+  ],
+  "blocked_labels": [
+    "autonomy:needs-human",
+    "risk:high"
+  ],
+  "blocked_terms": [
+    "secret",
+    ".env",
+    "credential",
+    "token",
+    "tenant",
+    "production",
+    "prod",
+    "binding",
+    "gateway restart"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "number": 101,
+  "title": "Docs: refresh GitHub autonomy and downstream sync operator index",
+  "body": "Improve the docs navigation for GitHub autonomy and downstream sync review surfaces while keeping the current behavior unchanged.",
+  "url": "https://github.com/Automind-Lab/automindlab-stack/issues/101",
+  "labels": [
+    {
+      "name": "autonomy:ready"
+    }
+  ]
+}

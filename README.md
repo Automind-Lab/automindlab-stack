@@ -28,6 +28,7 @@ Read these first when operating AutoMindLab from this repo:
 - repo operating-system files such as the runbook, task state, and routines pack
 - runtime diagnostics, recovery flows, and workflow validation
 - GitHub automation for validation and repository health
+- GitHub autonomy contracts, policy, and self-test coverage
 - reusable service contracts for downstream consumer products
 
 ## Boundary model
@@ -80,6 +81,10 @@ These files exist to make startup order, current state, recovery steps, and reus
   - `.ona/skills/`
   - `config/skills/`
   - `config/workflows/`
+- automation and downstream contracts
+  - `config/github/automation-contract.json`
+  - `.github/autonomy/execution-policy.json`
+  - `config/sync/downstreams/flowcommander.sync-manifest.json`
 - contracts and services
   - `config/schemas/`
   - `config/examples/`
@@ -98,6 +103,10 @@ These files exist to make startup order, current state, recovery steps, and reus
 - `node scripts/validate-repo-operating-system.mjs`
 - `node scripts/validate-workflows.mjs`
 - `node scripts/validate-runtime-contracts.mjs`
+- `node scripts/validate-github-automation.mjs`
+- `node scripts/github-autonomy-selftest.mjs`
+- `node scripts/validate-downstream-sync.mjs`
+- `node scripts/openclaw-fixture-smoke.mjs`
 - `node scripts/automind-skill-pack.mjs list`
 - `node scripts/automind-routines.mjs list`
 - `npm test --prefix services/diagnostic`
@@ -132,6 +141,22 @@ The host / worker handoff is documented and typed through:
 - `config/schemas/worker-result.schema.json`
 - `config/examples/worker-task.example.json`
 - `config/examples/worker-result.example.json`
+
+### GitHub autonomy contract
+
+The GitHub issue-to-PR scaffold is governed by:
+
+- `config/github/automation-contract.json`
+- `.github/autonomy/execution-policy.json`
+- `scripts/validate-github-automation.mjs`
+- `scripts/github-autonomy-selftest.mjs`
+
+### Downstream sync contract
+
+The current FLOWCOMMANDER sync review manifest is tracked in:
+
+- `config/sync/downstreams/flowcommander.sync-manifest.json`
+- `config/schemas/downstream-sync-manifest.schema.json`
 
 ## Translation rules
 

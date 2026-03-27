@@ -67,6 +67,9 @@ Use these before ad hoc debugging when they fit:
 4. `make bootstrap-recovery`
 5. `make workflow-validate`
 6. `make skill-pack`
+7. `make github-automation-validate`
+8. `make downstream-sync-validate`
+9. `make runtime-fixture-smoke`
 
 ## Verification protocol
 
@@ -76,6 +79,7 @@ Before claiming completion:
 - verify the requested capability exists in AutoMindLab-native form
 - run the relevant validators and tests
 - confirm contracts and docs still match runtime behavior
+- run `node scripts/openclaw-fixture-smoke.mjs` when host/worker setup or workspace seeding changed
 - state blockers and caveats explicitly
 
 ## Routing model
