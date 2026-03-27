@@ -10,6 +10,7 @@ const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "automindlab-openclaw-fix
 const fixtureBin = path.join(tempRoot, "bin");
 const openclawHome = path.join(tempRoot, "openclaw-home");
 const bashCommand = resolveBash();
+const nodeBinary = process.env.NODE_BINARY || process.execPath;
 
 function fail(message) {
   console.error(`ERROR: ${message}`);
@@ -63,6 +64,14 @@ function assert(condition, message) {
     fail(message);
   }
 }
+
+writeExecutable(
+  path.join(fixtureBin, "node"),
+  `#!/usr/bin/env bash
+set -euo pipefail
+exec "\${NODE_BINARY:?NODE_BINARY is required}" "$@"
+`,
+);
 
 writeExecutable(
   path.join(fixtureBin, "openclaw"),
@@ -151,6 +160,7 @@ fi
 const env = {
   ...process.env,
   PATH: `${fixtureBin}${path.delimiter}${process.env.PATH || ""}`,
+  NODE_BINARY: nodeBinary,
   OPENCLAW_HOME: openclawHome,
   OPENCLAW_CONFIG: path.join(openclawHome, "openclaw.json"),
   AUTOMIND_HOST_WORKSPACE: path.join(openclawHome, "workspace-automind-host"),
