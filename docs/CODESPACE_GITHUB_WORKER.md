@@ -14,6 +14,8 @@ Run this script inside a GitHub Codespace or another `gh`-authenticated shell to
 
 - `scripts/codespace-github-admin.sh`
 - `config/github/codespace-admin.env.example`
+- `config/github/automation-contract.json`
+- `.github/autonomy/execution-policy.json`
 
 ## Setup
 
@@ -40,4 +42,5 @@ bash scripts/codespace-github-admin.sh bootstrap-low-risk-dry-run
 - This worker is meant for bounded GitHub admin tasks, not background autonomy.
 - Keep execution disabled by default until dry-run output looks correct.
 - The low-risk issue created by the bootstrap path is docs-only on purpose.
+- Run `node scripts/validate-github-automation.mjs` and `node scripts/github-autonomy-selftest.mjs` before enabling execution on a self-hosted runner.
 - FLOWCOMMANDER downstream sync should remain manual and reviewable.

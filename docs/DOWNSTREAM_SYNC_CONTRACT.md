@@ -58,6 +58,7 @@ FLOWCOMMANDER intentionally keeps:
 - its own advisor naming
 - its own field-service boundary
 - its own narrowed runtime identity
+- sync contract version `2026-03-25.v1`
 
 That divergence is correct. Sync should preserve it rather than erase it.
 
@@ -73,4 +74,4 @@ When downstream teams sync from AutoMindLab, record:
 
 ## Manifest
 
-See `config/sync/downstreams/flowcommander.sync-manifest.yaml` for the current review manifest.
+See `config/sync/downstreams/flowcommander.sync-manifest.json` for the current review manifest.

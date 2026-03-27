@@ -15,10 +15,17 @@ const requiredFiles = [
   "context/BOOTSTRAP.md",
   "docs/REPO_BOUNDARY_POLICY.md",
   "docs/NETWORK_POLICY.md",
+  "docs/GITHUB_AUTOMATION.md",
+  "docs/GITHUB_AUTONOMY.md",
+  "docs/DOWNSTREAM_SYNC_CONTRACT.md",
   "docs/SKILLS_USAGE.md",
   "docs/SKILLS_RECOMMENDED.md",
+  ".github/autonomy/execution-policy.json",
+  "config/github/automation-contract.json",
   "config/routines/automindlab-core-routines.json",
   "config/skills/automindlab-baseline-pack.json",
+  "config/schemas/downstream-sync-manifest.schema.json",
+  "config/sync/downstreams/flowcommander.sync-manifest.json",
   "scripts/bootstrap-recovery.sh",
   "scripts/runtime-doctor.sh",
   "scripts/worker-status.sh",
@@ -76,6 +83,8 @@ for (const expected of [
   "config/skills/automindlab-baseline-pack.json",
   "docs/REPO_BOUNDARY_POLICY.md",
   "config/schemas/worker-task.schema.json",
+  "config/github/automation-contract.json",
+  "config/sync/downstreams/flowcommander.sync-manifest.json",
 ]) {
   if (!readme.includes(expected)) {
     fail(`README.md must mention ${expected}`);
@@ -113,6 +122,23 @@ for (const expected of ["config/schemas/worker-task.schema.json", "config/schema
   if (!delegationDoc.includes(expected)) {
     fail(`docs/WORKER_DELEGATION_PROTOCOL.md must mention ${expected}`);
   }
+}
+
+const automationDoc = read("docs/GITHUB_AUTONOMY.md");
+for (const expected of [
+  "config/github/automation-contract.json",
+  ".github/autonomy/execution-policy.json",
+  "validate-github-automation.mjs",
+  "github-autonomy-selftest.mjs",
+]) {
+  if (!automationDoc.includes(expected)) {
+    fail(`docs/GITHUB_AUTONOMY.md must mention ${expected}`);
+  }
+}
+
+const downstreamDoc = read("docs/DOWNSTREAM_SYNC_CONTRACT.md");
+if (!downstreamDoc.includes("config/sync/downstreams/flowcommander.sync-manifest.json")) {
+  fail("docs/DOWNSTREAM_SYNC_CONTRACT.md must mention config/sync/downstreams/flowcommander.sync-manifest.json");
 }
 
 console.log("AutoMindLab repo operating system files are valid");

@@ -2,7 +2,31 @@
 
 This repository includes a practical automation baseline that matches the current AutoMindLab repo surfaces.
 
+## Contract
+
+The current machine-readable automation contract lives in:
+
+- `config/github/automation-contract.json`
+- `.github/autonomy/execution-policy.json`
+
+Validate it with:
+
+- `node scripts/validate-github-automation.mjs`
+- `node scripts/github-autonomy-selftest.mjs`
+
 ## Workflows
+
+### `issue-to-pr.yml`
+
+The issue-to-PR scaffold is governed by the automation contract and policy file.
+It uses:
+
+- `scripts/github-issue-planner.sh`
+- `scripts/github-policy-check.sh`
+- `scripts/github-change-executor.sh`
+- `scripts/github-verifier.sh`
+- `scripts/render-github-plan-comment.mjs`
+- `scripts/render-github-pr-body.mjs`
 
 ### `ci.yml`
 
@@ -18,6 +42,9 @@ It checks:
 - routine pack
 - workflow configs
 - worker delegation contracts
+- GitHub automation contract and self-test
+- downstream sync manifest
+- OpenClaw fixture smoke
 - diagnostic install and tests
 
 ### `repo-health.yml`

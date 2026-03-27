@@ -1,9 +1,9 @@
-.PHONY: doctor doctor-plus health-check configure-agents worker-status runtime-doctor bootstrap-recovery workspace-sync workflow-validate repo-validate routines skill-pack contract-validate diagnostic-install diagnostic-start diagnostic-test diagnostic-ci up down review-comments
+.PHONY: doctor doctor-plus health-check configure-agents worker-status runtime-doctor bootstrap-recovery workspace-sync workflow-validate repo-validate routines skill-pack contract-validate github-automation-validate downstream-sync-validate runtime-fixture-smoke diagnostic-install diagnostic-start diagnostic-test diagnostic-ci up down review-comments
 
 doctor:
 	./scripts/runtime-doctor.sh
 
-doctor-plus: doctor repo-validate
+doctor-plus: doctor repo-validate runtime-fixture-smoke
 
 health-check: doctor-plus
 
@@ -28,6 +28,16 @@ workflow-validate:
 contract-validate:
 	node scripts/validate-runtime-contracts.mjs
 
+github-automation-validate:
+	node scripts/validate-github-automation.mjs
+	node scripts/github-autonomy-selftest.mjs
+
+downstream-sync-validate:
+	node scripts/validate-downstream-sync.mjs
+
+runtime-fixture-smoke:
+	node scripts/openclaw-fixture-smoke.mjs
+
 repo-validate:
 	node scripts/validate-repo-operating-system.mjs
 	node scripts/validate-ona-skills.mjs
@@ -35,6 +45,9 @@ repo-validate:
 	node scripts/automind-routines.mjs validate
 	node scripts/validate-workflows.mjs
 	node scripts/validate-runtime-contracts.mjs
+	node scripts/validate-github-automation.mjs
+	node scripts/github-autonomy-selftest.mjs
+	node scripts/validate-downstream-sync.mjs
 
 routines:
 	node scripts/automind-routines.mjs list

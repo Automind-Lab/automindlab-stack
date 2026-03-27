@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "description": "Current GitHub automation contract for AutoMindLab enterprise runtime maintenance.",
+  "workflows": [
+    {
+      "name": "Issue To PR",
+      "workflow_file": ".github/workflows/issue-to-pr.yml",
+      "workflow_name": "AutoMindLab Issue to PR",
+      "execution_surface": "github-hosted planning plus self-hosted execution",
+      "required_strings": [
+        "AUTOMIND_AUTONOMY_EXECUTION_ENABLED",
+        "AUTOMINDLAB_GITHUB_AUTONOMY_EXECUTOR",
+        "scripts/github-issue-planner.sh",
+        "scripts/github-policy-check.sh",
+        "scripts/github-change-executor.sh",
+        "scripts/github-verifier.sh",
+        "scripts/render-github-plan-comment.mjs",
+        "scripts/render-github-pr-body.mjs"
+      ],
+      "required_repo_vars": [
+        "AUTOMIND_AUTONOMY_EXECUTION_ENABLED",
+        "AUTOMINDLAB_GITHUB_AUTONOMY_EXECUTOR"
+      ]
+    },
+    {
+      "name": "Workspace Sync",
+      "workflow_file": ".github/workflows/workspace-sync-on-merge.yml",
+      "workflow_name": "AutoMindLab Workspace Sync on Merge",
+      "execution_surface": "self-hosted",
+      "required_strings": [
+        "AUTOMIND_WORKSPACE_SYNC_ENABLED",
+        "AUTOMIND_HOST_WORKSPACE",
+        "AUTOMIND_WORKER_WORKSPACE",
+        "OPENCLAW_HOME",
+        "scripts/sync-openclaw-workspaces.sh"
+      ],
+      "required_repo_vars": [
+        "AUTOMIND_WORKSPACE_SYNC_ENABLED",
+        "AUTOMIND_HOST_WORKSPACE",
+        "AUTOMIND_WORKER_WORKSPACE",
+        "OPENCLAW_HOME"
+      ]
+    }
+  ],
+  "required_scripts": [
+    "scripts/github-issue-planner.mjs",
+    "scripts/github-policy-check.mjs",
+    "scripts/github-verifier.mjs",
+    "scripts/github-autonomy-selftest.mjs",
+    "scripts/validate-github-automation.mjs",
+    "scripts/render-github-plan-comment.mjs",
+    "scripts/render-github-pr-body.mjs",
+    "scripts/github-change-executor.sh",
+    "scripts/codespace-github-admin.sh"
+  ],
+  "policy_file": ".github/autonomy/execution-policy.json",
+  "docs": [
+    "docs/GITHUB_AUTOMATION.md",
+    "docs/GITHUB_AUTONOMY.md",
+    "docs/CODESPACE_GITHUB_WORKER.md"
+  ],
+  "env_examples": [
+    "config/github/codespace-admin.env.example",
+    "config/github/codespace-codex.env.example"
+  ],
+  "selftest_examples": [
+    "config/examples/github-autonomy-issue-docs.example.json",
+    "config/examples/github-autonomy-issue-blocked.example.json"
+  ]
+}
