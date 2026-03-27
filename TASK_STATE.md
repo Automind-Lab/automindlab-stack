@@ -1,19 +1,19 @@
 # Task State
 
-Last updated: 2026-03-27 15:09 UTC
+Last updated: 2026-03-27 15:29 UTC
 
 ## Current status
 
 - Description: Upgrade AutoMindLab from a scaffold into a stronger enterprise runtime repo by translating the highest-value operating-system, diagnostics, skills, and validation patterns from `bmo-stack`.
 - Active repo: `C:\Users\cody_\Git\automindlab-stack`
 - Branch: `codex/enterprise-runtime-best-available`
-- Last successful step: translated `agentmail-to`, `millionco/expect`, and donor skill-bundle patterns into AutoMindLab-native email contracts, OpenClaw setup guidance, live-check scripts, browser-proof planning, enterprise skill bundles, intake decisions, and platform-positioning docs, then reran repo, workflow, operator, service, and runtime validations.
-- Next intended step: review the final diff, commit and push the donor-translation tranche, and then perform optional live AgentMail/OpenClaw proof on a machine with credentials and a real gateway install.
+- Last successful step: installed and versioned the repo-local finish-clean publishing path with tracked git hooks, a hook installer, and explicit runbook hygiene rules so completed tasks end in commit, push, PR, and a clean working tree.
+- Next intended step: merge PR `#32`, then perform optional live AgentMail/OpenClaw proof on a machine with credentials and a real gateway install.
 - Verification complete: true
 - Manual steps remaining:
   - optional: export `AGENTMAIL_API_KEY` and `AGENTMAIL_BASE_URL`, then run `node scripts/agentmail-live-check.mjs --require-live`
   - optional: run `./scripts/runtime-doctor.sh`, `./scripts/worker-status.sh`, and `./scripts/bootstrap-recovery.sh` on a machine that has a live `openclaw` installation and seeded workspaces
-  - review, commit, push, and package the updated branch state for merge
+  - merge PR `#32`
 - Safe to resume: true
 
 ## Recent checkpoints
@@ -76,4 +76,14 @@ Last updated: 2026-03-27 15:09 UTC
   - Next intended step: commit, push, and then gather optional live AgentMail and OpenClaw evidence on a credentialed runtime host
   - Verification complete: true
   - Manual steps remaining: commit/push plus optional live AgentMail/OpenClaw proof
+  - Safe to resume: true
+
+- 2026-03-27 15:29 UTC
+  - Repo: `C:\Users\cody_\Git\automindlab-stack`
+  - Branch: `codex/enterprise-runtime-best-available`
+  - Files touched: `.githooks/`, `scripts/install-git-hooks.sh`, `Makefile`, `README.md`, `RUNBOOK.md`, `docs/REPO_HYGIENE.md`, and `scripts/validate-repo-operating-system.mjs`
+  - Last successful step: turned the local PR auto-create behavior into a tracked repo feature, installed it in this clone, and validated the installer and hook syntax
+  - Next intended step: commit, push, and merge PR `#32`
+  - Verification complete: true
+  - Manual steps remaining: merge PR `#32`
   - Safe to resume: true

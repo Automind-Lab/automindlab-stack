@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+resolve_gh() {
+  if command -v gh >/dev/null 2>&1; then
+    command -v gh
+    return 0
+  fi
+  if [[ -x "/c/Program Files/GitHub CLI/gh.exe" ]]; then
+    printf '%s\n' "/c/Program Files/GitHub CLI/gh.exe"
+    return 0
+  fi
+  return 1
+}
+
+GH_BIN="$(resolve_gh || true)"
+if [[ -z "${GH_BIN:-}" ]]; then
+  exit 0
+fi
+
+branch="$(git branch --show-current 2>/dev/null || true)"
+if [[ -z "$branch" ]]; then
+  exit 0
+fi
+
+default_branch="$("$GH_BIN" repo view --json defaultBranchRef --jq '.defaultBranchRef.name' 2>/dev/null || true)"
+if [[ -z "$default_branch" || "$branch" == "$default_branch" ]]; then
+  exit 0
+fi
+
+existing_url="$("$GH_BIN" pr list --head "$branch" --state all --json url --jq '.[0].url // ""' 2>/dev/null || true)"
+if [[ -n "$existing_url" ]]; then
+  exit 0
+fi
+
+title_subject="$(git log -1 --pretty=%s 2>/dev/null || echo "$branch")"
+title="[codex] $title_subject"
+body=$(cat <<EOF
+## Summary
+- automated draft PR created by the repo post-push hook
+- branch: \`$branch\`
+
+## Validation
+- review the latest local validation results before marking the PR ready
+EOF
+)
+
+for attempt in 1 2 3; do
+  if "$GH_BIN" pr create \
+    --draft \
+    --base "$default_branch" \
+    --head "$branch" \
+    --title "$title" \
+    --body "$body" \
+    >/dev/null 2>&1; then
+    exit 0
+  fi
+
+  sleep 2
+  existing_url="$("$GH_BIN" pr list --head "$branch" --state all --json url --jq '.[0].url // ""' 2>/dev/null || true)"
+  if [[ -n "$existing_url" ]]; then
+    exit 0
+  fi
+done

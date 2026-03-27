@@ -1,4 +1,4 @@
-.PHONY: doctor doctor-plus health-check configure-agents worker-status runtime-doctor bootstrap-recovery workspace-sync workflow-validate repo-validate routines skill-pack contract-validate github-automation-validate downstream-sync-validate capability-intake-validate runtime-profile-validate operator-surface-validate agentmail-runtime-validate agentmail-doctor agentmail-live-check browser-validation-validate browser-validation-plan enterprise-skill-bundles-validate runtime-fixture-smoke diagnostic-install diagnostic-start diagnostic-test diagnostic-ci up down review-comments
+.PHONY: doctor doctor-plus health-check install-git-hooks configure-agents worker-status runtime-doctor bootstrap-recovery workspace-sync workflow-validate repo-validate routines skill-pack contract-validate github-automation-validate downstream-sync-validate capability-intake-validate runtime-profile-validate operator-surface-validate agentmail-runtime-validate agentmail-doctor agentmail-live-check browser-validation-validate browser-validation-plan enterprise-skill-bundles-validate runtime-fixture-smoke diagnostic-install diagnostic-start diagnostic-test diagnostic-ci up down review-comments
 
 doctor:
 	./scripts/runtime-doctor.sh
@@ -6,6 +6,9 @@ doctor:
 doctor-plus: doctor repo-validate runtime-fixture-smoke
 
 health-check: doctor-plus
+
+install-git-hooks:
+	bash ./scripts/install-git-hooks.sh
 
 configure-agents:
 	./scripts/configure-openclaw-agents.sh

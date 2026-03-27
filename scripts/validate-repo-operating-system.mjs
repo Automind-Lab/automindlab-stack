@@ -12,6 +12,8 @@ const requiredFiles = [
   "TASK_STATE.md",
   "WORK_IN_PROGRESS.md",
   "routines.md",
+  ".githooks/README.md",
+  ".githooks/post-push",
   "context/BOOTSTRAP.md",
   "docs/REPO_BOUNDARY_POLICY.md",
   "docs/NETWORK_POLICY.md",
@@ -61,6 +63,7 @@ const requiredFiles = [
   "config/workflows/browser_validation.workflow.json",
   "scripts/agentmail-doctor.mjs",
   "scripts/agentmail-live-check.mjs",
+  "scripts/install-git-hooks.sh",
   "scripts/plan-browser-validation.mjs",
   "scripts/validate-agentmail-runtime.mjs",
   "scripts/validate-browser-validation.mjs",
@@ -114,7 +117,7 @@ for (const expected of ["`RUNBOOK.md`", "`TASK_STATE.md`", "`.ona/skills/INDEX.m
 }
 
 const runbook = read("RUNBOOK.md");
-for (const expected of ["git status", "make doctor-plus", "make bootstrap-recovery", "make agentmail-runtime-validate", "make browser-validation-validate"]) {
+for (const expected of ["git status", "make doctor-plus", "make bootstrap-recovery", "make agentmail-runtime-validate", "make browser-validation-validate", "install-git-hooks.sh"]) {
   if (!runbook.includes(expected)) {
     fail(`RUNBOOK.md must mention ${expected}`);
   }
@@ -130,6 +133,7 @@ for (const expected of [
   "docs/AGENTMAIL_OPENCLAW_SETUP.md",
   "config/browser-validation/enterprise-browser-validation.manifest.json",
   "docs/BROWSER_VALIDATION_CONTRACT.md",
+  ".githooks/post-push",
   "config/skills/enterprise-skill-bundles.json",
   "docs/ENTERPRISE_SKILL_BUNDLES.md",
   "config/schemas/worker-task.schema.json",

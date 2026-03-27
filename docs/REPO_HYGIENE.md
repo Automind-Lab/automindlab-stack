@@ -24,6 +24,12 @@ This guide keeps AutoMindLab easy to review and maintain.
 - ensure new skills, packs, and workflows are documented
 - ensure new JSON config files are parseable and covered by validation workflows
 
+## Before closing a task
+- commit the intended changes
+- push the active branch
+- ensure a PR exists for the branch if the work is not already on `main`
+- leave the working tree clean unless the user explicitly asks to pause with local changes
+
 ## Cleanup targets
 - remove temporary test-only workarounds once production code can absorb the fix cleanly
 - keep schemas and workflows close to the code they protect

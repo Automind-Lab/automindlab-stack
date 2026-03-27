@@ -1,6 +1,6 @@
 # Work In Progress
 
-Last updated: 2026-03-27 15:09 UTC
+Last updated: 2026-03-27 15:29 UTC
 
 ## Current focus
 
@@ -32,10 +32,11 @@ Last updated: 2026-03-27 15:09 UTC
 - translate `millionco/expect` into manifest-backed browser-proof planning for downstream enterprise surfaces
 - translate donor skill-pack ideas into curated enterprise skill bundles rather than copying donor repo ownership
 - add platform ownership and positioning guidance so the stack stays partner-owned and reusable
+- turn finish-clean publishing into a tracked repo feature so completed work lands as commit, push, PR, and clean working tree by default
 
 ## Next milestone
 
-- commit and push the donor-translation tranche
+- merge PR `#32`
 - gather optional live AgentMail proof once credentials are available
 - optionally rerun runtime doctor, worker status, and bootstrap recovery on a compatible OpenClaw host if live-gateway proof is required
 

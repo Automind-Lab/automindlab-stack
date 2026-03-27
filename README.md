@@ -129,6 +129,7 @@ These files exist to make startup order, current state, recovery steps, and reus
 - `./scripts/runtime-doctor.sh`
 - `./scripts/worker-status.sh`
 - `./scripts/bootstrap-recovery.sh --dry-run`
+- `bash ./scripts/install-git-hooks.sh`
 - `node scripts/validate-repo-operating-system.mjs`
 - `node scripts/validate-workflows.mjs`
 - `node scripts/validate-runtime-contracts.mjs`
@@ -149,6 +150,17 @@ These files exist to make startup order, current state, recovery steps, and reus
 - `node scripts/automind-skill-pack.mjs list`
 - `node scripts/automind-routines.mjs list`
 - `npm test --prefix services/diagnostic`
+
+## Finish-Clean Rule
+
+When a repo task is complete, the intended end state is:
+
+- relevant work is committed
+- the branch is pushed
+- a pull request exists for the branch if it is not already merged
+- the working tree is clean
+
+The tracked hook in `.githooks/post-push` helps enforce the PR part locally once installed with `bash ./scripts/install-git-hooks.sh`.
 
 ## Current runtime surfaces
 
