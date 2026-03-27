@@ -22,6 +22,10 @@ Treat network access differently by owner surface:
 - downstream service consumers
   - consume contracts and guidance only
   - keep their own product-specific auth, persistence, and business approvals
+- manifest-backed operator surfaces
+  - may expose only reviewed repo-owned actions from `config/operator/`
+  - must require explicit approval for prompt-gated runtime-changing actions
+  - must not become a back door to unrestricted host execution
 
 ## Approval model
 
@@ -90,4 +94,6 @@ If uncertainty is high and the next networked action is irreversible:
 - `docs/WORKER_DELEGATION_PROTOCOL.md`
 - `docs/GITHUB_AUTONOMY.md`
 - `docs/REPO_BOUNDARY_POLICY.md`
+- `docs/OPERATOR_SURFACE_CONTRACT.md`
+- `docs/OPERATOR_APPROVAL_POLICY.md`
 - `config/skills/automindlab-baseline-pack.json`

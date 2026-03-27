@@ -60,6 +60,18 @@
       ]
     },
     {
+      "name": "operator-surface-validate",
+      "command": "make operator-surface-validate",
+      "owner_surface": "repo",
+      "purpose": "Validate the manifest-backed operator/admin surface and its approval policy before exposing new actions.",
+      "related_files": [
+        "Makefile",
+        "config/operator/operator-surface-manifest.json",
+        "config/operator/operator-command-policy.json",
+        "scripts/validate-operator-surfaces.mjs"
+      ]
+    },
+    {
       "name": "skill-pack",
       "command": "make skill-pack",
       "owner_surface": "repo",

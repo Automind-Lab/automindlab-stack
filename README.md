@@ -33,6 +33,7 @@ Read these first when operating AutoMindLab from this repo:
 - GitHub autonomy contracts, policy, and self-test coverage
 - governed capability-intake records for external tools, skills, and source repos
 - explicit OpenClaw and NemoClaw runtime topology profiles
+- manifest-backed operator/admin surfaces and approval policy
 - reusable service contracts for downstream consumer products
 
 ## Boundary model
@@ -94,6 +95,10 @@ These files exist to make startup order, current state, recovery steps, and reus
   - `config/runtime-profiles/`
   - `docs/CAPABILITY_INTAKE_POLICY.md`
   - `docs/RUNTIME_PROFILE_COMPATIBILITY.md`
+- operator surfaces
+  - `config/operator/`
+  - `docs/OPERATOR_SURFACE_CONTRACT.md`
+  - `docs/OPERATOR_APPROVAL_POLICY.md`
 - contracts and services
   - `config/schemas/`
   - `config/examples/`
@@ -117,7 +122,9 @@ These files exist to make startup order, current state, recovery steps, and reus
 - `node scripts/validate-downstream-sync.mjs`
 - `node scripts/validate-capability-intake.mjs`
 - `node scripts/validate-runtime-topology-profiles.mjs`
+- `node scripts/validate-operator-surfaces.mjs`
 - `node scripts/openclaw-fixture-smoke.mjs`
+- `node scripts/run-operator-action.mjs list`
 - `node scripts/automind-skill-pack.mjs list`
 - `node scripts/automind-routines.mjs list`
 - `npm test --prefix services/diagnostic`
@@ -147,6 +154,19 @@ Runtime ownership is also expressed as typed profile contracts:
 OpenClaw is currently `fixture-validated`.
 NemoClaw is currently `contract-validated` only.
 See `docs/RUNTIME_PROFILE_COMPATIBILITY.md` for the evidence boundary.
+
+### Operator surface contract
+
+The enterprise translation of BMO's workstation action model lives in:
+
+- `config/operator/operator-surface-manifest.json`
+- `config/operator/operator-command-policy.json`
+- `config/schemas/operator-surface-manifest.schema.json`
+- `config/schemas/operator-command-policy.schema.json`
+- `docs/OPERATOR_SURFACE_CONTRACT.md`
+
+This repo does not ship the BMO Windows desktop UI.
+It ships the reusable manifest and approval contract that future AutoMindLab operator surfaces can consume.
 
 ### FLOWCOMMANDER diagnostic consultation
 

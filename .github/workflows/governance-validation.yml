@@ -28,6 +28,8 @@ jobs:
           test -f docs/NETWORK_POLICY.md
           test -f docs/REPO_BOUNDARY_POLICY.md
           test -f docs/CAPABILITY_INTAKE_POLICY.md
+          test -f docs/OPERATOR_SURFACE_CONTRACT.md
+          test -f docs/OPERATOR_APPROVAL_POLICY.md
           test -f docs/RUNTIME_PROFILE_COMPATIBILITY.md
           test -f docs/GITHUB_AUTOMATION.md
           test -f docs/GITHUB_AUTONOMY.md
@@ -39,6 +41,7 @@ jobs:
           node scripts/validate-github-automation.mjs
           node scripts/validate-capability-intake.mjs
           node scripts/validate-runtime-topology-profiles.mjs
+          node scripts/validate-operator-surfaces.mjs
 
       - name: Run memory schema sanity test
         run: node --test services/diagnostic/test/memory-schema.test.js

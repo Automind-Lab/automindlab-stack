@@ -29,6 +29,7 @@ Downstream consumer repos should contain:
 
 - local operator workstation assumptions
 - BMO-specific shell UX
+- BMO's direct Windows desktop application
 - desktop or local-only helpers that do not back an enterprise runtime surface
 - BMO delivery surfaces that AutoMindLab does not own
 

@@ -93,12 +93,16 @@ for required in \
   "$ROOT_DIR/routines.md" \
   "$ROOT_DIR/.ona/skills/index.json" \
   "$ROOT_DIR/config/intake/approved.json" \
+  "$ROOT_DIR/config/operator/operator-surface-manifest.json" \
+  "$ROOT_DIR/config/operator/operator-command-policy.json" \
   "$ROOT_DIR/config/runtime-profiles/openclaw.enterprise-host-worker.json" \
   "$ROOT_DIR/config/runtime-profiles/nemoclaw.enterprise-host-worker.json" \
   "$ROOT_DIR/config/skills/automindlab-baseline-pack.json" \
   "$ROOT_DIR/config/routines/automindlab-core-routines.json" \
   "$ROOT_DIR/docs/CAPABILITY_INTAKE_POLICY.md" \
   "$ROOT_DIR/docs/NETWORK_POLICY.md" \
+  "$ROOT_DIR/docs/OPERATOR_SURFACE_CONTRACT.md" \
+  "$ROOT_DIR/docs/OPERATOR_APPROVAL_POLICY.md" \
   "$ROOT_DIR/docs/RUNTIME_PROFILE_COMPATIBILITY.md" \
   "$ROOT_DIR/docs/WORKER_DELEGATION_PROTOCOL.md" \
   "$ROOT_DIR/services/diagnostic/package.json"; do
@@ -139,6 +143,7 @@ if have_cmd node; then
   run_check "downstream sync validator" node "$ROOT_DIR/scripts/validate-downstream-sync.mjs"
   run_check "capability intake validator" node "$ROOT_DIR/scripts/validate-capability-intake.mjs"
   run_check "runtime profile validator" node "$ROOT_DIR/scripts/validate-runtime-topology-profiles.mjs"
+  run_check "operator surface validator" node "$ROOT_DIR/scripts/validate-operator-surfaces.mjs"
   run_check "diagnostic consultation syntax" node --check "$ROOT_DIR/services/diagnostic/consultation-service.js"
   run_check "diagnostic server syntax" node --check "$ROOT_DIR/services/diagnostic/server.js"
 else

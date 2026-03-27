@@ -9,6 +9,7 @@ This index turns `.ona/skills/` into a browsable skill registry.
 - `host-worker-routing-check.md` - host / worker ownership and binding verification
 - `bootstrap-recovery.md` - seeded workspace and bootstrap recovery
 - `workflow-validation.md` - workflow and contract validation
+- `operator-surface-review.md` - manifest-backed operator/admin surface review
 - `council-query.md` - structured Council of 13 synthesis
 - `council-review.md` - small-seat strategic review
 - `diagnostic-consultation.md` - pump-station consultation flow

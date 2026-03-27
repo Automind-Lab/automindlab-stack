@@ -11,6 +11,7 @@ This is the operator runbook for the AutoMindLab enterprise runtime repo.
 - `config/` holds machine-readable routines, skill packs, schemas, examples, and workflow definitions.
 - `config/intake/` is the source of truth for external capability review state.
 - `config/runtime-profiles/` is the source of truth for OpenClaw/NemoClaw runtime topology contracts.
+- `config/operator/` is the source of truth for manifest-backed operator/admin surfaces.
 
 ## Restart recovery protocol
 
@@ -75,7 +76,8 @@ Use these before ad hoc debugging when they fit:
 8. `make downstream-sync-validate`
 9. `make capability-intake-validate`
 10. `make runtime-profile-validate`
-11. `make runtime-fixture-smoke`
+11. `make operator-surface-validate`
+12. `make runtime-fixture-smoke`
 
 ## Verification protocol
 
@@ -87,6 +89,7 @@ Before claiming completion:
 - confirm contracts and docs still match runtime behavior
 - confirm new external capabilities have intake records before calling them approved
 - confirm runtime profile status still matches the actual evidence level
+- confirm any new operator-visible action is present in `config/operator/` with the right approval mode
 - run `node scripts/openclaw-fixture-smoke.mjs` when host/worker setup or workspace seeding changed
 - state blockers and caveats explicitly
 

@@ -25,6 +25,10 @@
       "why": "Keep workflow definitions aligned with the live skill registry and delegation contract."
     },
     {
+      "name": "operator-surface-review",
+      "why": "Translate operator-facing patterns into typed enterprise manifests and approval policy instead of ad hoc shells."
+    },
+    {
       "name": "diagnostic-consultation",
       "why": "Run the pump-station consultation flow in a repeatable, contract-safe way."
     },

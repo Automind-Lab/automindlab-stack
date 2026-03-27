@@ -60,6 +60,18 @@
         "check workflow json"
       ]
     },
+    "operator-surface-review": {
+      "file": ".ona/skills/operator-surface-review.md",
+      "actions": ["review", "curate"],
+      "default_action": "review",
+      "triggers": [
+        "operator surface",
+        "admin surface",
+        "approval policy",
+        "operator manifest",
+        "desktop translation"
+      ]
+    },
     "council-query": {
       "file": ".ona/skills/council-query.md",
       "actions": ["synthesize", "route"],

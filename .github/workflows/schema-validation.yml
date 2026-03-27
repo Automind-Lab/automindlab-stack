@@ -27,3 +27,4 @@ jobs:
           node scripts/validate-downstream-sync.mjs
           node scripts/validate-capability-intake.mjs
           node scripts/validate-runtime-topology-profiles.mjs
+          node scripts/validate-operator-surfaces.mjs

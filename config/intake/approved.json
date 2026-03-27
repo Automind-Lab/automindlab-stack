@@ -51,6 +51,30 @@
       "boundaryDecision": "Curate the pattern into AutoMindLab skills and runbooks. Reject any BMO-specific workstation UX or operator shell assumptions.",
       "decisionDate": "2026-03-27",
       "decisionOwner": "AutoMindLab runtime owner"
+    },
+    {
+      "id": "bmo-workstation-manifest-pattern",
+      "name": "BMO workstation manifest and supervised action pattern",
+      "sourceRepoOrSource": "bmo-stack Windows workstation manifest and approval policy",
+      "capabilityType": "workflow-pattern",
+      "adoptionMode": "curate",
+      "owner": "AutoMindLab runtime governance",
+      "riskLevel": "medium",
+      "networkScope": "none",
+      "storageScope": "repo-only",
+      "secretScope": "none",
+      "tenantScope": "platform-shared",
+      "rolloutRing": "production",
+      "approvalRequirements": [
+        "runtime-owner-review",
+        "operator-visible-validation"
+      ],
+      "rollbackNotes": "Remove or narrow manifest-backed actions if they drift beyond reviewed runtime-owner entrypoints.",
+      "reviewNotes": "Approved only as an enterprise operator-surface contract and approval policy. The direct Windows UI remains outside this repo.",
+      "enterpriseJustification": "Improves operator trust and future admin-surface reuse by making actions, docs, and approval boundaries machine-readable.",
+      "boundaryDecision": "Translate the action map and approval policy into repo-owned contracts. Do not import the BMO Windows UI or local task shell directly.",
+      "decisionDate": "2026-03-27",
+      "decisionOwner": "AutoMindLab runtime owner"
     }
   ]
 }

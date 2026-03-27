@@ -56,6 +56,7 @@ Use the intake system to decide whether a capability should:
 
 `bmo-stack` can only enter through translation.
 Local BMO operator UX does not become approved here by default.
+That includes the direct BMO Windows desktop shell: the reusable manifest and approval-policy pattern may be translated here, but the desktop application itself remains rejected as a source-of-truth surface.
 
 ## Operator guidance
 
