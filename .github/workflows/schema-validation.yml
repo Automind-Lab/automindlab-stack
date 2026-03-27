@@ -25,3 +25,6 @@ jobs:
         run: |
           node --test services/diagnostic/test/schema-files.test.js
           node scripts/validate-downstream-sync.mjs
+          node scripts/validate-capability-intake.mjs
+          node scripts/validate-runtime-topology-profiles.mjs
+          node scripts/validate-operator-surfaces.mjs

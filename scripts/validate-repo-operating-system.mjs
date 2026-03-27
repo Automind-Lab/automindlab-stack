@@ -15,6 +15,10 @@ const requiredFiles = [
   "context/BOOTSTRAP.md",
   "docs/REPO_BOUNDARY_POLICY.md",
   "docs/NETWORK_POLICY.md",
+  "docs/CAPABILITY_INTAKE_POLICY.md",
+  "docs/OPERATOR_SURFACE_CONTRACT.md",
+  "docs/OPERATOR_APPROVAL_POLICY.md",
+  "docs/RUNTIME_PROFILE_COMPATIBILITY.md",
   "docs/GITHUB_AUTOMATION.md",
   "docs/GITHUB_AUTONOMY.md",
   "docs/DOWNSTREAM_SYNC_CONTRACT.md",
@@ -22,14 +26,29 @@ const requiredFiles = [
   "docs/SKILLS_RECOMMENDED.md",
   ".github/autonomy/execution-policy.json",
   "config/github/automation-contract.json",
+  "config/intake/candidates.json",
+  "config/intake/approved.json",
+  "config/intake/rejected.json",
+  "config/operator/operator-surface-manifest.json",
+  "config/operator/operator-command-policy.json",
   "config/routines/automindlab-core-routines.json",
+  "config/runtime-profiles/openclaw.enterprise-host-worker.json",
+  "config/runtime-profiles/nemoclaw.enterprise-host-worker.json",
   "config/skills/automindlab-baseline-pack.json",
+  "config/schemas/capability-intake-catalog.schema.json",
   "config/schemas/downstream-sync-manifest.schema.json",
+  "config/schemas/operator-surface-manifest.schema.json",
+  "config/schemas/operator-command-policy.schema.json",
+  "config/schemas/runtime-topology-profile.schema.json",
   "config/sync/downstreams/flowcommander.sync-manifest.json",
   "scripts/bootstrap-recovery.sh",
   "scripts/runtime-doctor.sh",
   "scripts/worker-status.sh",
   "scripts/sync-openclaw-workspaces.sh",
+  "scripts/validate-capability-intake.mjs",
+  "scripts/validate-operator-surfaces.mjs",
+  "scripts/run-operator-action.mjs",
+  "scripts/validate-runtime-topology-profiles.mjs",
 ];
 
 function fail(message) {
@@ -85,6 +104,12 @@ for (const expected of [
   "config/schemas/worker-task.schema.json",
   "config/github/automation-contract.json",
   "config/sync/downstreams/flowcommander.sync-manifest.json",
+  "config/intake/approved.json",
+  "config/operator/operator-surface-manifest.json",
+  "config/runtime-profiles/openclaw.enterprise-host-worker.json",
+  "docs/CAPABILITY_INTAKE_POLICY.md",
+  "docs/OPERATOR_SURFACE_CONTRACT.md",
+  "docs/RUNTIME_PROFILE_COMPATIBILITY.md",
 ]) {
   if (!readme.includes(expected)) {
     fail(`README.md must mention ${expected}`);
@@ -106,8 +131,8 @@ for (const expected of ["## Current focus", "## Current work packet", "## Next m
 }
 
 const boundary = read("docs/REPO_BOUNDARY_POLICY.md");
-if (!boundary.includes("`bmo-stack`") || !boundary.toLowerCase().includes("downstream")) {
-  fail("docs/REPO_BOUNDARY_POLICY.md must mention bmo-stack and downstream boundaries");
+if (!boundary.includes("`bmo-stack`") || !boundary.toLowerCase().includes("downstream") || !boundary.includes("config/intake/")) {
+  fail("docs/REPO_BOUNDARY_POLICY.md must mention bmo-stack, downstream boundaries, and config/intake/");
 }
 
 const network = read("docs/NETWORK_POLICY.md");
@@ -139,6 +164,34 @@ for (const expected of [
 const downstreamDoc = read("docs/DOWNSTREAM_SYNC_CONTRACT.md");
 if (!downstreamDoc.includes("config/sync/downstreams/flowcommander.sync-manifest.json")) {
   fail("docs/DOWNSTREAM_SYNC_CONTRACT.md must mention config/sync/downstreams/flowcommander.sync-manifest.json");
+}
+
+const intakeDoc = read("docs/CAPABILITY_INTAKE_POLICY.md");
+for (const expected of ["config/intake/approved.json", "config/intake/rejected.json", "validate-capability-intake.mjs"]) {
+  if (!intakeDoc.includes(expected)) {
+    fail(`docs/CAPABILITY_INTAKE_POLICY.md must mention ${expected}`);
+  }
+}
+
+const operatorSurfaceDoc = read("docs/OPERATOR_SURFACE_CONTRACT.md");
+for (const expected of ["config/operator/operator-surface-manifest.json", "config/operator/operator-command-policy.json", "run-operator-action.mjs"]) {
+  if (!operatorSurfaceDoc.includes(expected)) {
+    fail(`docs/OPERATOR_SURFACE_CONTRACT.md must mention ${expected}`);
+  }
+}
+
+const operatorPolicyDoc = read("docs/OPERATOR_APPROVAL_POLICY.md");
+for (const expected of ["config/operator/operator-command-policy.json", "validate-operator-surfaces.mjs", "prompt"]) {
+  if (!operatorPolicyDoc.includes(expected)) {
+    fail(`docs/OPERATOR_APPROVAL_POLICY.md must mention ${expected}`);
+  }
+}
+
+const profileDoc = read("docs/RUNTIME_PROFILE_COMPATIBILITY.md");
+for (const expected of ["OpenClaw", "NemoClaw", "contract-validated", "fixture-validated", "validate-runtime-topology-profiles.mjs"]) {
+  if (!profileDoc.includes(expected)) {
+    fail(`docs/RUNTIME_PROFILE_COMPATIBILITY.md must mention ${expected}`);
+  }
 }
 
 console.log("AutoMindLab repo operating system files are valid");

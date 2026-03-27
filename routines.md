@@ -15,7 +15,9 @@ The machine-readable source lives in `config/routines/automindlab-core-routines.
    Recover seeded workspaces and host/worker config after drift.
 5. `make workflow-validate`
    Verify workflow files still match the skills registry and routing rules.
-6. `make skill-pack`
+6. `make operator-surface-validate`
+   Verify manifest-backed operator actions, shortcuts, and approval modes.
+7. `make skill-pack`
    Inspect the current enterprise baseline skill pack before adding more capability.
 
 ## Translation reminder

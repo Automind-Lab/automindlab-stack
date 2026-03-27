@@ -1,0 +1,243 @@
+{
+  "version": 1,
+  "documentShortcuts": [
+    {
+      "id": "runbook",
+      "name": "Runbook",
+      "path": "RUNBOOK.md",
+      "description": "Canonical restart, checkpoint, and recovery protocol."
+    },
+    {
+      "id": "task-state",
+      "name": "Task State",
+      "path": "TASK_STATE.md",
+      "description": "Current checkpoint and resume status for the repo."
+    },
+    {
+      "id": "work-in-progress",
+      "name": "Work In Progress",
+      "path": "WORK_IN_PROGRESS.md",
+      "description": "Current focus, risks, and next milestone."
+    },
+    {
+      "id": "operator-surface",
+      "name": "Operator Surface Contract",
+      "path": "docs/OPERATOR_SURFACE_CONTRACT.md",
+      "description": "Manifest-driven operator/admin surfaces for enterprise runtime owners."
+    },
+    {
+      "id": "approval-policy",
+      "name": "Operator Approval Policy",
+      "path": "docs/OPERATOR_APPROVAL_POLICY.md",
+      "description": "Approval boundaries for manifest-backed operator actions."
+    },
+    {
+      "id": "network-policy",
+      "name": "Network Policy",
+      "path": "docs/NETWORK_POLICY.md",
+      "description": "Network and approval posture across host, worker, automation, and services."
+    },
+    {
+      "id": "runtime-compatibility",
+      "name": "Runtime Profile Compatibility",
+      "path": "docs/RUNTIME_PROFILE_COMPATIBILITY.md",
+      "description": "Evidence level and implementation status for OpenClaw and NemoClaw surfaces."
+    },
+    {
+      "id": "delegation-protocol",
+      "name": "Worker Delegation Protocol",
+      "path": "docs/WORKER_DELEGATION_PROTOCOL.md",
+      "description": "Typed host/worker handoff contract."
+    }
+  ],
+  "operatorActions": [
+    {
+      "id": "doctor-plus",
+      "name": "Doctor Plus",
+      "command": "node scripts/validate-repo-operating-system.mjs && node scripts/validate-ona-skills.mjs && node scripts/automind-skill-pack.mjs validate && node scripts/automind-routines.mjs validate && node scripts/validate-workflows.mjs && node scripts/validate-runtime-contracts.mjs && node scripts/validate-github-automation.mjs && node scripts/github-autonomy-selftest.mjs && node scripts/validate-downstream-sync.mjs && node scripts/validate-capability-intake.mjs && node scripts/validate-runtime-topology-profiles.mjs && node scripts/validate-operator-surfaces.mjs && node scripts/openclaw-fixture-smoke.mjs",
+      "capability": "runtime.validate",
+      "approvalMode": "allow",
+      "ownerSurface": "host",
+      "description": "Run the broad repo and runtime sanity check."
+    },
+    {
+      "id": "worker-status",
+      "name": "Worker Status",
+      "command": "bash ./scripts/worker-status.sh",
+      "capability": "runtime.inspect",
+      "approvalMode": "allow",
+      "ownerSurface": "host",
+      "description": "Inspect host/worker routing, seeded state, and continuity files."
+    },
+    {
+      "id": "runtime-doctor",
+      "name": "Runtime Doctor",
+      "command": "bash ./scripts/runtime-doctor.sh",
+      "capability": "runtime.validate",
+      "approvalMode": "allow",
+      "ownerSurface": "host",
+      "description": "Validate core runtime topology, contracts, and policies."
+    },
+    {
+      "id": "repo-validate",
+      "name": "Repo Validate",
+      "command": "node scripts/validate-repo-operating-system.mjs && node scripts/validate-ona-skills.mjs && node scripts/automind-skill-pack.mjs validate && node scripts/automind-routines.mjs validate && node scripts/validate-workflows.mjs && node scripts/validate-runtime-contracts.mjs && node scripts/validate-github-automation.mjs && node scripts/github-autonomy-selftest.mjs && node scripts/validate-downstream-sync.mjs && node scripts/validate-capability-intake.mjs && node scripts/validate-runtime-topology-profiles.mjs && node scripts/validate-operator-surfaces.mjs",
+      "capability": "repo.validate",
+      "approvalMode": "allow",
+      "ownerSurface": "repo",
+      "description": "Run the broad repo operating-system and contract validation suite."
+    },
+    {
+      "id": "workflow-validate",
+      "name": "Workflow Validate",
+      "command": "node scripts/validate-workflows.mjs",
+      "capability": "repo.validate",
+      "approvalMode": "allow",
+      "ownerSurface": "repo",
+      "description": "Validate workflow definitions and routing config."
+    },
+    {
+      "id": "diagnostic-test",
+      "name": "Diagnostic Tests",
+      "command": "npm test --prefix services/diagnostic",
+      "capability": "service.validate",
+      "approvalMode": "allow",
+      "ownerSurface": "repo",
+      "description": "Run the diagnostic service test suite."
+    },
+    {
+      "id": "downstream-sync-validate",
+      "name": "Downstream Sync Validate",
+      "command": "node scripts/validate-downstream-sync.mjs",
+      "capability": "governance.validate",
+      "approvalMode": "allow",
+      "ownerSurface": "repo",
+      "description": "Validate downstream sync manifests and schema alignment."
+    },
+    {
+      "id": "capability-intake-validate",
+      "name": "Capability Intake Validate",
+      "command": "node scripts/validate-capability-intake.mjs",
+      "capability": "governance.validate",
+      "approvalMode": "allow",
+      "ownerSurface": "repo",
+      "description": "Validate governed external-capability intake catalogs."
+    },
+    {
+      "id": "runtime-profile-validate",
+      "name": "Runtime Profile Validate",
+      "command": "node scripts/validate-runtime-topology-profiles.mjs",
+      "capability": "runtime.validate",
+      "approvalMode": "allow",
+      "ownerSurface": "repo",
+      "description": "Validate OpenClaw/NemoClaw runtime profile contracts."
+    },
+    {
+      "id": "openclaw-fixture-smoke",
+      "name": "OpenClaw Fixture Smoke",
+      "command": "node scripts/openclaw-fixture-smoke.mjs",
+      "capability": "runtime.validate",
+      "approvalMode": "allow",
+      "ownerSurface": "repo",
+      "description": "Prove host/worker topology against the reusable fixture harness."
+    },
+    {
+      "id": "bootstrap-recovery-dry-run",
+      "name": "Bootstrap Recovery Dry Run",
+      "command": "bash ./scripts/bootstrap-recovery.sh --dry-run",
+      "capability": "runtime.reconfigure",
+      "approvalMode": "prompt",
+      "ownerSurface": "host-worker",
+      "description": "Preview workspace reseed and recovery actions without mutating state."
+    },
+    {
+      "id": "configure-openclaw-agents",
+      "name": "Configure OpenClaw Agents",
+      "command": "bash ./scripts/configure-openclaw-agents.sh",
+      "capability": "runtime.reconfigure",
+      "approvalMode": "prompt",
+      "ownerSurface": "host-worker",
+      "description": "Re-seed and reconfigure the OpenClaw host/worker split."
+    }
+  ],
+  "runtimeProfiles": [
+    {
+      "id": "openclaw-enterprise-host-worker",
+      "name": "OpenClaw enterprise host/worker",
+      "profilePath": "config/runtime-profiles/openclaw.enterprise-host-worker.json",
+      "description": "Fixture-validated OpenClaw topology contract.",
+      "validationCommand": "node scripts/validate-runtime-topology-profiles.mjs"
+    },
+    {
+      "id": "nemoclaw-enterprise-host-worker",
+      "name": "NemoClaw enterprise host/worker",
+      "profilePath": "config/runtime-profiles/nemoclaw.enterprise-host-worker.json",
+      "description": "Contract-validated NemoClaw topology contract with no overclaimed runtime implementation.",
+      "validationCommand": "node scripts/validate-runtime-topology-profiles.mjs"
+    }
+  ],
+  "skillActions": [
+    {
+      "skillId": "operator-surface-review",
+      "path": ".ona/skills/operator-surface-review.md",
+      "recommendedActionId": "capability-intake-validate",
+      "description": "Review or expand the manifest-backed operator/admin surface safely."
+    },
+    {
+      "skillId": "runtime-doctoring",
+      "path": ".ona/skills/runtime-doctoring.md",
+      "recommendedActionId": "doctor-plus",
+      "description": "Use structured runtime inspection before deeper surgery."
+    },
+    {
+      "skillId": "host-worker-routing-check",
+      "path": ".ona/skills/host-worker-routing-check.md",
+      "recommendedActionId": "worker-status",
+      "description": "Verify front-door ownership and worker isolation."
+    },
+    {
+      "skillId": "bootstrap-recovery",
+      "path": ".ona/skills/bootstrap-recovery.md",
+      "recommendedActionId": "bootstrap-recovery-dry-run",
+      "description": "Preview workspace recovery before reconfiguration."
+    },
+    {
+      "skillId": "workflow-validation",
+      "path": ".ona/skills/workflow-validation.md",
+      "recommendedActionId": "workflow-validate",
+      "description": "Keep workflow, contract, and routing surfaces aligned."
+    }
+  ],
+  "serviceSurfaces": [
+    {
+      "id": "diagnostic-consultation",
+      "name": "Diagnostic Consultation Service",
+      "path": "services/diagnostic/server.js",
+      "description": "Service-facing diagnostic consultation surface for downstream products.",
+      "contractRefs": [
+        "services/diagnostic/contracts/diagnose.request.schema.json",
+        "services/diagnostic/contracts/diagnose.response.schema.json"
+      ]
+    },
+    {
+      "id": "worker-delegation-contract",
+      "name": "Worker Delegation Contract",
+      "path": "docs/WORKER_DELEGATION_PROTOCOL.md",
+      "description": "Typed host/worker task and result contract.",
+      "contractRefs": [
+        "config/schemas/worker-task.schema.json",
+        "config/schemas/worker-result.schema.json"
+      ]
+    },
+    {
+      "id": "github-automation-contract",
+      "name": "GitHub Automation Contract",
+      "path": "docs/GITHUB_AUTONOMY.md",
+      "description": "Planner-first GitHub automation and policy surface.",
+      "contractRefs": [
+        "config/github/automation-contract.json",
+        ".github/autonomy/execution-policy.json"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automindlab.dev/schemas/runtime-topology-profile.schema.json",
+  "title": "Runtime Topology Profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "profileVersion",
+    "profileId",
+    "runtimeName",
+    "implementationStatus",
+    "description",
+    "deploymentPattern",
+    "artifacts",
+    "routing",
+    "agents",
+    "serviceSurfaces",
+    "approvalBoundaries",
+    "notes"
+  ],
+  "properties": {
+    "profileVersion": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}\\.v\\d+$"
+    },
+    "profileId": {
+      "type": "string",
+      "pattern": "^[a-z0-9.-]+$"
+    },
+    "runtimeName": {
+      "type": "string",
+      "enum": ["OpenClaw", "NemoClaw"]
+    },
+    "implementationStatus": {
+      "type": "string",
+      "enum": ["contract-validated", "fixture-validated", "runtime-validated"]
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deploymentPattern": {
+      "type": "string",
+      "const": "enterprise-host-worker"
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primaryDocs", "validators", "bootstrapScript", "doctorScript"],
+      "properties": {
+        "primaryDocs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "validators": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "bootstrapScript": {
+          "type": ["string", "null"]
+        },
+        "doctorScript": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "routing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "hostReceivesExternalChannels",
+        "workerAcceptsExternalChannels",
+        "delegationTaskSchema",
+        "delegationResultSchema",
+        "escalationRequiredOnIrreversibleActions"
+      ],
+      "properties": {
+        "hostReceivesExternalChannels": {
+          "type": "boolean"
+        },
+        "workerAcceptsExternalChannels": {
+          "type": "boolean"
+        },
+        "delegationTaskSchema": {
+          "type": "string",
+          "minLength": 1
+        },
+        "delegationResultSchema": {
+          "type": "string",
+          "minLength": 1
+        },
+        "escalationRequiredOnIrreversibleActions": {
+          "type": "boolean"
+        }
+      }
+    },
+    "agents": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "$ref": "#/$defs/agent"
+      }
+    },
+    "serviceSurfaces": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/serviceSurface"
+      }
+    },
+    "approvalBoundaries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "notes": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "$defs": {
+    "agent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "role", "defaultAgent", "sandboxMode", "sandboxScope", "capabilities", "constraints"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "type": "string",
+          "enum": ["host", "worker"]
+        },
+        "defaultAgent": {
+          "type": "boolean"
+        },
+        "sandboxMode": {
+          "type": "string",
+          "enum": ["off", "all"]
+        },
+        "sandboxScope": {
+          "type": "string",
+          "enum": ["none", "agent"]
+        },
+        "capabilities": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "constraints": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "serviceSurface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "type", "entrypoint", "contractSchema", "owner", "advisoryOnly"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "enum": ["http-api", "runtime-contract"]
+        },
+        "entrypoint": {
+          "type": "string",
+          "minLength": 1
+        },
+        "contractSchema": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "advisoryOnly": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

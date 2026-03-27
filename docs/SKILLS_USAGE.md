@@ -31,6 +31,7 @@ Use the smallest surface that solves the problem cleanly.
 - `host-worker-routing-check`
 - `bootstrap-recovery`
 - `workflow-validation`
+- `operator-surface-review`
 - `diagnostic-consultation`
 - `council-query`
 - `council-review`

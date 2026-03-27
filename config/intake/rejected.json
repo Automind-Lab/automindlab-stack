@@ -1,0 +1,56 @@
+{
+  "catalogVersion": "2026-03-27.v1",
+  "catalogId": "capability-intake-rejected",
+  "reviewStatus": "rejected",
+  "description": "Capabilities explicitly rejected from the AutoMindLab enterprise runtime owner repo.",
+  "entries": [
+    {
+      "id": "bmo-telegram-operator-shell",
+      "name": "BMO Telegram operator shell",
+      "sourceRepoOrSource": "bmo-stack local/operator delivery surface",
+      "capabilityType": "source-repo",
+      "adoptionMode": "reject",
+      "owner": "AutoMindLab runtime governance",
+      "riskLevel": "high",
+      "networkScope": "external-web",
+      "storageScope": "downstream-owned",
+      "secretScope": "downstream-secrets",
+      "tenantScope": "downstream-owned",
+      "rolloutRing": "design",
+      "approvalRequirements": [
+        "runtime-owner-review",
+        "product-owner-review"
+      ],
+      "rollbackNotes": "Keep this capability out of `automindlab-stack`. If similar functionality is needed, implement it in the owning downstream product instead.",
+      "reviewNotes": "Rejected because it would collapse runtime ownership into a consumer/operator shell and blur runtime vs product boundaries.",
+      "enterpriseJustification": "None for the enterprise runtime repo. The runtime should expose contracts, diagnostics, and policy, not own the consumer/operator UX surface.",
+      "boundaryDecision": "Do not import BMO local/operator UX into `automindlab-stack`. Keep it out or implement it downstream under the correct owner.",
+      "decisionDate": "2026-03-27",
+      "decisionOwner": "AutoMindLab runtime owner"
+    },
+    {
+      "id": "bmo-windows-desktop-shell",
+      "name": "BMO Windows desktop workstation shell",
+      "sourceRepoOrSource": "bmo-stack apps/windows-desktop",
+      "capabilityType": "source-repo",
+      "adoptionMode": "reject",
+      "owner": "AutoMindLab runtime governance",
+      "riskLevel": "medium",
+      "networkScope": "external-web",
+      "storageScope": "downstream-owned",
+      "secretScope": "downstream-secrets",
+      "tenantScope": "downstream-owned",
+      "rolloutRing": "design",
+      "approvalRequirements": [
+        "runtime-owner-review",
+        "product-owner-review"
+      ],
+      "rollbackNotes": "Keep the direct desktop UI out of `automindlab-stack`. If AutoMindLab ever ships an operator desktop, it should consume the repo's operator-surface contract rather than replace it.",
+      "reviewNotes": "Rejected as a direct import because it is a local/operator application surface rather than a reusable runtime-owner contract.",
+      "enterpriseJustification": "The useful reusable piece is the manifest/policy pattern, not the WinForms shell itself.",
+      "boundaryDecision": "Reject the desktop shell as a source-of-truth surface here. Keep only enterprise-neutral contracts and validators.",
+      "decisionDate": "2026-03-27",
+      "decisionOwner": "AutoMindLab runtime owner"
+    }
+  ]
+}

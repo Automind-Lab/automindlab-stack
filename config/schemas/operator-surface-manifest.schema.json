@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automindlab.dev/schemas/operator-surface-manifest.schema.json",
+  "title": "Operator Surface Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "documentShortcuts",
+    "operatorActions",
+    "runtimeProfiles",
+    "skillActions",
+    "serviceSurfaces"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "documentShortcuts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/documentShortcut"
+      }
+    },
+    "operatorActions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/operatorAction"
+      }
+    },
+    "runtimeProfiles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/runtimeProfile"
+      }
+    },
+    "skillActions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/skillAction"
+      }
+    },
+    "serviceSurfaces": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/serviceSurface"
+      }
+    }
+  },
+  "$defs": {
+    "documentShortcut": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "path", "description"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 }
+      }
+    },
+    "operatorAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "command", "capability", "approvalMode", "ownerSurface", "description"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "command": { "type": "string", "minLength": 1 },
+        "capability": { "type": "string", "minLength": 1 },
+        "approvalMode": { "type": "string", "enum": ["allow", "prompt", "deny"] },
+        "ownerSurface": { "type": "string", "enum": ["host", "worker", "host-worker", "repo"] },
+        "description": { "type": "string", "minLength": 1 }
+      }
+    },
+    "runtimeProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "profilePath", "description", "validationCommand"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "profilePath": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+        "validationCommand": { "type": "string", "minLength": 1 }
+      }
+    },
+    "skillAction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["skillId", "path", "recommendedActionId", "description"],
+      "properties": {
+        "skillId": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 },
+        "recommendedActionId": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 }
+      }
+    },
+    "serviceSurface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "path", "description", "contractRefs"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+        "contractRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

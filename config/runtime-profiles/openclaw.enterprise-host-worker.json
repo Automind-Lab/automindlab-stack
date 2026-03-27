@@ -1,0 +1,79 @@
+{
+  "profileVersion": "2026-03-27.v1",
+  "profileId": "openclaw.enterprise-host-worker",
+  "runtimeName": "OpenClaw",
+  "implementationStatus": "fixture-validated",
+  "description": "AutoMindLab enterprise host and worker topology for OpenClaw-based deployments.",
+  "deploymentPattern": "enterprise-host-worker",
+  "artifacts": {
+    "primaryDocs": [
+      "AGENTS.md",
+      "docs/OPENCLAW_HOST_AGENT_SYSTEM.md",
+      "docs/WORKER_DELEGATION_PROTOCOL.md",
+      "docs/RUNTIME_PROFILE_COMPATIBILITY.md"
+    ],
+    "validators": [
+      "scripts/validate-runtime-topology-profiles.mjs",
+      "scripts/openclaw-fixture-smoke.mjs"
+    ],
+    "bootstrapScript": "scripts/configure-openclaw-agents.sh",
+    "doctorScript": "scripts/runtime-doctor.sh"
+  },
+  "routing": {
+    "hostReceivesExternalChannels": true,
+    "workerAcceptsExternalChannels": false,
+    "delegationTaskSchema": "config/schemas/worker-task.schema.json",
+    "delegationResultSchema": "config/schemas/worker-result.schema.json",
+    "escalationRequiredOnIrreversibleActions": true
+  },
+  "agents": [
+    {
+      "id": "automind-host",
+      "role": "host",
+      "defaultAgent": true,
+      "sandboxMode": "off",
+      "sandboxScope": "none",
+      "capabilities": [
+        "Owns front-door channels and operator interaction.",
+        "May call external APIs and route to council or specialists.",
+        "May delegate isolated execution to automind-worker."
+      ],
+      "constraints": [
+        "Must not execute untrusted code directly.",
+        "Must not persist business records owned by downstream consumer products."
+      ]
+    },
+    {
+      "id": "automind-worker",
+      "role": "worker",
+      "defaultAgent": false,
+      "sandboxMode": "all",
+      "sandboxScope": "agent",
+      "capabilities": [
+        "Executes delegated isolated tasks inside the agent sandbox.",
+        "May validate structured outputs before returning them to the host."
+      ],
+      "constraints": [
+        "Must not accept requests directly from external channels.",
+        "Must not become the default agent.",
+        "Must not persist business records or bypass host review."
+      ]
+    }
+  ],
+  "serviceSurfaces": [
+    {
+      "name": "diagnostic-consultation",
+      "type": "http-api",
+      "entrypoint": "services/diagnostic/server.js",
+      "contractSchema": "services/diagnostic/contracts/diagnose.response.schema.json",
+      "owner": "automindlab-stack",
+      "advisoryOnly": true
+    }
+  ],
+  "approvalBoundaries": [
+    "Only the host owns external channel bindings.",
+    "Irreversible actions require operator-visible escalation when uncertainty remains high.",
+    "Downstream products own persistence and business workflow outcomes."
+  ],
+  "notes": "This profile is validated through repo-side checks and the reusable OpenClaw fixture smoke harness. It does not claim live gateway proof on this machine."
+}

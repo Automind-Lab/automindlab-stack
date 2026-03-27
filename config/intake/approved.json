@@ -1,0 +1,80 @@
+{
+  "catalogVersion": "2026-03-27.v1",
+  "catalogId": "capability-intake-approved",
+  "reviewStatus": "approved",
+  "description": "Capabilities approved for AutoMindLab enterprise use in translated, governed form.",
+  "entries": [
+    {
+      "id": "openclaw-cli-runtime-topology",
+      "name": "OpenClaw CLI runtime topology management",
+      "sourceRepoOrSource": "OpenClaw CLI and gateway configuration surface",
+      "capabilityType": "tool",
+      "adoptionMode": "wrap",
+      "owner": "AutoMindLab runtime owner",
+      "riskLevel": "medium",
+      "networkScope": "none",
+      "storageScope": "runtime-config",
+      "secretScope": "none",
+      "tenantScope": "platform-shared",
+      "rolloutRing": "production",
+      "approvalRequirements": [
+        "runtime-owner-review",
+        "operator-visible-validation"
+      ],
+      "rollbackNotes": "Reapply the repo-managed topology and workspace seeds before restarting the gateway if drift is detected.",
+      "reviewNotes": "Approved because the repo wraps OpenClaw through scripts, validators, and runbooks instead of relying on ad hoc local commands.",
+      "enterpriseJustification": "Provides the runtime owner with a controlled way to enforce the AutoMindLab host and worker topology.",
+      "boundaryDecision": "Wrap the tool in reviewed scripts and validators. Do not hand it to downstream products as an unmanaged operator shortcut.",
+      "decisionDate": "2026-03-27",
+      "decisionOwner": "AutoMindLab runtime owner"
+    },
+    {
+      "id": "bmo-browser-research-pattern",
+      "name": "BMO browser research pattern",
+      "sourceRepoOrSource": "bmo-stack browser research and escalation routines",
+      "capabilityType": "skill",
+      "adoptionMode": "curate",
+      "owner": "AutoMindLab runtime governance",
+      "riskLevel": "low",
+      "networkScope": "operator-approved",
+      "storageScope": "repo-only",
+      "secretScope": "none",
+      "tenantScope": "platform-shared",
+      "rolloutRing": "production",
+      "approvalRequirements": [
+        "runtime-owner-review",
+        "operator-visible-network-guidance"
+      ],
+      "rollbackNotes": "Retire or narrow the translated skill if it drifts from AutoMindLab network policy or host and worker escalation rules.",
+      "reviewNotes": "Approved in translated form only. The enterprise version lives in `.ona/skills/` and policy docs, not as a local shell routine.",
+      "enterpriseJustification": "Improves evidence gathering and diagnosis while keeping network posture explicit and reviewable.",
+      "boundaryDecision": "Curate the pattern into AutoMindLab skills and runbooks. Reject any BMO-specific workstation UX or operator shell assumptions.",
+      "decisionDate": "2026-03-27",
+      "decisionOwner": "AutoMindLab runtime owner"
+    },
+    {
+      "id": "bmo-workstation-manifest-pattern",
+      "name": "BMO workstation manifest and supervised action pattern",
+      "sourceRepoOrSource": "bmo-stack Windows workstation manifest and approval policy",
+      "capabilityType": "workflow-pattern",
+      "adoptionMode": "curate",
+      "owner": "AutoMindLab runtime governance",
+      "riskLevel": "medium",
+      "networkScope": "none",
+      "storageScope": "repo-only",
+      "secretScope": "none",
+      "tenantScope": "platform-shared",
+      "rolloutRing": "production",
+      "approvalRequirements": [
+        "runtime-owner-review",
+        "operator-visible-validation"
+      ],
+      "rollbackNotes": "Remove or narrow manifest-backed actions if they drift beyond reviewed runtime-owner entrypoints.",
+      "reviewNotes": "Approved only as an enterprise operator-surface contract and approval policy. The direct Windows UI remains outside this repo.",
+      "enterpriseJustification": "Improves operator trust and future admin-surface reuse by making actions, docs, and approval boundaries machine-readable.",
+      "boundaryDecision": "Translate the action map and approval policy into repo-owned contracts. Do not import the BMO Windows UI or local task shell directly.",
+      "decisionDate": "2026-03-27",
+      "decisionOwner": "AutoMindLab runtime owner"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "catalogVersion": "2026-03-27.v1",
+  "catalogId": "capability-intake-candidates",
+  "reviewStatus": "candidate",
+  "description": "Capabilities under review for AutoMindLab enterprise adoption. Unlisted capabilities are not approved by default.",
+  "entries": [
+    {
+      "id": "nemoclaw-runtime-observability-patterns",
+      "name": "NemoClaw runtime observability patterns",
+      "sourceRepoOrSource": "NemoClaw upstream runtime references",
+      "capabilityType": "source-repo",
+      "adoptionMode": "curate",
+      "owner": "AutoMindLab runtime architecture",
+      "riskLevel": "medium",
+      "networkScope": "none",
+      "storageScope": "repo-only",
+      "secretScope": "none",
+      "tenantScope": "platform-shared",
+      "rolloutRing": "design",
+      "approvalRequirements": [
+        "runtime-owner-review",
+        "security-review"
+      ],
+      "rollbackNotes": "Keep this capability in candidate status until a typed contract and a live validation harness exist.",
+      "reviewNotes": "Candidate only. The repo may adopt observability ideas if they strengthen enterprise diagnostics without importing consumer UX or workstation assumptions.",
+      "enterpriseJustification": "Potentially improves host and worker visibility for future NemoClaw deployments.",
+      "boundaryDecision": "Translate only into reusable runtime contracts, validators, or runbooks. Do not import product UI or local operator shell behavior.",
+      "decisionDate": "2026-03-27",
+      "decisionOwner": "AutoMindLab runtime owner"
+    }
+  ]
+}

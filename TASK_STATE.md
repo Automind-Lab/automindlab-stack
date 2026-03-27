@@ -1,18 +1,18 @@
 # Task State
 
-Last updated: 2026-03-27 13:01 UTC
+Last updated: 2026-03-27 14:05 UTC
 
 ## Current status
 
 - Description: Upgrade AutoMindLab from a scaffold into a stronger enterprise runtime repo by translating the highest-value operating-system, diagnostics, skills, and validation patterns from `bmo-stack`.
 - Active repo: `C:\Users\cody_\Git\automindlab-stack`
-- Branch: `codex/enterprise-runtime-hardening`
-- Last successful step: added the GitHub automation contract and policy surface, converted the autonomy helpers to Node-backed validators, replaced the FLOWCOMMANDER sync manifest with a schema-validated JSON contract, fixed the OpenClaw topology writer, and proved host/worker setup with a reusable fixture smoke harness.
-- Next intended step: review the branch diff, push if needed, and optionally run the same runtime doctor / worker status commands on a machine with a real `openclaw` install if live gateway proof is required beyond the fixture harness.
+- Branch: `codex/enterprise-runtime-best-available`
+- Last successful step: fetched current `bmo-stack` `origin/master` through commit `1a22621` (March 27, 2026), translated the new Windows workstation manifest and supervised action patterns into AutoMindLab's manifest-backed operator surface and approval policy, and validated the runner, repo, service, and runtime checks.
+- Next intended step: review the diff, commit and push the new operator-surface translation work, and continue the next BMO delta pass if more recent capability appears.
 - Verification complete: true
 - Manual steps remaining:
   - optional: run `./scripts/runtime-doctor.sh`, `./scripts/worker-status.sh`, and `./scripts/bootstrap-recovery.sh` on a machine that has a live `openclaw` installation and seeded workspaces
-  - review and package the updated branch state for merge
+  - review, push, and package the updated branch state for merge
 - Safe to resume: true
 
 ## Recent checkpoints
@@ -45,4 +45,24 @@ Last updated: 2026-03-27 13:01 UTC
   - Next intended step: review the branch for merge and optionally rerun the runtime scripts on a real OpenClaw host for live-gateway proof
   - Verification complete: true
   - Manual steps remaining: optional live OpenClaw host verification and merge packaging
+  - Safe to resume: true
+
+- 2026-03-27 13:49 UTC
+  - Repo: `C:\Users\cody_\Git\automindlab-stack`
+  - Branch: `codex/enterprise-runtime-best-available`
+  - Files touched: `config/intake/`, `config/runtime-profiles/`, `config/schemas/`, `scripts/`, `docs/`, `README.md`, `RUNBOOK.md`, `Makefile`, GitHub workflows, and continuity docs
+  - Last successful step: validated capability intake, runtime topology profiles, repo operating system, workflows, worker contracts, GitHub automation, downstream sync, OpenClaw fixture smoke, diagnostic service tests, shell syntax, runtime doctor, worker status, and bootstrap recovery dry-run
+  - Next intended step: push the branch and open it for review, with optional live OpenClaw host verification if gateway proof is needed
+  - Verification complete: true
+  - Manual steps remaining: optional live OpenClaw host verification and branch packaging
+  - Safe to resume: true
+
+- 2026-03-27 14:05 UTC
+  - Repo: `C:\Users\cody_\Git\automindlab-stack`
+  - Branch: `codex/enterprise-runtime-best-available`
+  - Files touched: `config/operator/`, `config/schemas/`, `docs/`, `.ona/skills/`, `scripts/`, `Makefile`, workflow files, routines, intake catalogs, and continuity docs
+  - Last successful step: translated the BMO Windows workstation manifest/policy pattern into AutoMindLab-native operator surface contracts, a manifest-backed action runner, updated intake decisions, and reran validation plus operator-surface proof
+  - Next intended step: commit, push, and continue the next BMO capability tranche if needed
+  - Verification complete: true
+  - Manual steps remaining: commit/push and optional live OpenClaw host verification
   - Safe to resume: true

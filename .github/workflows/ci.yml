@@ -49,6 +49,9 @@ jobs:
           node scripts/validate-github-automation.mjs
           node scripts/github-autonomy-selftest.mjs
           node scripts/validate-downstream-sync.mjs
+          node scripts/validate-capability-intake.mjs
+          node scripts/validate-runtime-topology-profiles.mjs
+          node scripts/validate-operator-surfaces.mjs
           node scripts/openclaw-fixture-smoke.mjs
 
       - name: Verify module resolution

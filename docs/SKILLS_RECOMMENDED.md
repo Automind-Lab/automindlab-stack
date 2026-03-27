@@ -19,6 +19,7 @@ Before adding more capability, make sure the repo-local baseline is available an
 - `host-worker-routing-check`
 - `bootstrap-recovery`
 - `workflow-validation`
+- `operator-surface-review`
 - `diagnostic-consultation`
 - `council-query`
 - `council-review`

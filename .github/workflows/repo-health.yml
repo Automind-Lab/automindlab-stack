@@ -24,6 +24,9 @@ jobs:
           test -d scripts
           test -d docs
           test -d .ona/skills
+          test -d config/intake
+          test -d config/operator
+          test -d config/runtime-profiles
           test -d config/skills
           test -d config/routines
 
@@ -45,6 +48,9 @@ jobs:
           node scripts/validate-runtime-contracts.mjs
           node scripts/validate-github-automation.mjs
           node scripts/validate-downstream-sync.mjs
+          node scripts/validate-capability-intake.mjs
+          node scripts/validate-runtime-topology-profiles.mjs
+          node scripts/validate-operator-surfaces.mjs
           node scripts/openclaw-fixture-smoke.mjs
 
       - name: Verify module resolution
