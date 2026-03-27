@@ -1,0 +1,16 @@
+{
+  "taskId": "routing-check-20260327-001",
+  "type": "host-worker-routing-check",
+  "input": {
+    "expectedHostAgent": "automind-host",
+    "expectedWorkerAgent": "automind-worker"
+  },
+  "contextRefs": [
+    "AGENTS.md",
+    "docs/OPENCLAW_HOST_AGENT_SYSTEM.md",
+    "docs/WORKER_DELEGATION_PROTOCOL.md"
+  ],
+  "timeoutMs": 30000,
+  "requestedBy": "automind-host",
+  "approvalMode": "implicit-safe"
+}

@@ -8,7 +8,8 @@
 - [ ] host/worker behavior changed
 
 ## Validation
-- [ ] `make doctor`
+- [ ] `make doctor-plus`
+- [ ] `make workflow-validate` if applicable
 - [ ] `make diagnostic-ci` if applicable
 - [ ] relevant GitHub workflows passed
 

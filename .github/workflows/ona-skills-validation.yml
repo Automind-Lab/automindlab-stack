@@ -13,14 +13,16 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up Node
+        uses: actions/setup-node@v6
         with:
-          python-version: '3.11'
+          node-version: '20'
 
       - name: Validate machine-readable skills registry
-        run: |
-          python3 scripts/validate-ona-skills.py
+        run: node scripts/validate-ona-skills.mjs
+
+      - name: Validate baseline skill pack
+        run: node scripts/automind-skill-pack.mjs validate
 
       - name: Validate adaptive skills files exist
         run: |

@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "pack_name": "automindlab-core-routines",
+  "description": "High-value routines that AutoMindLab operators should prefer before ad hoc debugging.",
+  "routines": [
+    {
+      "name": "doctor-plus",
+      "command": "make doctor-plus",
+      "owner_surface": "host",
+      "purpose": "Run the broad repo and runtime sanity check before deeper troubleshooting.",
+      "related_files": [
+        "Makefile",
+        "scripts/runtime-doctor.sh",
+        "scripts/validate-repo-operating-system.mjs"
+      ]
+    },
+    {
+      "name": "worker-status",
+      "command": "make worker-status",
+      "owner_surface": "host",
+      "purpose": "Check host/worker routing, runtime continuity files, and seeded workspace state in one step.",
+      "related_files": [
+        "Makefile",
+        "scripts/worker-status.sh",
+        "TASK_STATE.md",
+        "WORK_IN_PROGRESS.md"
+      ]
+    },
+    {
+      "name": "runtime-doctor",
+      "command": "make runtime-doctor",
+      "owner_surface": "host",
+      "purpose": "Validate OpenClaw topology, key runtime files, contracts, and service surfaces.",
+      "related_files": [
+        "Makefile",
+        "scripts/runtime-doctor.sh"
+      ]
+    },
+    {
+      "name": "bootstrap-recovery",
+      "command": "make bootstrap-recovery",
+      "owner_surface": "host-worker",
+      "purpose": "Recover seeded host and worker workspaces after merges, drift, or broken bootstrap state.",
+      "related_files": [
+        "Makefile",
+        "scripts/bootstrap-recovery.sh",
+        "scripts/sync-openclaw-workspaces.sh",
+        "scripts/configure-openclaw-agents.sh"
+      ]
+    },
+    {
+      "name": "workflow-validate",
+      "command": "make workflow-validate",
+      "owner_surface": "repo",
+      "purpose": "Verify workflow configs still match the skills registry and host/worker routing rules.",
+      "related_files": [
+        "Makefile",
+        "scripts/validate-workflows.mjs",
+        "config/workflows/"
+      ]
+    },
+    {
+      "name": "skill-pack",
+      "command": "make skill-pack",
+      "owner_surface": "repo",
+      "purpose": "Inspect the enterprise baseline skill pack before expanding capability or changing routing assumptions.",
+      "related_files": [
+        "Makefile",
+        "scripts/automind-skill-pack.mjs",
+        "config/skills/automindlab-baseline-pack.json"
+      ]
+    }
+  ]
+}

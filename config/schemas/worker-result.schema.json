@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automindlab.local/schemas/worker-result.schema.json",
+  "title": "AutoMindLab Worker Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["taskId", "status", "output", "uncertainty", "escalate", "safeAction"],
+  "properties": {
+    "taskId": { "type": "string", "minLength": 1 },
+    "status": {
+      "type": "string",
+      "enum": ["ok", "partial", "timeout", "error"]
+    },
+    "output": {
+      "type": ["object", "array", "string", "number", "boolean", "null"]
+    },
+    "uncertainty": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level", "reason", "missingContext"],
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": ["low", "medium", "high"]
+        },
+        "reason": { "type": "string", "minLength": 1 },
+        "missingContext": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "escalate": { "type": "boolean" },
+    "safeAction": { "type": "string", "minLength": 1 },
+    "escalation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reason", "missingContext", "safeAction"],
+      "properties": {
+        "reason": { "type": "string", "minLength": 1 },
+        "missingContext": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "safeAction": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

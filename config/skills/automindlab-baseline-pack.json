@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "pack_name": "automindlab-enterprise-baseline",
+  "description": "Curated local skill baseline for AutoMindLab host/worker operations, runtime diagnostics, and enterprise review work.",
+  "skill_search_order": [
+    ".ona/skills",
+    "config/workflows",
+    "docs/runbooks and policies"
+  ],
+  "local_skills": [
+    {
+      "name": "runtime-doctoring",
+      "why": "Inspect host/worker topology, contracts, and runtime health before claiming the runtime is ready."
+    },
+    {
+      "name": "host-worker-routing-check",
+      "why": "Verify front-door bindings stay on the host and the worker remains isolated."
+    },
+    {
+      "name": "bootstrap-recovery",
+      "why": "Recover seeded workspaces and runtime config after drift or broken bootstrap state."
+    },
+    {
+      "name": "workflow-validation",
+      "why": "Keep workflow definitions aligned with the live skill registry and delegation contract."
+    },
+    {
+      "name": "diagnostic-consultation",
+      "why": "Run the pump-station consultation flow in a repeatable, contract-safe way."
+    },
+    {
+      "name": "council-query",
+      "why": "Use the Council of 13 as a small, explicit reasoning layer instead of a decorative flourish."
+    },
+    {
+      "name": "council-review",
+      "why": "Challenge high-impact decisions with a narrow seat mix before final host synthesis."
+    },
+    {
+      "name": "memory-capture",
+      "why": "Record validated runtime patterns without turning memory into an unreviewed source of truth."
+    },
+    {
+      "name": "escalate-to-human",
+      "why": "Force a safe handoff when uncertainty is high or approval boundaries are crossed."
+    }
+  ],
+  "optional_capabilities": [
+    {
+      "name": "github-admin-bridge",
+      "why": "Useful for issue, PR, and repo operations when explicit write approval exists.",
+      "approval": "Require explicit operator intent and repo-visible verification."
+    },
+    {
+      "name": "explainable-web-research",
+      "why": "Useful when enterprise research needs sourced evidence rather than ungrounded summaries.",
+      "approval": "Keep access narrow and results operator-visible."
+    },
+    {
+      "name": "browser-automation",
+      "why": "Useful only for sanctioned UI verification or workflow replay.",
+      "approval": "Enable only with a documented browser policy and a clear rollback path."
+    },
+    {
+      "name": "deep-filesystem-analysis",
+      "why": "Useful for repo-scale diagnostics or migrations that exceed the default file surface.",
+      "approval": "Prefer workspace-scoped access and avoid broad host-level writes."
+    }
+  ]
+}

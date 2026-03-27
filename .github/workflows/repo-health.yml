@@ -11,6 +11,11 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+
       - name: Check key directories
         run: |
           test -d context/council
@@ -19,6 +24,8 @@ jobs:
           test -d scripts
           test -d docs
           test -d .ona/skills
+          test -d config/skills
+          test -d config/routines
 
       - name: Validate council seat count
         run: |
@@ -31,12 +38,23 @@ jobs:
           grep -q 'The Pump Specialist is a specialist agent, not a numbered council seat.' context/council/diagnostic/PUMP_SPECIALIST.md
           grep -q 'Council Composition & Influence' context/council/diagnostic/PUMP_SPECIALIST.md
 
-      - name: Verify module resolution
+      - name: Verify repo operating system and workflow validators
         run: |
-          node -e "require('./services/diagnostic/consultation-service')"
+          node scripts/validate-repo-operating-system.mjs
+          node scripts/validate-workflows.mjs
+          node scripts/validate-runtime-contracts.mjs
 
-      - name: Check script syntax
+      - name: Verify module resolution
+        run: node -e "require('./services/diagnostic/consultation-service')"
+
+      - name: Check shell script syntax
         run: |
+          bash -n scripts/bootstrap-recovery.sh
           bash -n scripts/configure-openclaw-agents.sh
+          bash -n scripts/github-change-executor.sh
+          bash -n scripts/github-issue-planner.sh
+          bash -n scripts/github-policy-check.sh
+          bash -n scripts/github-verifier.sh
           bash -n scripts/runtime-doctor.sh
+          bash -n scripts/sync-openclaw-workspaces.sh
           bash -n scripts/worker-status.sh

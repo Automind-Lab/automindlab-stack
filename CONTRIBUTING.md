@@ -3,10 +3,11 @@
 AutoMindLab favors small, reviewable upgrades.
 
 ## Before you open a PR
-1. Run `make doctor`.
+1. Run `make doctor-plus`.
 2. Run `make diagnostic-ci` if you touched the diagnostic service or schemas.
-3. Check that new skills, schemas, and workflow files are documented.
-4. Keep host and worker boundaries explicit.
+3. Run `make workflow-validate` if you touched skills, workflows, or contracts.
+4. Check that new skills, packs, schemas, and workflow files are documented.
+5. Keep host and worker boundaries explicit.
 
 ## Council files
 - keep the declared council at 13 unless the council index is intentionally updated

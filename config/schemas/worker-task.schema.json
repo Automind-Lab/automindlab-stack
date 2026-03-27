@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automindlab.local/schemas/worker-task.schema.json",
+  "title": "AutoMindLab Worker Task",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["taskId", "type", "input", "contextRefs", "timeoutMs"],
+  "properties": {
+    "taskId": { "type": "string", "minLength": 1 },
+    "type": { "type": "string", "minLength": 1 },
+    "input": { "type": "object" },
+    "contextRefs": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "timeoutMs": { "type": "integer", "minimum": 1, "maximum": 30000 },
+    "requestedBy": { "type": "string", "minLength": 1 },
+    "approvalMode": {
+      "type": "string",
+      "enum": ["implicit-safe", "explicit-operator", "human-required"]
+    }
+  }
+}

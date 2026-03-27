@@ -10,7 +10,7 @@ The primary users of this runtime are operators, builders, and consumer applicat
 ## Builders
 - extend council seats, specialist briefs, and runtime scaffolding
 - should follow the Pump Specialist input/output contract as the template for new specialists
-- should run `make doctor` before pushing runtime changes
+- should run `make doctor-plus` before pushing runtime changes
 
 ## Consumer applications
 - call `/api/diagnose` with a typed request payload

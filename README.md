@@ -1,111 +1,145 @@
 # AutoMindLab Stack
 
-AutoMindLab Stack is the enterprise runtime, host/agent system, and integration layer for business-facing OpenClaw deployments.
+AutoMindLab Stack is the enterprise runtime, host/worker system, and reusable contract layer for business-facing OpenClaw deployments.
 
-BMO-stack is a reference point only.
-AutoMindLab owns its own council, specialist agents, automation, and runtime-side service surfaces.
+`bmo-stack` is a reference implementation only.
+This repository owns the AutoMindLab-native translation of the useful operating-system, diagnostic, skill, and automation capabilities that matter here.
+
+## Startup surface
+
+Read these first when operating AutoMindLab from this repo:
+
+1. `AGENTS.md`
+2. `RUNBOOK.md`
+3. `context/BOOTSTRAP.md`
+4. `context/identity/IDENTITY.md`
+5. `context/identity/SOUL.md`
+6. `context/council/COUNCIL_OF_13.md`
+7. `TASK_STATE.md`
+8. `WORK_IN_PROGRESS.md`
+9. `.ona/skills/INDEX.md`
+10. `docs/NETWORK_POLICY.md` when the task touches external access or approvals
 
 ## What this repository owns
 
 - the Council of 13 enterprise council
 - specialist agents such as Pump Specialist
-- the OpenClaw host / worker split for AutoMindLab
-- deployment and operations scaffolding
+- the AutoMindLab OpenClaw host / worker split
+- repo operating-system files such as the runbook, task state, and routines pack
+- runtime diagnostics, recovery flows, and workflow validation
 - GitHub automation for validation and repository health
-- reusable service clients for consumer products
+- reusable service contracts for downstream consumer products
 
 ## Boundary model
 
 ### AutoMindLab Stack owns
+
 - runtime and agent execution
 - council and specialist routing
 - enterprise-side APIs and operational hardening
-- deployment documentation and host setup
+- host and worker runbooks, diagnostics, and policies
 
 ### Consumer applications own
+
 - user experience
 - business records and persistence
 - approvals, reporting, and workflow outcomes
 
-### BMO-stack is
-- an architectural reference point
-- not the owner of this production council
-- not the home of the AutoMindLab enterprise runtime
+### `bmo-stack` is
 
-## Repository structure
+- an architectural and operational reference point
+- not the owner of the AutoMindLab production council
+- not the home of AutoMindLab consumer UX or downstream persistence
 
-```text
-automindlab-stack/
-├── .cursor/
-│   └── rules/
-│       └── agents.md           # Editor-side guidance for extending council and specialists
-├── .github/                    # GitHub automation and dependency updates
-├── .ona/
-│   └── skills/                 # Reusable skill definitions (diagnostic, council, escalation, memory)
-├── config/
-│   ├── examples/               # Example request and response payloads
-│   ├── schemas/                # JSON schema validators
-│   └── workflows/              # Workflow configuration files
-├── context/
-│   ├── BOOTSTRAP.md
-│   ├── council/
-│   │   ├── COUNCIL_OF_13.md
-│   │   ├── diagnostic/
-│   │   │   └── PUMP_SPECIALIST.md
-│   │   └── *.md               # Council seat definitions (13 seats)
-│   └── identity/              # Host and worker identity seeds
-├── data/                       # Runtime data stores (adaptive skills outcomes)
-├── deployments/
-│   └── openclaw/              # Optional host-side auxiliary services
-├── docs/
-│   ├── ADAPTIVE_SKILLS_OPERATIONS.md
-│   ├── FLOWCOMMANDER_INTEGRATION_CONTRACT.md
-│   ├── GITHUB_AUTOMATION.md
-│   ├── MAINTENANCE_CHECKLIST.md
-│   ├── MEMORY_STRATEGY.md
-│   ├── OPENCLAW_HOST_AGENT_SYSTEM.md
-│   ├── REPO_HYGIENE.md
-│   └── WORKER_DELEGATION_PROTOCOL.md
-├── lib/
-│   └── services/
-│       └── diagnostic_consultation_service.dart
-├── scripts/
-│   ├── configure-openclaw-agents.sh
-│   ├── runtime-doctor.sh
-│   └── worker-status.sh
-├── services/
-│   └── diagnostic/
-│       ├── contracts/          # FLOWCOMMANDER contract schemas and README
-│       ├── test/               # Test suite (consultation, contract, schema, example tests)
-│       ├── consultation-service.js
-│       ├── package.json
-│       └── server.js
-└── Makefile
-```
+## Repo operating system
 
-## Current implementation
+The practical operating system for this repo now lives in:
+
+- `RUNBOOK.md`
+- `TASK_STATE.md`
+- `WORK_IN_PROGRESS.md`
+- `routines.md`
+- `config/routines/automindlab-core-routines.json`
+- `config/skills/automindlab-baseline-pack.json`
+
+These files exist to make startup order, current state, recovery steps, and reusable routine selection explicit and reviewable.
+
+## Important paths
+
+- startup and continuity
+  - `AGENTS.md`
+  - `RUNBOOK.md`
+  - `TASK_STATE.md`
+  - `WORK_IN_PROGRESS.md`
+  - `routines.md`
+- runtime context
+  - `context/BOOTSTRAP.md`
+  - `context/identity/`
+  - `context/council/`
+- skills and workflows
+  - `.ona/skills/`
+  - `config/skills/`
+  - `config/workflows/`
+- contracts and services
+  - `config/schemas/`
+  - `config/examples/`
+  - `services/diagnostic/`
+- policy and runbooks
+  - `docs/OPENCLAW_HOST_AGENT_SYSTEM.md`
+  - `docs/WORKER_DELEGATION_PROTOCOL.md`
+  - `docs/NETWORK_POLICY.md`
+  - `docs/REPO_BOUNDARY_POLICY.md`
+
+## Core commands
+
+- `./scripts/runtime-doctor.sh`
+- `./scripts/worker-status.sh`
+- `./scripts/bootstrap-recovery.sh --dry-run`
+- `node scripts/validate-repo-operating-system.mjs`
+- `node scripts/validate-workflows.mjs`
+- `node scripts/validate-runtime-contracts.mjs`
+- `node scripts/automind-skill-pack.mjs list`
+- `node scripts/automind-routines.mjs list`
+- `npm test --prefix services/diagnostic`
+
+## Current runtime surfaces
 
 ### Council of 13
+
 The enterprise council is made of 13 original operating profiles inspired by:
 Nikola Tesla, Ram Dass, Leonardo da Vinci, Pablo Picasso, Bob Ross, Albert Einstein, Steve Jobs, Napoleon Bonaparte, Elon Musk, Carl Jung, Marcus Aurelius, Robert Cialdini, and David Goggins.
 
 ### OpenClaw host / worker topology
+
 The intended topology is:
-- `automind-host` = host-facing conversational runtime, sandbox off
-- `automind-worker` = dedicated sandbox worker, sandbox all
+
+- `automind-host` = host-facing conversational runtime, sandbox `off`
+- `automind-worker` = dedicated sandbox worker, sandbox `all`
 
 ### FLOWCOMMANDER diagnostic consultation
+
 This repository packages the AutoMindLab-side diagnostic consultation surface for FLOWCOMMANDER and similar products.
 The diagnostic service exposes `POST /api/diagnose` and wraps all responses in a versioned contract envelope (`contract_version: 2026-03-24.v1`).
 Contract schemas live in `services/diagnostic/contracts/`.
 See `docs/FLOWCOMMANDER_INTEGRATION_CONTRACT.md` for the full request and response shapes.
 
-## GitHub automation
-The repository includes:
-- CI validation for council and diagnostic-service scaffolding
-- scheduled repository health checks
-- CodeQL analysis for JavaScript files
-- Dependabot updates for GitHub Actions and npm dependencies
+### Worker delegation contract
+
+The host / worker handoff is documented and typed through:
+
+- `docs/WORKER_DELEGATION_PROTOCOL.md`
+- `config/schemas/worker-task.schema.json`
+- `config/schemas/worker-result.schema.json`
+- `config/examples/worker-task.example.json`
+- `config/examples/worker-result.example.json`
+
+## Translation rules
+
+- BMO local routines become AutoMindLab host / worker runbooks or machine-readable routines.
+- BMO skill-pack ideas become `.ona/skills/` guidance and enterprise baseline packs.
+- BMO runtime doctoring becomes host / worker diagnostics and routing verification.
+- BMO network policy becomes enterprise approval and escalation guidance.
+- BMO local operator UX and workstation-only assumptions do not get copied into this repo unless they back a real enterprise runtime surface.
 
 ## Design rules
 

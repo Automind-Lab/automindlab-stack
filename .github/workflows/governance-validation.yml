@@ -13,18 +13,23 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+
       - name: Check governance docs exist
         run: |
           test -f CONTRIBUTING.md
+          test -f RUNBOOK.md
           test -f docs/REPO_HYGIENE.md
           test -f docs/MEMORY_STRATEGY.md
           test -f docs/WORKER_DELEGATION_PROTOCOL.md
+          test -f docs/NETWORK_POLICY.md
+          test -f docs/REPO_BOUNDARY_POLICY.md
 
-      - name: Validate memory workflow and schema files exist
-        run: |
-          test -f config/workflows/memory_capture.workflow.json
-          test -f config/schemas/memory-entry.schema.json
+      - name: Validate repo operating system
+        run: node scripts/validate-repo-operating-system.mjs
 
       - name: Run memory schema sanity test
-        run: |
-          node --test services/diagnostic/test/memory-schema.test.js
+        run: node --test services/diagnostic/test/memory-schema.test.js
