@@ -40,6 +40,7 @@ Read these in order at session start:
 Then:
 
 - check `git status` before asking anyone to restate context
+- install tracked git hooks with `bash ./scripts/install-git-hooks.sh` on a fresh clone
 - prefer `routines.md` over ad hoc troubleshooting
 - if the active checkout is a seeded OpenClaw workspace, reseed it before claiming files are missing:
   - `./scripts/bootstrap-recovery.sh --dry-run`
@@ -96,6 +97,9 @@ Before claiming completion:
 - verify the owner path
 - verify the requested capability exists in AutoMindLab-native form
 - run the relevant validators and tests
+- ensure the branch work is committed and pushed
+- ensure a PR exists for the branch when the work is review-bound and not already merged
+- ensure `git status` is clean unless the user explicitly wants uncommitted local work left open
 - confirm contracts and docs still match runtime behavior
 - confirm new external capabilities have intake records before calling them approved
 - confirm runtime profile status still matches the actual evidence level
