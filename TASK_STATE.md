@@ -1,18 +1,19 @@
 # Task State
 
-Last updated: 2026-03-27 14:05 UTC
+Last updated: 2026-03-27 15:09 UTC
 
 ## Current status
 
 - Description: Upgrade AutoMindLab from a scaffold into a stronger enterprise runtime repo by translating the highest-value operating-system, diagnostics, skills, and validation patterns from `bmo-stack`.
 - Active repo: `C:\Users\cody_\Git\automindlab-stack`
 - Branch: `codex/enterprise-runtime-best-available`
-- Last successful step: fetched current `bmo-stack` `origin/master` through commit `1a22621` (March 27, 2026), translated the new Windows workstation manifest and supervised action patterns into AutoMindLab's manifest-backed operator surface and approval policy, and validated the runner, repo, service, and runtime checks.
-- Next intended step: review the diff, commit and push the new operator-surface translation work, and continue the next BMO delta pass if more recent capability appears.
+- Last successful step: translated `agentmail-to`, `millionco/expect`, and donor skill-bundle patterns into AutoMindLab-native email contracts, OpenClaw setup guidance, live-check scripts, browser-proof planning, enterprise skill bundles, intake decisions, and platform-positioning docs, then reran repo, workflow, operator, service, and runtime validations.
+- Next intended step: review the final diff, commit and push the donor-translation tranche, and then perform optional live AgentMail/OpenClaw proof on a machine with credentials and a real gateway install.
 - Verification complete: true
 - Manual steps remaining:
+  - optional: export `AGENTMAIL_API_KEY` and `AGENTMAIL_BASE_URL`, then run `node scripts/agentmail-live-check.mjs --require-live`
   - optional: run `./scripts/runtime-doctor.sh`, `./scripts/worker-status.sh`, and `./scripts/bootstrap-recovery.sh` on a machine that has a live `openclaw` installation and seeded workspaces
-  - review, push, and package the updated branch state for merge
+  - review, commit, push, and package the updated branch state for merge
 - Safe to resume: true
 
 ## Recent checkpoints
@@ -65,4 +66,14 @@ Last updated: 2026-03-27 14:05 UTC
   - Next intended step: commit, push, and continue the next BMO capability tranche if needed
   - Verification complete: true
   - Manual steps remaining: commit/push and optional live OpenClaw host verification
+  - Safe to resume: true
+
+- 2026-03-27 15:09 UTC
+  - Repo: `C:\Users\cody_\Git\automindlab-stack`
+  - Branch: `codex/enterprise-runtime-best-available`
+  - Files touched: `config/email/`, `config/browser-validation/`, `config/examples/`, `config/intake/`, `config/operator/`, `config/routines/`, `config/skills/`, `config/workflows/`, `config/schemas/`, `docs/`, `scripts/`, `Makefile`, workflow files, `README.md`, `RUNBOOK.md`, `routines.md`, and continuity docs
+  - Last successful step: added AgentMail runtime contracts and OpenClaw setup guidance, read-only live provider checks, expect-style browser-proof planning, curated enterprise skill bundles, donor-intake decisions for `agentmail-to`, `millionco/expect`, `slavingia/skills`, and `MoneyPrinterV2`, and validated all affected repo, workflow, operator, service, and shell surfaces
+  - Next intended step: commit, push, and then gather optional live AgentMail and OpenClaw evidence on a credentialed runtime host
+  - Verification complete: true
+  - Manual steps remaining: commit/push plus optional live AgentMail/OpenClaw proof
   - Safe to resume: true

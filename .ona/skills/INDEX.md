@@ -10,6 +10,8 @@ This index turns `.ona/skills/` into a browsable skill registry.
 - `bootstrap-recovery.md` - seeded workspace and bootstrap recovery
 - `workflow-validation.md` - workflow and contract validation
 - `operator-surface-review.md` - manifest-backed operator/admin surface review
+- `agentmail-ops.md` - runtime-owned AgentMail mailbox and domain review
+- `browser-validation.md` - diff-aware browser-proof planning for downstream surfaces
 - `council-query.md` - structured Council of 13 synthesis
 - `council-review.md` - small-seat strategic review
 - `diagnostic-consultation.md` - pump-station consultation flow

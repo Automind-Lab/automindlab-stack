@@ -44,6 +44,36 @@
       "description": "Evidence level and implementation status for OpenClaw and NemoClaw surfaces."
     },
     {
+      "id": "agentmail-contract",
+      "name": "AgentMail Runtime Contract",
+      "path": "docs/AGENTMAIL_RUNTIME_CONTRACT.md",
+      "description": "Runtime-owned mailbox, domain, and message-envelope contract."
+    },
+    {
+      "id": "agentmail-openclaw-setup",
+      "name": "AgentMail OpenClaw Setup",
+      "path": "docs/AGENTMAIL_OPENCLAW_SETUP.md",
+      "description": "OpenClaw-specific setup and live-proof path for AgentMail."
+    },
+    {
+      "id": "browser-validation-contract",
+      "name": "Browser Validation Contract",
+      "path": "docs/BROWSER_VALIDATION_CONTRACT.md",
+      "description": "Diff-aware browser-proof planning contract for downstream surfaces."
+    },
+    {
+      "id": "enterprise-skill-bundles",
+      "name": "Enterprise Skill Bundles",
+      "path": "docs/ENTERPRISE_SKILL_BUNDLES.md",
+      "description": "Curated bundle catalog for reusable enterprise skill packaging."
+    },
+    {
+      "id": "platform-positioning",
+      "name": "Platform Ownership and Positioning",
+      "path": "docs/PLATFORM_OWNERSHIP_AND_POSITIONING.md",
+      "description": "Partner-owned platform boundaries, provenance, and reusable productization model."
+    },
+    {
       "id": "delegation-protocol",
       "name": "Worker Delegation Protocol",
       "path": "docs/WORKER_DELEGATION_PROTOCOL.md",
@@ -54,7 +84,7 @@
     {
       "id": "doctor-plus",
       "name": "Doctor Plus",
-      "command": "node scripts/validate-repo-operating-system.mjs && node scripts/validate-ona-skills.mjs && node scripts/automind-skill-pack.mjs validate && node scripts/automind-routines.mjs validate && node scripts/validate-workflows.mjs && node scripts/validate-runtime-contracts.mjs && node scripts/validate-github-automation.mjs && node scripts/github-autonomy-selftest.mjs && node scripts/validate-downstream-sync.mjs && node scripts/validate-capability-intake.mjs && node scripts/validate-runtime-topology-profiles.mjs && node scripts/validate-operator-surfaces.mjs && node scripts/openclaw-fixture-smoke.mjs",
+      "command": "node scripts/validate-repo-operating-system.mjs && node scripts/validate-ona-skills.mjs && node scripts/automind-skill-pack.mjs validate && node scripts/automind-routines.mjs validate && node scripts/validate-workflows.mjs && node scripts/validate-runtime-contracts.mjs && node scripts/validate-github-automation.mjs && node scripts/github-autonomy-selftest.mjs && node scripts/validate-downstream-sync.mjs && node scripts/validate-capability-intake.mjs && node scripts/validate-runtime-topology-profiles.mjs && node scripts/validate-operator-surfaces.mjs && node scripts/validate-agentmail-runtime.mjs && node scripts/validate-browser-validation.mjs && node scripts/validate-enterprise-skill-bundles.mjs && node scripts/openclaw-fixture-smoke.mjs",
       "capability": "runtime.validate",
       "approvalMode": "allow",
       "ownerSurface": "host",
@@ -81,7 +111,7 @@
     {
       "id": "repo-validate",
       "name": "Repo Validate",
-      "command": "node scripts/validate-repo-operating-system.mjs && node scripts/validate-ona-skills.mjs && node scripts/automind-skill-pack.mjs validate && node scripts/automind-routines.mjs validate && node scripts/validate-workflows.mjs && node scripts/validate-runtime-contracts.mjs && node scripts/validate-github-automation.mjs && node scripts/github-autonomy-selftest.mjs && node scripts/validate-downstream-sync.mjs && node scripts/validate-capability-intake.mjs && node scripts/validate-runtime-topology-profiles.mjs && node scripts/validate-operator-surfaces.mjs",
+      "command": "node scripts/validate-repo-operating-system.mjs && node scripts/validate-ona-skills.mjs && node scripts/automind-skill-pack.mjs validate && node scripts/automind-routines.mjs validate && node scripts/validate-workflows.mjs && node scripts/validate-runtime-contracts.mjs && node scripts/validate-github-automation.mjs && node scripts/github-autonomy-selftest.mjs && node scripts/validate-downstream-sync.mjs && node scripts/validate-capability-intake.mjs && node scripts/validate-runtime-topology-profiles.mjs && node scripts/validate-operator-surfaces.mjs && node scripts/validate-agentmail-runtime.mjs && node scripts/validate-browser-validation.mjs && node scripts/validate-enterprise-skill-bundles.mjs",
       "capability": "repo.validate",
       "approvalMode": "allow",
       "ownerSurface": "repo",
@@ -131,6 +161,60 @@
       "approvalMode": "allow",
       "ownerSurface": "repo",
       "description": "Validate OpenClaw/NemoClaw runtime profile contracts."
+    },
+    {
+      "id": "agentmail-runtime-validate",
+      "name": "AgentMail Runtime Validate",
+      "command": "node scripts/validate-agentmail-runtime.mjs",
+      "capability": "service.validate",
+      "approvalMode": "allow",
+      "ownerSurface": "repo",
+      "description": "Validate runtime-owned email identities, domain intent, and message envelopes."
+    },
+    {
+      "id": "agentmail-doctor",
+      "name": "AgentMail Doctor",
+      "command": "node scripts/agentmail-doctor.mjs",
+      "capability": "runtime.inspect",
+      "approvalMode": "allow",
+      "ownerSurface": "host",
+      "description": "Inspect declared AgentMail readiness and remaining live proof gaps."
+    },
+    {
+      "id": "agentmail-live-check",
+      "name": "AgentMail Live Check",
+      "command": "node scripts/agentmail-live-check.mjs",
+      "capability": "network.authenticated.read",
+      "approvalMode": "prompt",
+      "ownerSurface": "host",
+      "description": "Run a read-only provider check for declared inboxes and domains when AgentMail credentials are available."
+    },
+    {
+      "id": "browser-validation-validate",
+      "name": "Browser Validation Validate",
+      "command": "node scripts/validate-browser-validation.mjs",
+      "capability": "repo.validate",
+      "approvalMode": "allow",
+      "ownerSurface": "repo",
+      "description": "Validate the diff-aware browser proof manifest."
+    },
+    {
+      "id": "browser-validation-plan",
+      "name": "Browser Validation Plan",
+      "command": "node scripts/plan-browser-validation.mjs --mode branch",
+      "capability": "repo.validate",
+      "approvalMode": "allow",
+      "ownerSurface": "repo",
+      "description": "Map the current branch diff to downstream browser validation suites."
+    },
+    {
+      "id": "enterprise-skill-bundles-validate",
+      "name": "Enterprise Skill Bundles Validate",
+      "command": "node scripts/validate-enterprise-skill-bundles.mjs",
+      "capability": "repo.validate",
+      "approvalMode": "allow",
+      "ownerSurface": "repo",
+      "description": "Validate the curated enterprise skill bundle catalog."
     },
     {
       "id": "openclaw-fixture-smoke",
@@ -206,6 +290,18 @@
       "path": ".ona/skills/workflow-validation.md",
       "recommendedActionId": "workflow-validate",
       "description": "Keep workflow, contract, and routing surfaces aligned."
+    },
+    {
+      "skillId": "agentmail-ops",
+      "path": ".ona/skills/agentmail-ops.md",
+      "recommendedActionId": "agentmail-runtime-validate",
+      "description": "Review runtime-owned email identities and validate their approval boundaries."
+    },
+    {
+      "skillId": "browser-validation",
+      "path": ".ona/skills/browser-validation.md",
+      "recommendedActionId": "browser-validation-plan",
+      "description": "Turn repo changes into explicit browser-proof plans for downstream operator surfaces."
     }
   ],
   "serviceSurfaces": [
@@ -237,6 +333,39 @@
       "contractRefs": [
         "config/github/automation-contract.json",
         ".github/autonomy/execution-policy.json"
+      ]
+    },
+    {
+      "id": "agentmail-runtime-contract",
+      "name": "AgentMail Runtime Contract",
+      "path": "docs/AGENTMAIL_RUNTIME_CONTRACT.md",
+      "description": "Typed runtime-owned email identities, domains, and message envelopes.",
+      "contractRefs": [
+        "config/email/agentmail-runtime-manifest.json",
+        "config/schemas/agentmail-runtime-manifest.schema.json",
+        "config/schemas/agentmail-message-request.schema.json",
+        "config/schemas/agentmail-message-result.schema.json",
+        "config/examples/openclaw-agentmail-skill.example.json"
+      ]
+    },
+    {
+      "id": "browser-validation-contract",
+      "name": "Browser Validation Contract",
+      "path": "docs/BROWSER_VALIDATION_CONTRACT.md",
+      "description": "Diff-aware browser validation planning contract for downstream enterprise UIs.",
+      "contractRefs": [
+        "config/browser-validation/enterprise-browser-validation.manifest.json",
+        "config/schemas/browser-validation-manifest.schema.json"
+      ]
+    },
+    {
+      "id": "enterprise-skill-bundle-catalog",
+      "name": "Enterprise Skill Bundle Catalog",
+      "path": "docs/ENTERPRISE_SKILL_BUNDLES.md",
+      "description": "Validated catalog of curated enterprise skill bundles.",
+      "contractRefs": [
+        "config/skills/enterprise-skill-bundles.json",
+        "config/schemas/enterprise-skill-bundles.schema.json"
       ]
     }
   ]

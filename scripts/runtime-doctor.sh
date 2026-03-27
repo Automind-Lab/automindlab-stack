@@ -92,17 +92,25 @@ for required in \
   "$ROOT_DIR/WORK_IN_PROGRESS.md" \
   "$ROOT_DIR/routines.md" \
   "$ROOT_DIR/.ona/skills/index.json" \
+  "$ROOT_DIR/config/email/agentmail-runtime-manifest.json" \
   "$ROOT_DIR/config/intake/approved.json" \
   "$ROOT_DIR/config/operator/operator-surface-manifest.json" \
   "$ROOT_DIR/config/operator/operator-command-policy.json" \
+  "$ROOT_DIR/config/browser-validation/enterprise-browser-validation.manifest.json" \
   "$ROOT_DIR/config/runtime-profiles/openclaw.enterprise-host-worker.json" \
   "$ROOT_DIR/config/runtime-profiles/nemoclaw.enterprise-host-worker.json" \
   "$ROOT_DIR/config/skills/automindlab-baseline-pack.json" \
+  "$ROOT_DIR/config/skills/enterprise-skill-bundles.json" \
   "$ROOT_DIR/config/routines/automindlab-core-routines.json" \
+  "$ROOT_DIR/docs/AGENTMAIL_RUNTIME_CONTRACT.md" \
+  "$ROOT_DIR/docs/AGENTMAIL_OPENCLAW_SETUP.md" \
+  "$ROOT_DIR/docs/BROWSER_VALIDATION_CONTRACT.md" \
   "$ROOT_DIR/docs/CAPABILITY_INTAKE_POLICY.md" \
+  "$ROOT_DIR/docs/ENTERPRISE_SKILL_BUNDLES.md" \
   "$ROOT_DIR/docs/NETWORK_POLICY.md" \
   "$ROOT_DIR/docs/OPERATOR_SURFACE_CONTRACT.md" \
   "$ROOT_DIR/docs/OPERATOR_APPROVAL_POLICY.md" \
+  "$ROOT_DIR/docs/PLATFORM_OWNERSHIP_AND_POSITIONING.md" \
   "$ROOT_DIR/docs/RUNTIME_PROFILE_COMPATIBILITY.md" \
   "$ROOT_DIR/docs/WORKER_DELEGATION_PROTOCOL.md" \
   "$ROOT_DIR/services/diagnostic/package.json"; do
@@ -144,8 +152,16 @@ if have_cmd node; then
   run_check "capability intake validator" node "$ROOT_DIR/scripts/validate-capability-intake.mjs"
   run_check "runtime profile validator" node "$ROOT_DIR/scripts/validate-runtime-topology-profiles.mjs"
   run_check "operator surface validator" node "$ROOT_DIR/scripts/validate-operator-surfaces.mjs"
+  run_check "agentmail runtime validator" node "$ROOT_DIR/scripts/validate-agentmail-runtime.mjs"
+  run_check "browser validation manifest validator" node "$ROOT_DIR/scripts/validate-browser-validation.mjs"
+  run_check "enterprise skill bundle validator" node "$ROOT_DIR/scripts/validate-enterprise-skill-bundles.mjs"
   run_check "diagnostic consultation syntax" node --check "$ROOT_DIR/services/diagnostic/consultation-service.js"
   run_check "diagnostic server syntax" node --check "$ROOT_DIR/services/diagnostic/server.js"
+  if [[ -n "${AGENTMAIL_API_KEY:-}" ]]; then
+    run_check "agentmail live check" node "$ROOT_DIR/scripts/agentmail-live-check.mjs"
+  else
+    warn "AGENTMAIL_API_KEY missing; skipped live AgentMail provider check"
+  fi
 else
   warn "node not available; skipped repo validators"
 fi
@@ -180,4 +196,5 @@ echo
 echo "Recommended next steps:"
 echo "1. Run ./scripts/worker-status.sh for host and worker continuity details."
 echo "2. Run ./scripts/bootstrap-recovery.sh --dry-run if workspaces or bindings drifted."
-echo "3. Run npm test --prefix services/diagnostic before claiming contract or service readiness."
+echo "3. Run node scripts/agentmail-live-check.mjs after exporting AgentMail credentials to prove mailbox and domain readiness."
+echo "4. Run npm test --prefix services/diagnostic before claiming contract or service readiness."

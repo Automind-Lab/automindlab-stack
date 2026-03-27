@@ -10,8 +10,11 @@ This is the operator runbook for the AutoMindLab enterprise runtime repo.
 - `context/` is the canonical runtime context.
 - `config/` holds machine-readable routines, skill packs, schemas, examples, and workflow definitions.
 - `config/intake/` is the source of truth for external capability review state.
+- `config/email/` is the source of truth for runtime-owned email identities and domain intent.
+- `config/browser-validation/` is the source of truth for diff-aware browser proof planning.
 - `config/runtime-profiles/` is the source of truth for OpenClaw/NemoClaw runtime topology contracts.
 - `config/operator/` is the source of truth for manifest-backed operator/admin surfaces.
+- `config/skills/enterprise-skill-bundles.json` is the source of truth for curated enterprise skill bundles.
 
 ## Restart recovery protocol
 
@@ -31,6 +34,8 @@ Read these in order at session start:
 12. `docs/NETWORK_POLICY.md` when the task touches external access or automation
 13. `docs/CAPABILITY_INTAKE_POLICY.md` when reviewing outside tools, skills, or source repos
 14. `docs/RUNTIME_PROFILE_COMPATIBILITY.md` when runtime topology or platform support changes
+15. `docs/AGENTMAIL_OPENCLAW_SETUP.md` when live email setup or domain routing changes
+16. `docs/PLATFORM_OWNERSHIP_AND_POSITIONING.md` when the task affects donor provenance, packaging, or platform commercialization
 
 Then:
 
@@ -77,7 +82,12 @@ Use these before ad hoc debugging when they fit:
 9. `make capability-intake-validate`
 10. `make runtime-profile-validate`
 11. `make operator-surface-validate`
-12. `make runtime-fixture-smoke`
+12. `make agentmail-runtime-validate`
+13. `make agentmail-doctor`
+14. `make browser-validation-validate`
+15. `make browser-validation-plan`
+16. `make enterprise-skill-bundles-validate`
+17. `make runtime-fixture-smoke`
 
 ## Verification protocol
 
@@ -90,6 +100,9 @@ Before claiming completion:
 - confirm new external capabilities have intake records before calling them approved
 - confirm runtime profile status still matches the actual evidence level
 - confirm any new operator-visible action is present in `config/operator/` with the right approval mode
+- confirm AgentMail claims do not exceed live provider or DNS evidence
+- confirm browser-proof plans still map to the changed downstream surfaces
+- confirm enterprise skill bundles still point only at real local skills
 - run `node scripts/openclaw-fixture-smoke.mjs` when host/worker setup or workspace seeding changed
 - state blockers and caveats explicitly
 

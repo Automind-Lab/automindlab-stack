@@ -1,4 +1,4 @@
-.PHONY: doctor doctor-plus health-check configure-agents worker-status runtime-doctor bootstrap-recovery workspace-sync workflow-validate repo-validate routines skill-pack contract-validate github-automation-validate downstream-sync-validate capability-intake-validate runtime-profile-validate operator-surface-validate runtime-fixture-smoke diagnostic-install diagnostic-start diagnostic-test diagnostic-ci up down review-comments
+.PHONY: doctor doctor-plus health-check configure-agents worker-status runtime-doctor bootstrap-recovery workspace-sync workflow-validate repo-validate routines skill-pack contract-validate github-automation-validate downstream-sync-validate capability-intake-validate runtime-profile-validate operator-surface-validate agentmail-runtime-validate agentmail-doctor agentmail-live-check browser-validation-validate browser-validation-plan enterprise-skill-bundles-validate runtime-fixture-smoke diagnostic-install diagnostic-start diagnostic-test diagnostic-ci up down review-comments
 
 doctor:
 	./scripts/runtime-doctor.sh
@@ -44,6 +44,24 @@ runtime-profile-validate:
 operator-surface-validate:
 	node scripts/validate-operator-surfaces.mjs
 
+agentmail-runtime-validate:
+	node scripts/validate-agentmail-runtime.mjs
+
+agentmail-doctor:
+	node scripts/agentmail-doctor.mjs
+
+agentmail-live-check:
+	node scripts/agentmail-live-check.mjs $(if $(ARGS),$(ARGS))
+
+browser-validation-validate:
+	node scripts/validate-browser-validation.mjs
+
+browser-validation-plan:
+	node scripts/plan-browser-validation.mjs --mode branch
+
+enterprise-skill-bundles-validate:
+	node scripts/validate-enterprise-skill-bundles.mjs
+
 runtime-fixture-smoke:
 	node scripts/openclaw-fixture-smoke.mjs
 
@@ -60,6 +78,9 @@ repo-validate:
 	node scripts/validate-capability-intake.mjs
 	node scripts/validate-runtime-topology-profiles.mjs
 	node scripts/validate-operator-surfaces.mjs
+	node scripts/validate-agentmail-runtime.mjs
+	node scripts/validate-browser-validation.mjs
+	node scripts/validate-enterprise-skill-bundles.mjs
 
 routines:
 	node scripts/automind-routines.mjs list

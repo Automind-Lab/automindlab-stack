@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automindlab.dev/schemas/browser-validation-manifest.schema.json",
+  "title": "Browser Validation Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "manifestId",
+    "description",
+    "plannerMode",
+    "defaultEvidence",
+    "targets"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}\\.v\\d+$"
+    },
+    "manifestId": {
+      "type": "string",
+      "pattern": "^[a-z0-9.-]+$"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "plannerMode": {
+      "type": "string",
+      "enum": ["diff-aware", "manual-only"]
+    },
+    "defaultEvidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": ["screenshot", "console-log", "trace", "video", "network-log"]
+      }
+    },
+    "targets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/target"
+      }
+    }
+  },
+  "$defs": {
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "baseUrlEnv",
+        "owner",
+        "requiresAuthSession",
+        "supportedArtifacts",
+        "suites"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "baseUrlEnv": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]+$"
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requiresAuthSession": {
+          "type": "boolean"
+        },
+        "supportedArtifacts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": ["screenshot", "console-log", "trace", "video", "network-log"]
+          }
+        },
+        "suites": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/suite"
+          }
+        }
+      }
+    },
+    "suite": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "description",
+        "pathPrefixes",
+        "routeHints",
+        "riskLevel",
+        "approvalMode",
+        "steps",
+        "requiredArtifacts",
+        "alwaysInclude",
+        "notes"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pathPrefixes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "routeHints": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "riskLevel": {
+          "type": "string",
+          "enum": ["low", "medium", "high"]
+        },
+        "approvalMode": {
+          "type": "string",
+          "enum": ["allow", "prompt"]
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "requiredArtifacts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": ["screenshot", "console-log", "trace", "video", "network-log"]
+          }
+        },
+        "alwaysInclude": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

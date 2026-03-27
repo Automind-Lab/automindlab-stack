@@ -1,0 +1,12 @@
+{
+  "name": "browser_validation_planning",
+  "description": "Turn repo changes into a reviewable browser-proof plan for downstream operator, inbox, and admin surfaces.",
+  "entry_skill": "browser-validation",
+  "steps": [
+    {"id": "collect-diff", "type": "host", "output": "changedFiles"},
+    {"id": "plan-proof", "type": "worker", "skill": "browser-validation", "timeoutMs": 30000},
+    {"id": "operator-review", "type": "host", "skill": "operator-surface-review"},
+    {"id": "escalation-check", "type": "host", "skill": "escalate-to-human"}
+  ],
+  "outputs": ["selectedSuites", "requiredArtifacts", "approvalMode", "changedFiles", "escalate"]
+}

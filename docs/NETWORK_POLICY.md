@@ -16,6 +16,10 @@ Treat network access differently by owner surface:
   - isolated execution path only
   - should use the least egress necessary for the delegated task
   - should return structured uncertainty and escalation instead of broad autonomous action
+- authenticated provider reads
+  - may be used for read-only verification such as AgentMail mailbox or domain checks
+  - should stay prompt-gated when they rely on runtime credentials
+  - should not be treated as permission for outbound writes
 - GitHub automation and self-hosted runners
   - must stay inside repo-visible workflows, policies, and verification steps
   - should default to dry-run or planner-first behavior for changes with write impact
@@ -96,4 +100,5 @@ If uncertainty is high and the next networked action is irreversible:
 - `docs/REPO_BOUNDARY_POLICY.md`
 - `docs/OPERATOR_SURFACE_CONTRACT.md`
 - `docs/OPERATOR_APPROVAL_POLICY.md`
+- `docs/AGENTMAIL_RUNTIME_CONTRACT.md`
 - `config/skills/automindlab-baseline-pack.json`

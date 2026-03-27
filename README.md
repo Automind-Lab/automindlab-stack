@@ -21,6 +21,8 @@ Read these first when operating AutoMindLab from this repo:
 10. `docs/NETWORK_POLICY.md` when the task touches external access or approvals
 11. `docs/CAPABILITY_INTAKE_POLICY.md` when the task evaluates outside capabilities
 12. `docs/RUNTIME_PROFILE_COMPATIBILITY.md` when the task changes runtime topology or platform support
+13. `docs/AGENTMAIL_OPENCLAW_SETUP.md` when the task touches live email setup or domain routing
+14. `docs/PLATFORM_OWNERSHIP_AND_POSITIONING.md` when the task affects commercialization, provenance, or reusable platform boundaries
 
 ## What this repository owns
 
@@ -34,6 +36,9 @@ Read these first when operating AutoMindLab from this repo:
 - governed capability-intake records for external tools, skills, and source repos
 - explicit OpenClaw and NemoClaw runtime topology profiles
 - manifest-backed operator/admin surfaces and approval policy
+- runtime-owned AgentMail email identities, setup guidance, and live-check path
+- diff-aware browser-proof planning for downstream operator and inbox surfaces
+- curated enterprise skill bundles for repeatable adoption across enterprise engagements
 - reusable service contracts for downstream consumer products
 
 ## Boundary model
@@ -90,11 +95,21 @@ These files exist to make startup order, current state, recovery steps, and reus
   - `config/github/automation-contract.json`
   - `.github/autonomy/execution-policy.json`
   - `config/sync/downstreams/flowcommander.sync-manifest.json`
+- email and proof surfaces
+  - `config/email/agentmail-runtime-manifest.json`
+  - `docs/AGENTMAIL_RUNTIME_CONTRACT.md`
+  - `docs/AGENTMAIL_OPENCLAW_SETUP.md`
+  - `config/browser-validation/enterprise-browser-validation.manifest.json`
+  - `docs/BROWSER_VALIDATION_CONTRACT.md`
 - intake and runtime profiles
   - `config/intake/`
   - `config/runtime-profiles/`
   - `docs/CAPABILITY_INTAKE_POLICY.md`
   - `docs/RUNTIME_PROFILE_COMPATIBILITY.md`
+- bundle and platform governance
+  - `config/skills/enterprise-skill-bundles.json`
+  - `docs/ENTERPRISE_SKILL_BUNDLES.md`
+  - `docs/PLATFORM_OWNERSHIP_AND_POSITIONING.md`
 - operator surfaces
   - `config/operator/`
   - `docs/OPERATOR_SURFACE_CONTRACT.md`
@@ -123,6 +138,12 @@ These files exist to make startup order, current state, recovery steps, and reus
 - `node scripts/validate-capability-intake.mjs`
 - `node scripts/validate-runtime-topology-profiles.mjs`
 - `node scripts/validate-operator-surfaces.mjs`
+- `node scripts/validate-agentmail-runtime.mjs`
+- `node scripts/agentmail-doctor.mjs`
+- `node scripts/agentmail-live-check.mjs`
+- `node scripts/validate-browser-validation.mjs`
+- `node scripts/plan-browser-validation.mjs --mode branch`
+- `node scripts/validate-enterprise-skill-bundles.mjs`
 - `node scripts/openclaw-fixture-smoke.mjs`
 - `node scripts/run-operator-action.mjs list`
 - `node scripts/automind-skill-pack.mjs list`
@@ -168,6 +189,36 @@ The enterprise translation of BMO's workstation action model lives in:
 This repo does not ship the BMO Windows desktop UI.
 It ships the reusable manifest and approval contract that future AutoMindLab operator surfaces can consume.
 
+### AgentMail runtime contract
+
+The runtime-owned email layer lives in:
+
+- `config/email/agentmail-runtime-manifest.json`
+- `docs/AGENTMAIL_RUNTIME_CONTRACT.md`
+- `docs/AGENTMAIL_OPENCLAW_SETUP.md`
+- `config/examples/openclaw-agentmail-skill.example.json`
+
+This gives AutoMindLab a governed path to make `prismtek@agentmail.to`, `bmo-tron@agentmail.to`, and `prismtek.dev` usable in OpenClaw without overclaiming live readiness.
+
+### Browser validation contract
+
+The enterprise translation of `expect`-style proof planning lives in:
+
+- `config/browser-validation/enterprise-browser-validation.manifest.json`
+- `docs/BROWSER_VALIDATION_CONTRACT.md`
+- `scripts/plan-browser-validation.mjs`
+
+This repo still does not own the downstream UI, but it now owns the proof plan that downstream operator or inbox surfaces should satisfy after relevant changes.
+
+### Enterprise skill bundles
+
+The enterprise translation of donor skill-pack discoverability lives in:
+
+- `config/skills/enterprise-skill-bundles.json`
+- `docs/ENTERPRISE_SKILL_BUNDLES.md`
+
+This turns reusable capability clusters into a governed catalog instead of depending on donor-repo packaging.
+
 ### FLOWCOMMANDER diagnostic consultation
 
 This repository packages the AutoMindLab-side diagnostic consultation surface for FLOWCOMMANDER and similar products.
@@ -210,6 +261,12 @@ External capabilities are governed by:
 - `config/intake/rejected.json`
 - `config/schemas/capability-intake-catalog.schema.json`
 - `docs/CAPABILITY_INTAKE_POLICY.md`
+
+## Platform positioning
+
+Partner ownership, provenance boundaries, and long-term platform positioning are documented in:
+
+- `docs/PLATFORM_OWNERSHIP_AND_POSITIONING.md`
 
 ## Translation rules
 

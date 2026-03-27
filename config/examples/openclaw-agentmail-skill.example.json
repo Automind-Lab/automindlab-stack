@@ -1,0 +1,13 @@
+{
+  "skills": {
+    "entries": {
+      "agentmail": {
+        "enabled": true,
+        "env": {
+          "AGENTMAIL_API_KEY": "${AGENTMAIL_API_KEY}",
+          "AGENTMAIL_BASE_URL": "${AGENTMAIL_BASE_URL}"
+        }
+      }
+    }
+  }
+}

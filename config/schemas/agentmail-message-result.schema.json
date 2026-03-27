@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automindlab.dev/schemas/agentmail-message-result.schema.json",
+  "title": "AgentMail Message Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "requestId",
+    "provider",
+    "mailboxId",
+    "operation",
+    "status",
+    "uncertainty",
+    "escalate",
+    "safeAction"
+  ],
+  "properties": {
+    "requestId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider": {
+      "type": "string",
+      "const": "agentmail"
+    },
+    "mailboxId": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "operation": {
+      "type": "string",
+      "enum": ["send", "reply", "reply-all", "forward", "list-messages", "get-message", "list-threads"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["success", "blocked", "partial", "failed"]
+    },
+    "messageId": {
+      "type": ["string", "null"]
+    },
+    "threadId": {
+      "type": ["string", "null"]
+    },
+    "result": {
+      "type": ["object", "null"],
+      "additionalProperties": true
+    },
+    "uncertainty": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level", "reason"],
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": ["low", "medium", "high"]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "escalate": {
+      "type": "boolean"
+    },
+    "safeAction": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

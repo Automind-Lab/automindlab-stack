@@ -16,8 +16,13 @@ const requiredFiles = [
   "docs/REPO_BOUNDARY_POLICY.md",
   "docs/NETWORK_POLICY.md",
   "docs/CAPABILITY_INTAKE_POLICY.md",
+  "docs/AGENTMAIL_RUNTIME_CONTRACT.md",
+  "docs/AGENTMAIL_OPENCLAW_SETUP.md",
+  "docs/BROWSER_VALIDATION_CONTRACT.md",
+  "docs/ENTERPRISE_SKILL_BUNDLES.md",
   "docs/OPERATOR_SURFACE_CONTRACT.md",
   "docs/OPERATOR_APPROVAL_POLICY.md",
+  "docs/PLATFORM_OWNERSHIP_AND_POSITIONING.md",
   "docs/RUNTIME_PROFILE_COMPATIBILITY.md",
   "docs/GITHUB_AUTOMATION.md",
   "docs/GITHUB_AUTONOMY.md",
@@ -25,6 +30,11 @@ const requiredFiles = [
   "docs/SKILLS_USAGE.md",
   "docs/SKILLS_RECOMMENDED.md",
   ".github/autonomy/execution-policy.json",
+  "config/browser-validation/enterprise-browser-validation.manifest.json",
+  "config/email/agentmail-runtime-manifest.json",
+  "config/examples/agentmail-message-request.example.json",
+  "config/examples/agentmail-message-result.example.json",
+  "config/examples/openclaw-agentmail-skill.example.json",
   "config/github/automation-contract.json",
   "config/intake/candidates.json",
   "config/intake/approved.json",
@@ -35,17 +45,31 @@ const requiredFiles = [
   "config/runtime-profiles/openclaw.enterprise-host-worker.json",
   "config/runtime-profiles/nemoclaw.enterprise-host-worker.json",
   "config/skills/automindlab-baseline-pack.json",
+  "config/skills/enterprise-skill-bundles.json",
+  "config/schemas/agentmail-message-request.schema.json",
+  "config/schemas/agentmail-message-result.schema.json",
+  "config/schemas/agentmail-runtime-manifest.schema.json",
+  "config/schemas/browser-validation-manifest.schema.json",
   "config/schemas/capability-intake-catalog.schema.json",
   "config/schemas/downstream-sync-manifest.schema.json",
+  "config/schemas/enterprise-skill-bundles.schema.json",
   "config/schemas/operator-surface-manifest.schema.json",
   "config/schemas/operator-command-policy.schema.json",
   "config/schemas/runtime-topology-profile.schema.json",
   "config/sync/downstreams/flowcommander.sync-manifest.json",
+  "config/workflows/agentmail_runtime.workflow.json",
+  "config/workflows/browser_validation.workflow.json",
+  "scripts/agentmail-doctor.mjs",
+  "scripts/agentmail-live-check.mjs",
+  "scripts/plan-browser-validation.mjs",
+  "scripts/validate-agentmail-runtime.mjs",
+  "scripts/validate-browser-validation.mjs",
   "scripts/bootstrap-recovery.sh",
   "scripts/runtime-doctor.sh",
   "scripts/worker-status.sh",
   "scripts/sync-openclaw-workspaces.sh",
   "scripts/validate-capability-intake.mjs",
+  "scripts/validate-enterprise-skill-bundles.mjs",
   "scripts/validate-operator-surfaces.mjs",
   "scripts/run-operator-action.mjs",
   "scripts/validate-runtime-topology-profiles.mjs",
@@ -90,7 +114,7 @@ for (const expected of ["`RUNBOOK.md`", "`TASK_STATE.md`", "`.ona/skills/INDEX.m
 }
 
 const runbook = read("RUNBOOK.md");
-for (const expected of ["git status", "make doctor-plus", "make bootstrap-recovery"]) {
+for (const expected of ["git status", "make doctor-plus", "make bootstrap-recovery", "make agentmail-runtime-validate", "make browser-validation-validate"]) {
   if (!runbook.includes(expected)) {
     fail(`RUNBOOK.md must mention ${expected}`);
   }
@@ -101,6 +125,13 @@ for (const expected of [
   "config/routines/automindlab-core-routines.json",
   "config/skills/automindlab-baseline-pack.json",
   "docs/REPO_BOUNDARY_POLICY.md",
+  "config/email/agentmail-runtime-manifest.json",
+  "docs/AGENTMAIL_RUNTIME_CONTRACT.md",
+  "docs/AGENTMAIL_OPENCLAW_SETUP.md",
+  "config/browser-validation/enterprise-browser-validation.manifest.json",
+  "docs/BROWSER_VALIDATION_CONTRACT.md",
+  "config/skills/enterprise-skill-bundles.json",
+  "docs/ENTERPRISE_SKILL_BUNDLES.md",
   "config/schemas/worker-task.schema.json",
   "config/github/automation-contract.json",
   "config/sync/downstreams/flowcommander.sync-manifest.json",
@@ -109,6 +140,7 @@ for (const expected of [
   "config/runtime-profiles/openclaw.enterprise-host-worker.json",
   "docs/CAPABILITY_INTAKE_POLICY.md",
   "docs/OPERATOR_SURFACE_CONTRACT.md",
+  "docs/PLATFORM_OWNERSHIP_AND_POSITIONING.md",
   "docs/RUNTIME_PROFILE_COMPATIBILITY.md",
 ]) {
   if (!readme.includes(expected)) {
@@ -167,9 +199,42 @@ if (!downstreamDoc.includes("config/sync/downstreams/flowcommander.sync-manifest
 }
 
 const intakeDoc = read("docs/CAPABILITY_INTAKE_POLICY.md");
-for (const expected of ["config/intake/approved.json", "config/intake/rejected.json", "validate-capability-intake.mjs"]) {
+for (const expected of ["config/intake/approved.json", "config/intake/rejected.json", "validate-capability-intake.mjs", "agentmail-to", "MoneyPrinterV2"]) {
   if (!intakeDoc.includes(expected)) {
     fail(`docs/CAPABILITY_INTAKE_POLICY.md must mention ${expected}`);
+  }
+}
+
+const agentmailDoc = read("docs/AGENTMAIL_RUNTIME_CONTRACT.md");
+for (const expected of [
+  "config/email/agentmail-runtime-manifest.json",
+  "config/examples/openclaw-agentmail-skill.example.json",
+  "scripts/agentmail-live-check.mjs",
+]) {
+  if (!agentmailDoc.includes(expected)) {
+    fail(`docs/AGENTMAIL_RUNTIME_CONTRACT.md must mention ${expected}`);
+  }
+}
+
+const browserValidationDoc = read("docs/BROWSER_VALIDATION_CONTRACT.md");
+for (const expected of [
+  "config/browser-validation/enterprise-browser-validation.manifest.json",
+  "scripts/validate-browser-validation.mjs",
+  "scripts/plan-browser-validation.mjs",
+]) {
+  if (!browserValidationDoc.includes(expected)) {
+    fail(`docs/BROWSER_VALIDATION_CONTRACT.md must mention ${expected}`);
+  }
+}
+
+const bundleDoc = read("docs/ENTERPRISE_SKILL_BUNDLES.md");
+for (const expected of [
+  "config/skills/enterprise-skill-bundles.json",
+  "config/schemas/enterprise-skill-bundles.schema.json",
+  "scripts/validate-enterprise-skill-bundles.mjs",
+]) {
+  if (!bundleDoc.includes(expected)) {
+    fail(`docs/ENTERPRISE_SKILL_BUNDLES.md must mention ${expected}`);
   }
 }
 
@@ -191,6 +256,13 @@ const profileDoc = read("docs/RUNTIME_PROFILE_COMPATIBILITY.md");
 for (const expected of ["OpenClaw", "NemoClaw", "contract-validated", "fixture-validated", "validate-runtime-topology-profiles.mjs"]) {
   if (!profileDoc.includes(expected)) {
     fail(`docs/RUNTIME_PROFILE_COMPATIBILITY.md must mention ${expected}`);
+  }
+}
+
+const ownershipDoc = read("docs/PLATFORM_OWNERSHIP_AND_POSITIONING.md");
+for (const expected of ["config/intake/", "typed contracts", "diagnostics", "growth hacks"]) {
+  if (!ownershipDoc.includes(expected)) {
+    fail(`docs/PLATFORM_OWNERSHIP_AND_POSITIONING.md must mention ${expected}`);
   }
 }
 

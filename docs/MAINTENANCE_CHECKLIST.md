@@ -16,6 +16,9 @@ Use this checklist for regular repo upkeep.
 - run `make capability-intake-validate` when new external capabilities are reviewed
 - run `make runtime-profile-validate` when runtime topology contracts or evidence levels change
 - run `make operator-surface-validate` when operator manifests or approval rules change
+- run `make agentmail-runtime-validate` when mailbox, domain, or OpenClaw email setup changes
+- run `make browser-validation-validate` when downstream proof-planning rules change
+- run `make enterprise-skill-bundles-validate` when curated skill bundles change
 - confirm workflow config files, skill packs, and schemas still match runtime behavior
 - confirm specialist briefs still align with the Council of 13
 - confirm host and worker docs still match the runtime topology

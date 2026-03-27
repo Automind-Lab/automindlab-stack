@@ -20,6 +20,8 @@ Before adding more capability, make sure the repo-local baseline is available an
 - `bootstrap-recovery`
 - `workflow-validation`
 - `operator-surface-review`
+- `agentmail-ops`
+- `browser-validation`
 - `diagnostic-consultation`
 - `council-query`
 - `council-review`
@@ -32,10 +34,18 @@ Inspect the current baseline pack with:
 node scripts/automind-skill-pack.mjs list
 ```
 
+Inspect curated enterprise skill bundles with:
+
+```bash
+node scripts/validate-enterprise-skill-bundles.mjs
+```
+
 ## Optional capability categories
 
 Add external capability only when the approval path is explicit and the result remains operator-visible.
 
+- curated skill bundles
+  - useful when adopting patterns from donor repos without copying their original operator UX or business assumptions
 - GitHub admin bridges
   - useful for issue, PR, and repo operations with explicit write approval
 - explainable web research
@@ -53,6 +63,7 @@ Every added capability increases review burden, auth surface area, and verificat
 ## Related
 
 - `config/skills/automindlab-baseline-pack.json`
+- `config/skills/enterprise-skill-bundles.json`
 - `.ona/skills/INDEX.md`
 - `docs/SKILLS_USAGE.md`
 - `docs/NETWORK_POLICY.md`

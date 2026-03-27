@@ -18,6 +18,9 @@ This guide keeps AutoMindLab easy to review and maintain.
 - run `make capability-intake-validate` when intake catalogs changed
 - run `make runtime-profile-validate` when runtime profiles changed
 - run `make operator-surface-validate` when operator manifests or approval policy changed
+- run `make agentmail-runtime-validate` when mailbox or domain contracts changed
+- run `make browser-validation-validate` when browser-proof planning changed
+- run `make enterprise-skill-bundles-validate` when skill bundles changed
 - ensure new skills, packs, and workflows are documented
 - ensure new JSON config files are parseable and covered by validation workflows
 

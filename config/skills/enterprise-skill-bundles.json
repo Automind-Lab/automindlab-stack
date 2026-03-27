@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "catalog_name": "automindlab-enterprise-skill-bundles",
+  "description": "Curated enterprise skill bundles that translate donor-repo skill-pack ideas into AutoMindLab-owned operating patterns.",
+  "bundles": [
+    {
+      "id": "runtime-operations-core",
+      "name": "Runtime Operations Core",
+      "purpose": "Bring a runtime from unknown state to reviewable host/worker health.",
+      "skills": [
+        "runtime-doctoring",
+        "host-worker-routing-check",
+        "bootstrap-recovery",
+        "workflow-validation"
+      ],
+      "when_to_use": [
+        "starting a new session in a drift-prone workspace",
+        "validating runtime ownership after topology changes",
+        "recovering from broken bootstrap or seeded workspace issues"
+      ],
+      "guardrails": [
+        "keep external channels on the host",
+        "do not claim runtime readiness without validators and runtime doctor proof"
+      ]
+    },
+    {
+      "id": "operator-trust-and-proof",
+      "name": "Operator Trust and Proof",
+      "purpose": "Keep operator-facing changes explicit, reviewable, and backed by evidence artifacts.",
+      "skills": [
+        "operator-surface-review",
+        "browser-validation",
+        "escalate-to-human"
+      ],
+      "when_to_use": [
+        "changing operator manifests or approval policy",
+        "planning browser-proof capture for downstream admin surfaces",
+        "introducing any new operator-visible action"
+      ],
+      "guardrails": [
+        "keep auth-sensitive actions prompt-gated",
+        "retain proof artifacts for browser validation"
+      ]
+    },
+    {
+      "id": "enterprise-email-ops",
+      "name": "Enterprise Email Ops",
+      "purpose": "Govern runtime-owned mailboxes, domain routing, and human-visible email actions.",
+      "skills": [
+        "agentmail-ops",
+        "browser-validation",
+        "escalate-to-human"
+      ],
+      "when_to_use": [
+        "reviewing mailbox identity or domain-routing changes",
+        "adding a new downstream inbox surface",
+        "preparing live AgentMail setup or verification"
+      ],
+      "guardrails": [
+        "treat user-declared inboxes as non-production until live proof exists",
+        "keep outbound sends and replies under host review"
+      ]
+    },
+    {
+      "id": "strategy-and-governance",
+      "name": "Strategy and Governance",
+      "purpose": "Evaluate donor capabilities, challenge decisions, and keep reusable platform boundaries intact.",
+      "skills": [
+        "council-query",
+        "council-review",
+        "memory-capture",
+        "escalate-to-human"
+      ],
+      "when_to_use": [
+        "reviewing external capabilities for adoption",
+        "making high-impact platform decisions",
+        "capturing reusable operating lessons without creating drift"
+      ],
+      "guardrails": [
+        "translate donor patterns rather than copying donor ownership models",
+        "keep memory advisory and reviewable"
+      ]
+    }
+  ]
+}

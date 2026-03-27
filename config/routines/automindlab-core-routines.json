@@ -72,6 +72,42 @@
       ]
     },
     {
+      "name": "agentmail-runtime-validate",
+      "command": "make agentmail-runtime-validate",
+      "owner_surface": "repo",
+      "purpose": "Validate runtime-owned email identities, domain intent, and message envelopes before claiming email readiness.",
+      "related_files": [
+        "Makefile",
+        "config/email/agentmail-runtime-manifest.json",
+        "docs/AGENTMAIL_RUNTIME_CONTRACT.md",
+        "scripts/validate-agentmail-runtime.mjs"
+      ]
+    },
+    {
+      "name": "browser-validation-validate",
+      "command": "make browser-validation-validate",
+      "owner_surface": "repo",
+      "purpose": "Validate the diff-aware browser proof manifest that maps repo changes to downstream UI checks.",
+      "related_files": [
+        "Makefile",
+        "config/browser-validation/enterprise-browser-validation.manifest.json",
+        "docs/BROWSER_VALIDATION_CONTRACT.md",
+        "scripts/validate-browser-validation.mjs"
+      ]
+    },
+    {
+      "name": "enterprise-skill-bundles-validate",
+      "command": "make enterprise-skill-bundles-validate",
+      "owner_surface": "repo",
+      "purpose": "Validate curated enterprise skill bundles so donor-inspired packaging stays local and reviewable.",
+      "related_files": [
+        "Makefile",
+        "config/skills/enterprise-skill-bundles.json",
+        "docs/ENTERPRISE_SKILL_BUNDLES.md",
+        "scripts/validate-enterprise-skill-bundles.mjs"
+      ]
+    },
+    {
       "name": "skill-pack",
       "command": "make skill-pack",
       "owner_surface": "repo",
