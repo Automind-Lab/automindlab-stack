@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-28T02:30:09.515Z",
+  "generatedAt": "2026-03-28T10:36:47.543Z",
   "themeConfig": {
     "brandName": "Northstar Medical Logistics",
     "primaryColor": "#153f69",
@@ -54,9 +54,107 @@
       "type": "spacing"
     },
     {
+      "name": "spacing.panel.gap",
+      "value": "16px",
+      "type": "spacing"
+    },
+    {
       "name": "radius.panel",
       "value": "18px",
       "type": "radius"
+    },
+    {
+      "name": "shadow.panel",
+      "value": "0 18px 48px rgba(17, 24, 39, 0.10)",
+      "type": "shadow"
+    }
+  ],
+  "tokenCollections": [
+    {
+      "key": "brand-colors",
+      "name": "Brand Colors",
+      "tokenNames": [
+        "color.brand.primary",
+        "color.brand.secondary",
+        "color.brand.accent",
+        "color.surface.default",
+        "color.canvas.default"
+      ]
+    },
+    {
+      "key": "typography",
+      "name": "Typography",
+      "tokenNames": [
+        "font.heading",
+        "font.body"
+      ]
+    },
+    {
+      "key": "layout",
+      "name": "Layout",
+      "tokenNames": [
+        "spacing.section",
+        "spacing.panel.gap",
+        "radius.panel",
+        "shadow.panel"
+      ]
+    }
+  ],
+  "themeVariables": [
+    {
+      "name": "color.brand.primary",
+      "cssVar": "--color-brand-primary",
+      "value": "#153f69"
+    },
+    {
+      "name": "color.brand.secondary",
+      "cssVar": "--color-brand-secondary",
+      "value": "#5f95aa"
+    },
+    {
+      "name": "color.brand.accent",
+      "cssVar": "--color-brand-accent",
+      "value": "#d97a2b"
+    },
+    {
+      "name": "color.surface.default",
+      "cssVar": "--color-surface-default",
+      "value": "#f3f7f8"
+    },
+    {
+      "name": "color.canvas.default",
+      "cssVar": "--color-canvas-default",
+      "value": "#e4edf0"
+    },
+    {
+      "name": "font.heading",
+      "cssVar": "--font-heading",
+      "value": "\"Bahnschrift SemiBold\", \"Aptos Display\", sans-serif"
+    },
+    {
+      "name": "font.body",
+      "cssVar": "--font-body",
+      "value": "\"Aptos\", \"Segoe UI Variable Text\", sans-serif"
+    },
+    {
+      "name": "spacing.section",
+      "cssVar": "--spacing-section",
+      "value": "24px"
+    },
+    {
+      "name": "spacing.panel.gap",
+      "cssVar": "--spacing-panel-gap",
+      "value": "16px"
+    },
+    {
+      "name": "radius.panel",
+      "cssVar": "--radius-panel",
+      "value": "18px"
+    },
+    {
+      "name": "shadow.panel",
+      "cssVar": "--shadow-panel",
+      "value": "0 18px 48px rgba(17, 24, 39, 0.10)"
     }
   ],
   "componentManifest": [
@@ -65,32 +163,30 @@
       "name": "Operations Dashboard",
       "sourceModule": "dashboard",
       "editableProps": [
-        "title",
-        "emptyStateCopy",
-        "accentColor",
-        "tableDensity"
+        "page title",
+        "metric definitions",
+        "alert copy"
       ]
     },
     {
-      "key": "entities",
+      "key": "entity-workbench",
       "name": "Entity Workbench",
-      "sourceModule": "entities",
+      "sourceModule": "entity-workbench",
       "editableProps": [
-        "title",
-        "emptyStateCopy",
-        "accentColor",
-        "tableDensity"
+        "field labels",
+        "empty states",
+        "table density",
+        "filter presets"
       ]
     },
     {
-      "key": "workflows",
+      "key": "workflow-orchestrator",
       "name": "Workflow Orchestrator",
-      "sourceModule": "workflows",
+      "sourceModule": "workflow-orchestrator",
       "editableProps": [
-        "title",
-        "emptyStateCopy",
-        "accentColor",
-        "tableDensity"
+        "stage labels",
+        "escalation copy",
+        "checklist text"
       ]
     },
     {
@@ -98,10 +194,9 @@
       "name": "Approval Center",
       "sourceModule": "approvals",
       "editableProps": [
-        "title",
-        "emptyStateCopy",
-        "accentColor",
-        "tableDensity"
+        "decision prompts",
+        "risk labels",
+        "approval instructions"
       ]
     },
     {
@@ -109,10 +204,9 @@
       "name": "Audit Stream",
       "sourceModule": "audit",
       "editableProps": [
-        "title",
-        "emptyStateCopy",
-        "accentColor",
-        "tableDensity"
+        "audit copy",
+        "filter presets",
+        "export labels"
       ]
     },
     {
@@ -120,10 +214,9 @@
       "name": "Roles and Access",
       "sourceModule": "roles",
       "editableProps": [
-        "title",
-        "emptyStateCopy",
-        "accentColor",
-        "tableDensity"
+        "permission labels",
+        "approval scope notes",
+        "role summaries"
       ]
     },
     {
@@ -131,10 +224,9 @@
       "name": "Integrations",
       "sourceModule": "integrations",
       "editableProps": [
-        "title",
-        "emptyStateCopy",
-        "accentColor",
-        "tableDensity"
+        "integration notes",
+        "adapter policy copy",
+        "sync labels"
       ]
     },
     {
@@ -142,10 +234,9 @@
       "name": "Notifications",
       "sourceModule": "notifications",
       "editableProps": [
-        "title",
-        "emptyStateCopy",
-        "accentColor",
-        "tableDensity"
+        "notification copy",
+        "channel labels",
+        "escalation notes"
       ]
     },
     {
@@ -153,10 +244,9 @@
       "name": "Reports",
       "sourceModule": "reports",
       "editableProps": [
-        "title",
-        "emptyStateCopy",
-        "accentColor",
-        "tableDensity"
+        "report titles",
+        "metric descriptions",
+        "cadence copy"
       ]
     },
     {
@@ -164,10 +254,59 @@
       "name": "Settings",
       "sourceModule": "settings",
       "editableProps": [
-        "title",
-        "emptyStateCopy",
-        "accentColor",
-        "tableDensity"
+        "settings section copy",
+        "tenant policy notes",
+        "branding controls"
+      ]
+    },
+    {
+      "key": "dispatch-board",
+      "name": "Dispatch Board",
+      "sourceModule": "dispatch-board",
+      "editableProps": [
+        "dispatch columns",
+        "route copy",
+        "priority badges"
+      ]
+    },
+    {
+      "key": "inventory-readiness",
+      "name": "Inventory Readiness",
+      "sourceModule": "inventory-readiness",
+      "editableProps": [
+        "status chips",
+        "readiness copy",
+        "storage views"
+      ]
+    },
+    {
+      "key": "service-ticket-console",
+      "name": "Service Ticket Console",
+      "sourceModule": "service-ticket-console",
+      "editableProps": [
+        "ticket status labels",
+        "triage prompts",
+        "resolution copy"
+      ]
+    },
+    {
+      "key": "account-operations",
+      "name": "Account Operations",
+      "sourceModule": "account-operations",
+      "editableProps": [
+        "account summary copy",
+        "region groupings",
+        "service-tier labels"
+      ]
+    },
+    {
+      "key": "task-assignment",
+      "name": "Task Assignment Board",
+      "sourceModule": "task-assignment",
+      "editableProps": [
+        "task grouping",
+        "assignment copy",
+        "priority thresholds"
       ]
     }
   ],
@@ -179,13 +318,13 @@
       "purpose": "Give operators a live view of workload, approvals, risk, and throughput."
     },
     {
-      "key": "entities",
+      "key": "entity-workbench",
       "title": "Entity Workbench",
       "route": "/entities",
       "purpose": "Manage business entities through typed forms, tables, and detail views."
     },
     {
-      "key": "workflows",
+      "key": "workflow-orchestrator",
       "title": "Workflow Orchestrator",
       "route": "/workflows",
       "purpose": "Track multi-step operational flows with visible ownership and escalation."
@@ -231,12 +370,384 @@
       "title": "Settings",
       "route": "/settings",
       "purpose": "Handle tenant-aware configuration without hard-coding secrets or approvals."
+    },
+    {
+      "key": "dispatch-board",
+      "title": "Dispatch Board",
+      "route": "/dispatch",
+      "purpose": "A dispatch-focused board for delivery, pickup, and field-routing work."
+    },
+    {
+      "key": "inventory-readiness",
+      "title": "Inventory Readiness",
+      "route": "/inventory",
+      "purpose": "Show warehouse readiness, cleaning status, and movement events."
+    },
+    {
+      "key": "service-ticket-console",
+      "title": "Service Ticket Console",
+      "route": "/service-tickets",
+      "purpose": "Review service request intake, ownership, and field resolution state."
+    },
+    {
+      "key": "account-operations",
+      "title": "Account Operations",
+      "route": "/accounts",
+      "purpose": "Account-level visibility for service history, regions, and risk."
+    },
+    {
+      "key": "task-assignment",
+      "title": "Task Assignment Board",
+      "route": "/tasks",
+      "purpose": "Track technician and operator assignments with due dates and escalation paths."
+    }
+  ],
+  "pageSections": [
+    {
+      "key": "dashboard.stats",
+      "screenKey": "dashboard",
+      "moduleKey": "dashboard",
+      "title": "Operational Stats",
+      "primitive": "stat-grid",
+      "copyKeys": [
+        "dashboard.summary",
+        "dashboard.stats.title"
+      ]
+    },
+    {
+      "key": "dashboard.workflow-highlights",
+      "screenKey": "dashboard",
+      "moduleKey": "dashboard",
+      "title": "Workflow Highlights",
+      "primitive": "workflow-list",
+      "copyKeys": [
+        "dashboard.summary",
+        "dashboard.workflow-highlights.title"
+      ]
+    },
+    {
+      "key": "dashboard.report-highlights",
+      "screenKey": "dashboard",
+      "moduleKey": "dashboard",
+      "title": "Reporting Highlights",
+      "primitive": "report-list",
+      "copyKeys": [
+        "dashboard.summary",
+        "dashboard.report-highlights.title"
+      ]
+    },
+    {
+      "key": "entity-workbench.entity-table",
+      "screenKey": "entity-workbench",
+      "moduleKey": "entity-workbench",
+      "title": "Entity Tables",
+      "primitive": "entity-table",
+      "copyKeys": [
+        "entity-workbench.summary",
+        "entity-workbench.entity-table.title"
+      ]
+    },
+    {
+      "key": "workflow-orchestrator.workflow-list",
+      "screenKey": "workflow-orchestrator",
+      "moduleKey": "workflow-orchestrator",
+      "title": "Workflow Timeline",
+      "primitive": "workflow-list",
+      "copyKeys": [
+        "workflow-orchestrator.summary",
+        "workflow-orchestrator.workflow-list.title"
+      ]
+    },
+    {
+      "key": "approvals.approval-list",
+      "screenKey": "approvals",
+      "moduleKey": "approvals",
+      "title": "Approval Queue",
+      "primitive": "approval-list",
+      "copyKeys": [
+        "approvals.summary",
+        "approvals.approval-list.title"
+      ]
+    },
+    {
+      "key": "audit.audit-feed",
+      "screenKey": "audit",
+      "moduleKey": "audit",
+      "title": "Audit Feed",
+      "primitive": "audit-feed",
+      "copyKeys": [
+        "audit.summary",
+        "audit.audit-feed.title"
+      ]
+    },
+    {
+      "key": "roles.role-list",
+      "screenKey": "roles",
+      "moduleKey": "roles",
+      "title": "Roles",
+      "primitive": "role-list",
+      "copyKeys": [
+        "roles.summary",
+        "roles.role-list.title"
+      ]
+    },
+    {
+      "key": "integrations.integration-list",
+      "screenKey": "integrations",
+      "moduleKey": "integrations",
+      "title": "Integrations",
+      "primitive": "integration-list",
+      "copyKeys": [
+        "integrations.summary",
+        "integrations.integration-list.title"
+      ]
+    },
+    {
+      "key": "notifications.notification-list",
+      "screenKey": "notifications",
+      "moduleKey": "notifications",
+      "title": "Notifications",
+      "primitive": "notification-list",
+      "copyKeys": [
+        "notifications.summary",
+        "notifications.notification-list.title"
+      ]
+    },
+    {
+      "key": "reports.report-list",
+      "screenKey": "reports",
+      "moduleKey": "reports",
+      "title": "Reports",
+      "primitive": "report-list",
+      "copyKeys": [
+        "reports.summary",
+        "reports.report-list.title"
+      ]
+    },
+    {
+      "key": "settings.settings-list",
+      "screenKey": "settings",
+      "moduleKey": "settings",
+      "title": "Settings",
+      "primitive": "settings-list",
+      "copyKeys": [
+        "settings.summary",
+        "settings.settings-list.title"
+      ]
+    },
+    {
+      "key": "dispatch-board.dispatch-flows",
+      "screenKey": "dispatch-board",
+      "moduleKey": "dispatch-board",
+      "title": "Dispatch Flows",
+      "primitive": "workflow-list",
+      "copyKeys": [
+        "dispatch-board.summary",
+        "dispatch-board.dispatch-flows.title"
+      ]
+    },
+    {
+      "key": "dispatch-board.dispatch-orders",
+      "screenKey": "dispatch-board",
+      "moduleKey": "dispatch-board",
+      "title": "Dispatch Orders",
+      "primitive": "entity-table",
+      "copyKeys": [
+        "dispatch-board.summary",
+        "dispatch-board.dispatch-orders.title"
+      ]
+    },
+    {
+      "key": "inventory-readiness.inventory-workflow",
+      "screenKey": "inventory-readiness",
+      "moduleKey": "inventory-readiness",
+      "title": "Inventory Flow",
+      "primitive": "workflow-list",
+      "copyKeys": [
+        "inventory-readiness.summary",
+        "inventory-readiness.inventory-workflow.title"
+      ]
+    },
+    {
+      "key": "inventory-readiness.inventory-table",
+      "screenKey": "inventory-readiness",
+      "moduleKey": "inventory-readiness",
+      "title": "Inventory Items",
+      "primitive": "entity-table",
+      "copyKeys": [
+        "inventory-readiness.summary",
+        "inventory-readiness.inventory-table.title"
+      ]
+    },
+    {
+      "key": "service-ticket-console.service-workflow",
+      "screenKey": "service-ticket-console",
+      "moduleKey": "service-ticket-console",
+      "title": "Service Resolution",
+      "primitive": "workflow-list",
+      "copyKeys": [
+        "service-ticket-console.summary",
+        "service-ticket-console.service-workflow.title"
+      ]
+    },
+    {
+      "key": "service-ticket-console.service-tickets",
+      "screenKey": "service-ticket-console",
+      "moduleKey": "service-ticket-console",
+      "title": "Service Tickets",
+      "primitive": "entity-table",
+      "copyKeys": [
+        "service-ticket-console.summary",
+        "service-ticket-console.service-tickets.title"
+      ]
+    },
+    {
+      "key": "account-operations.account-table",
+      "screenKey": "account-operations",
+      "moduleKey": "account-operations",
+      "title": "Accounts",
+      "primitive": "entity-table",
+      "copyKeys": [
+        "account-operations.summary",
+        "account-operations.account-table.title"
+      ]
+    },
+    {
+      "key": "account-operations.account-reports",
+      "screenKey": "account-operations",
+      "moduleKey": "account-operations",
+      "title": "Account Reports",
+      "primitive": "report-list",
+      "copyKeys": [
+        "account-operations.summary",
+        "account-operations.account-reports.title"
+      ]
+    },
+    {
+      "key": "task-assignment.task-table",
+      "screenKey": "task-assignment",
+      "moduleKey": "task-assignment",
+      "title": "Task Assignments",
+      "primitive": "entity-table",
+      "copyKeys": [
+        "task-assignment.summary",
+        "task-assignment.task-table.title"
+      ]
+    },
+    {
+      "key": "task-assignment.task-flow",
+      "screenKey": "task-assignment",
+      "moduleKey": "task-assignment",
+      "title": "Task Workflow",
+      "primitive": "workflow-list",
+      "copyKeys": [
+        "task-assignment.summary",
+        "task-assignment.task-flow.title"
+      ]
+    }
+  ],
+  "contentModel": [
+    {
+      "key": "approval_request",
+      "entityKey": "approval_request",
+      "label": "Approval Request",
+      "ownership": "governance",
+      "fields": [
+        "Request Type",
+        "Requested By",
+        "Risk Level",
+        "Decision State"
+      ],
+      "notes": [
+        "Captures explicitly gated actions and the justification behind them.",
+        "Tenant scoped by default."
+      ]
+    },
+    {
+      "key": "shipment_order",
+      "entityKey": "shipment_order",
+      "label": "Shipment Order",
+      "ownership": "operations",
+      "fields": [
+        "Order Number",
+        "Service Window",
+        "Status",
+        "Priority"
+      ],
+      "notes": [
+        "Tracks delivery and pickup obligations, timing, and status.",
+        "Tenant scoped by default."
+      ]
+    },
+    {
+      "key": "service_ticket",
+      "entityKey": "service_ticket",
+      "label": "Service Ticket",
+      "ownership": "operations",
+      "fields": [
+        "Ticket Number",
+        "Issue Type",
+        "Requested By",
+        "Resolution State"
+      ],
+      "notes": [
+        "Captures customer-reported work, triage, and resolution state.",
+        "Tenant scoped by default."
+      ]
+    },
+    {
+      "key": "inventory_item",
+      "entityKey": "inventory_item",
+      "label": "Inventory Item",
+      "ownership": "warehouse",
+      "fields": [
+        "Asset Tag",
+        "Current Location",
+        "Readiness State",
+        "Condition"
+      ],
+      "notes": [
+        "Represents equipment, readiness state, and warehouse location.",
+        "Tenant scoped by default."
+      ]
+    },
+    {
+      "key": "account",
+      "entityKey": "account",
+      "label": "Account",
+      "ownership": "customer-ops",
+      "fields": [
+        "Account Name",
+        "Region",
+        "Service Tier",
+        "Status"
+      ],
+      "notes": [
+        "Represents a customer account, service profile, and regional footprint.",
+        "Tenant scoped by default."
+      ]
+    },
+    {
+      "key": "task_assignment",
+      "entityKey": "task_assignment",
+      "label": "Task Assignment",
+      "ownership": "operations",
+      "fields": [
+        "Task Code",
+        "Assigned To",
+        "Due At",
+        "State"
+      ],
+      "notes": [
+        "Assigns operational work to a person or team with due dates and evidence.",
+        "Tenant scoped by default."
+      ]
     }
   ],
   "copyMap": [
     {
       "key": "summary",
-      "text": "Northstar Medical Logistics needs an internal enterprise app built from reusable primitives for Build an internal operations app with dispatch dashboard, service tickets, pickup and delivery workflows, warehouse inventory status, hospital account views, technician task assignments, approvals for urgent replacements, audit logs, role-based access, and reporting. Include admin settings, notification rules, CSV import and export, and future ERP integration support.",
+      "text": "Northstar Medical Logistics needs an internal enterprise app built from reusable modules, domain packs, and typed contracts for Build an internal operations app with dispatch dashboard, service tickets, pickup and delivery workflows, warehouse inventory status, hospital account views, technician task assignments, approvals for urgent replacements, audit logs, role-based access, and reporting. Include admin settings, notification rules, CSV import and export, and future ERP integration support.",
       "location": "application shell header"
     },
     {
@@ -245,25 +756,201 @@
       "location": "overview screen"
     },
     {
-      "key": "report.throughput",
-      "text": "Show workload movement, completion rates, and backlog shape.",
-      "location": "reporting/throughput"
+      "key": "dashboard.summary",
+      "text": "Give operators a live view of workload, approvals, risk, and throughput.",
+      "location": "/dashboard"
     },
     {
-      "key": "report.approval-latency",
-      "text": "Track time-to-decision for gated actions.",
-      "location": "reporting/approval-latency"
+      "key": "entity-workbench.summary",
+      "text": "Manage business entities through typed forms, tables, and detail views.",
+      "location": "/entities"
+    },
+    {
+      "key": "workflow-orchestrator.summary",
+      "text": "Track multi-step operational flows with visible ownership and escalation.",
+      "location": "/workflows"
+    },
+    {
+      "key": "approvals.summary",
+      "text": "Keep irreversible actions behind explicit review and audit events.",
+      "location": "/approvals"
+    },
+    {
+      "key": "audit.summary",
+      "text": "Trace meaningful workflow events and changes across the tenant boundary.",
+      "location": "/audit"
+    },
+    {
+      "key": "roles.summary",
+      "text": "Review least-privilege access and approval scopes by role.",
+      "location": "/roles"
+    },
+    {
+      "key": "integrations.summary",
+      "text": "Make sync boundaries, credential ownership, and failure modes explicit.",
+      "location": "/integrations"
+    },
+    {
+      "key": "notifications.summary",
+      "text": "Configure operator-facing rules and escalation paths.",
+      "location": "/notifications"
+    },
+    {
+      "key": "reports.summary",
+      "text": "Expose operational summaries and trend views for review.",
+      "location": "/reports"
+    },
+    {
+      "key": "settings.summary",
+      "text": "Handle tenant-aware configuration without hard-coding secrets or approvals.",
+      "location": "/settings"
+    },
+    {
+      "key": "dispatch-board.summary",
+      "text": "A dispatch-focused board for delivery, pickup, and field-routing work.",
+      "location": "/dispatch"
+    },
+    {
+      "key": "inventory-readiness.summary",
+      "text": "Show warehouse readiness, cleaning status, and movement events.",
+      "location": "/inventory"
+    },
+    {
+      "key": "service-ticket-console.summary",
+      "text": "Review service request intake, ownership, and field resolution state.",
+      "location": "/service-tickets"
+    },
+    {
+      "key": "account-operations.summary",
+      "text": "Account-level visibility for service history, regions, and risk.",
+      "location": "/accounts"
+    },
+    {
+      "key": "task-assignment.summary",
+      "text": "Track technician and operator assignments with due dates and escalation paths.",
+      "location": "/tasks"
+    },
+    {
+      "key": "dashboard.stats.title",
+      "text": "Operational Stats",
+      "location": "/dashboard#stats"
+    },
+    {
+      "key": "dashboard.workflow-highlights.title",
+      "text": "Workflow Highlights",
+      "location": "/dashboard#workflow-highlights"
+    },
+    {
+      "key": "dashboard.report-highlights.title",
+      "text": "Reporting Highlights",
+      "location": "/dashboard#report-highlights"
+    },
+    {
+      "key": "entity-workbench.entity-table.title",
+      "text": "Entity Tables",
+      "location": "/entities#entity-table"
+    },
+    {
+      "key": "workflow-orchestrator.workflow-list.title",
+      "text": "Workflow Timeline",
+      "location": "/workflows#workflow-list"
+    },
+    {
+      "key": "approvals.approval-list.title",
+      "text": "Approval Queue",
+      "location": "/approvals#approval-list"
+    },
+    {
+      "key": "audit.audit-feed.title",
+      "text": "Audit Feed",
+      "location": "/audit#audit-feed"
+    },
+    {
+      "key": "roles.role-list.title",
+      "text": "Roles",
+      "location": "/roles#role-list"
+    },
+    {
+      "key": "integrations.integration-list.title",
+      "text": "Integrations",
+      "location": "/integrations#integration-list"
+    },
+    {
+      "key": "notifications.notification-list.title",
+      "text": "Notifications",
+      "location": "/notifications#notification-list"
+    },
+    {
+      "key": "reports.report-list.title",
+      "text": "Reports",
+      "location": "/reports#report-list"
+    },
+    {
+      "key": "settings.settings-list.title",
+      "text": "Settings",
+      "location": "/settings#settings-list"
+    },
+    {
+      "key": "dispatch-board.dispatch-flows.title",
+      "text": "Dispatch Flows",
+      "location": "/dispatch#dispatch-flows"
+    },
+    {
+      "key": "dispatch-board.dispatch-orders.title",
+      "text": "Dispatch Orders",
+      "location": "/dispatch#dispatch-orders"
+    },
+    {
+      "key": "inventory-readiness.inventory-workflow.title",
+      "text": "Inventory Flow",
+      "location": "/inventory#inventory-workflow"
+    },
+    {
+      "key": "inventory-readiness.inventory-table.title",
+      "text": "Inventory Items",
+      "location": "/inventory#inventory-table"
+    },
+    {
+      "key": "service-ticket-console.service-workflow.title",
+      "text": "Service Resolution",
+      "location": "/service-tickets#service-workflow"
+    },
+    {
+      "key": "service-ticket-console.service-tickets.title",
+      "text": "Service Tickets",
+      "location": "/service-tickets#service-tickets"
+    },
+    {
+      "key": "account-operations.account-table.title",
+      "text": "Accounts",
+      "location": "/accounts#account-table"
+    },
+    {
+      "key": "account-operations.account-reports.title",
+      "text": "Account Reports",
+      "location": "/accounts#account-reports"
+    },
+    {
+      "key": "task-assignment.task-table.title",
+      "text": "Task Assignments",
+      "location": "/tasks#task-table"
+    },
+    {
+      "key": "task-assignment.task-flow.title",
+      "text": "Task Workflow",
+      "location": "/tasks#task-flow"
     }
   ],
   "figmaAdapter": {
     "enabled": false,
     "mode": "optional",
-    "importContract": "design-handoff-package.v1",
-    "exportContract": "design-handoff-package.v1",
+    "adapterKey": "figma-bridge-adapter",
+    "importContract": "design-handoff-package.v2",
+    "exportContract": "design-handoff-package.v2",
     "notes": [
       "Figma integration is adapter-based and optional.",
       "Generation does not fail when no design adapter is configured.",
-      "Use the token and screen map payloads as the boundary for future Figma MCP work."
+      "Use the token, section, and content model payloads as the boundary for future Figma MCP work."
     ]
   }
 }

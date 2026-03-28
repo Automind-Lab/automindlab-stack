@@ -7,6 +7,7 @@
   "required": [
     "schemaVersion",
     "generatedAt",
+    "compiler",
     "customerProfile",
     "businessDomain",
     "appPurpose",
@@ -15,6 +16,8 @@
     "userRoles",
     "integrations",
     "approvalGates",
+    "moduleSelections",
+    "adapterBindings",
     "assumptions",
     "unresolvedItems",
     "uncertainty",
@@ -23,6 +26,19 @@
   "properties": {
     "schemaVersion": { "type": "string" },
     "generatedAt": { "type": "string" },
+    "compiler": {
+      "type": "object",
+      "required": ["compilerVersion", "specVersion", "targetRuntime", "selectedDomainPackKeys", "selectedModuleKeys", "selectedAdapterKeys", "stageResults"],
+      "properties": {
+        "compilerVersion": { "type": "string" },
+        "specVersion": { "type": "string" },
+        "targetRuntime": { "type": "string" },
+        "selectedDomainPackKeys": { "type": "array", "items": { "type": "string" } },
+        "selectedModuleKeys": { "type": "array", "items": { "type": "string" } },
+        "selectedAdapterKeys": { "type": "array", "items": { "type": "string" } },
+        "stageResults": { "type": "array", "items": { "type": "object" } }
+      }
+    },
     "customerProfile": {
       "type": "object",
       "required": ["name", "slug", "industry", "tenancy", "branding"],
@@ -70,6 +86,14 @@
     "approvalGates": {
       "type": "array",
       "items": { "type": "object", "required": ["key", "name", "trigger"], "properties": { "key": { "type": "string" }, "name": { "type": "string" }, "trigger": { "type": "string" } } }
+    },
+    "moduleSelections": {
+      "type": "array",
+      "items": { "type": "object", "required": ["key", "name", "route", "kind", "source"], "properties": { "key": { "type": "string" }, "name": { "type": "string" }, "route": { "type": "string" }, "kind": { "type": "string" }, "source": { "type": "string" } } }
+    },
+    "adapterBindings": {
+      "type": "array",
+      "items": { "type": "object", "required": ["key", "name", "mode", "status"], "properties": { "key": { "type": "string" }, "name": { "type": "string" }, "mode": { "type": "string" }, "status": { "type": "string" } } }
     },
     "assumptions": { "type": "array", "items": { "type": "string" } },
     "unresolvedItems": { "type": "array", "items": { "type": "string" } },

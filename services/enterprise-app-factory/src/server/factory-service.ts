@@ -1,22 +1,33 @@
 import path from "node:path";
-import { buildDesignHandoff, importDesignHandoff } from "../shared/design-handoff.js";
+import { importDesignHandoff, buildDesignHandoff } from "../shared/design-handoff.js";
+import { ADAPTER_SDK_CATALOG } from "../shared/adapter-sdk.js";
 import { APP_FACTORY_AGENT_REGISTRY } from "../shared/agent-registry.js";
+import { compileEnterpriseApp } from "../shared/compiler.js";
+import { DOMAIN_PACK_CATALOG } from "../shared/domain-packs.js";
 import type {
+  AdapterSdkDefinition,
   AgentRegistry,
   AgentRun,
   AgentRunRequest,
+  CompilerReport,
   DesignImportRequest,
   DesignImportResult,
+  DomainPackSummary,
   EnterpriseAppSpec,
+  EvalSuiteResult,
   GenerationApproval,
   GenerationJob,
   GenerationRequest,
   GenerationLogEntry,
+  GeneratedRuntimeKit,
+  ModuleRegistryEntry,
   OperatorPromptInput,
   ValidationResult,
 } from "../shared/contracts.js";
-import { buildEnterpriseAppSpec } from "../shared/spec-builder.js";
+import { runEnterpriseAppFactoryEvals } from "../shared/eval-harness.js";
+import { MODULE_REGISTRY } from "../shared/module-registry.js";
 import { validateEnterpriseAppSpec, validatePromptInput } from "../shared/spec-validation.js";
+import { buildGeneratedRuntimeKit } from "../shared/runtime-kit.js";
 import { DeterministicCouncilRuntime } from "./agent-runtime.js";
 import { AppFactoryFileStore } from "./file-store.js";
 import { GeneratedAppComposer } from "./generator.js";
@@ -33,8 +44,15 @@ function createJobId(): string {
 export interface ParseResult {
   prompt: OperatorPromptInput;
   spec: EnterpriseAppSpec;
+  compilerReport: CompilerReport;
   validation: ValidationResult;
+  runtimeKit: GeneratedRuntimeKit;
+  evalSuite: EvalSuiteResult;
   designHandoff: ReturnType<typeof buildDesignHandoff>;
+  moduleRegistry: ModuleRegistryEntry[];
+  selectedDomainPacks: DomainPackSummary[];
+  domainPackCatalog: DomainPackSummary[];
+  adapterCatalog: AdapterSdkDefinition[];
 }
 
 export class EnterpriseAppFactoryService {
@@ -56,24 +74,40 @@ export class EnterpriseAppFactoryService {
     await this.ready;
     const promptIssues = validatePromptInput(prompt);
     if (promptIssues.some((issue) => issue.severity === "error")) {
+      const compiled = compileEnterpriseApp(prompt);
       return {
         prompt,
-        spec: buildEnterpriseAppSpec(prompt),
+        spec: compiled.spec,
+        compilerReport: compiled.compilerReport,
         validation: {
           valid: false,
           confidence: "low",
           issues: promptIssues,
           summary: `Prompt has ${promptIssues.length} blocking issue(s).`,
         },
-        designHandoff: buildDesignHandoff(buildEnterpriseAppSpec(prompt)),
+        runtimeKit: compiled.runtimeKit,
+        evalSuite: compiled.evalSuite,
+        designHandoff: compiled.designHandoff,
+        moduleRegistry: compiled.moduleRegistry,
+        selectedDomainPacks: compiled.selectedDomainPacks,
+        domainPackCatalog: compiled.domainPackCatalog,
+        adapterCatalog: compiled.adapterCatalog,
       };
     }
-    const spec = buildEnterpriseAppSpec(prompt);
+    const compiled = compileEnterpriseApp(prompt);
+    const spec = compiled.spec;
     return {
       prompt,
       spec,
+      compilerReport: compiled.compilerReport,
       validation: validateEnterpriseAppSpec(spec),
-      designHandoff: buildDesignHandoff(spec),
+      runtimeKit: compiled.runtimeKit,
+      evalSuite: compiled.evalSuite,
+      designHandoff: compiled.designHandoff,
+      moduleRegistry: compiled.moduleRegistry,
+      selectedDomainPacks: compiled.selectedDomainPacks,
+      domainPackCatalog: compiled.domainPackCatalog,
+      adapterCatalog: compiled.adapterCatalog,
     };
   }
 
@@ -90,6 +124,21 @@ export class EnterpriseAppFactoryService {
   async getAgentRegistry(): Promise<AgentRegistry> {
     await this.ready;
     return APP_FACTORY_AGENT_REGISTRY;
+  }
+
+  async getModuleRegistry(): Promise<ModuleRegistryEntry[]> {
+    await this.ready;
+    return MODULE_REGISTRY;
+  }
+
+  async getDomainPackCatalog(): Promise<DomainPackSummary[]> {
+    await this.ready;
+    return DOMAIN_PACK_CATALOG;
+  }
+
+  async getAdapterCatalog(): Promise<AdapterSdkDefinition[]> {
+    await this.ready;
+    return ADAPTER_SDK_CATALOG;
   }
 
   async listAgentRuns(): Promise<AgentRun[]> {
@@ -133,6 +182,9 @@ export class EnterpriseAppFactoryService {
     await this.ready;
     this.ensureApproval(request.approval);
     const initialValidation = validateEnterpriseAppSpec(request.spec);
+    const runtimeKit = buildGeneratedRuntimeKit(request.spec, request.spec.moduleSelections, request.spec.adapterBindings);
+    const designHandoff = buildDesignHandoff(request.spec, runtimeKit);
+    const evalSuite = runEnterpriseAppFactoryEvals(request.spec, runtimeKit, designHandoff);
     const job: GenerationJob = {
       id: createJobId(),
       status: "queued",
@@ -140,7 +192,10 @@ export class EnterpriseAppFactoryService {
       updatedAt: now(),
       prompt: request.prompt,
       spec: request.spec,
+      compilerReport: request.spec.compiler,
       validation: initialValidation,
+      runtimeKit,
+      evalSuite,
       approval: request.approval,
       artifacts: [],
       verification: [],
@@ -223,7 +278,12 @@ export class EnterpriseAppFactoryService {
         return;
       }
 
-      const composeResult = await this.composer.compose(job.spec, appendLog);
+      const composeResult = await this.composer.compose({
+        spec: job.spec,
+        compilerReport: job.compilerReport,
+        runtimeKit: job.runtimeKit,
+        evalSuite: job.evalSuite,
+      }, appendLog);
       job.workspacePath = composeResult.workspacePath;
       job.artifacts = composeResult.artifacts;
 
@@ -238,7 +298,7 @@ export class EnterpriseAppFactoryService {
         job.failureReason = repaired.verification.failureReason ?? "Generated app verification failed.";
         await appendLog({ stage: "verify", level: "error", message: job.failureReason });
       } else {
-        const packaged = await this.composer.packageWorkspace(job.spec, composeResult.workspacePath, appendLog);
+        const packaged = await this.composer.packageWorkspace(job.spec, composeResult.workspacePath, job.runtimeKit, job.evalSuite, appendLog);
         job.artifacts = [...job.artifacts, packaged.artifact];
         job.handoff = packaged.handoff;
         job.status = "completed";

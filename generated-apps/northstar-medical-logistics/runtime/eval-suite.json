@@ -1,0 +1,103 @@
+{
+  "suiteVersion": "2026-03-28.eval-suite.v2",
+  "overallStatus": "passed",
+  "score": 100,
+  "summary": "Compiler evals passed. Score 100.",
+  "cases": [
+    {
+      "key": "tenant-boundary",
+      "label": "Tenant boundary clarity",
+      "status": "passed",
+      "summary": "Generated apps must keep tenant boundaries explicit.",
+      "details": [
+        "multi-tenant ready with tenant-scoped business entities",
+        "Generated customer apps own their own business records, workflow outcomes, and approval decisions. The factory only owns advisory specs, compiler metadata, job metadata, and generation artifacts."
+      ]
+    },
+    {
+      "key": "approval-coverage",
+      "label": "Approval coverage",
+      "status": "passed",
+      "summary": "Irreversible and bulk actions should remain approval-gated.",
+      "details": [
+        "Urgent Replacement Approval: A workflow requests an urgent replacement, swap, or status override.",
+        "Inventory Disposition Approval: An operator attempts to retire, dispose, or write off tracked equipment.",
+        "Bulk Import Approval: A CSV or integration batch affects multiple tenant-scoped records.",
+        "Role and Permission Change Approval: An admin modifies role definitions, privileged permissions, or approval scopes.",
+        "Urgent replacement approval: Any workflow action classified as Urgent replacement approval.",
+        "Bulk inventory changes: Any workflow action classified as Bulk inventory changes."
+      ]
+    },
+    {
+      "key": "module-coverage",
+      "label": "Module coverage",
+      "status": "passed",
+      "summary": "The generated runtime kit should cover dashboard, data, workflow, governance, and settings surfaces.",
+      "details": [
+        "Operations Dashboard (dashboard)",
+        "Entity Workbench (data)",
+        "Workflow Orchestrator (workflow)",
+        "Approval Center (approval)",
+        "Audit Stream (audit)",
+        "Roles and Access (access)",
+        "Integrations (integration)",
+        "Notifications (notification)",
+        "Reports (reporting)",
+        "Settings (settings)",
+        "Dispatch Board (workflow)",
+        "Inventory Readiness (data)",
+        "Service Ticket Console (workflow)",
+        "Account Operations (data)",
+        "Task Assignment Board (workflow)"
+      ]
+    },
+    {
+      "key": "adapter-boundaries",
+      "label": "Adapter boundaries",
+      "status": "passed",
+      "summary": "Adapters should remain explicit, typed, and operator-reviewable.",
+      "details": [
+        "Design Handoff Adapter: selected",
+        "Figma Bridge Adapter: optional",
+        "Notification Router Adapter: selected",
+        "Identity Provider Adapter: deferred",
+        "CSV Batch Gateway: selected",
+        "ERP Sync SDK: deferred"
+      ]
+    },
+    {
+      "key": "editability",
+      "label": "Human editability",
+      "status": "passed",
+      "summary": "Operators should have obvious post-generation edit surfaces.",
+      "details": [
+        "Structured app spec: src/generated/app-spec.ts",
+        "Runtime kit manifest: src/generated/runtime-kit.ts",
+        "Eval report: src/generated/eval-suite.ts",
+        "Theme and runtime styles: src/styles.css",
+        "Design handoff package: design/design-handoff.json"
+      ]
+    },
+    {
+      "key": "design-handoff",
+      "label": "Design handoff completeness",
+      "status": "passed",
+      "summary": "Design export should contain tokens, screen inventory, and content model artifacts.",
+      "details": [
+        "tokens=11",
+        "screens=15",
+        "content-model=6"
+      ]
+    },
+    {
+      "key": "uncertainty-visible",
+      "label": "Uncertainty visibility",
+      "status": "passed",
+      "summary": "The compiler must keep assumptions and missing context visible.",
+      "details": [
+        "unresolved=6",
+        "missing-context=6"
+      ]
+    }
+  ]
+}

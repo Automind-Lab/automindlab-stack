@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automindlab.dev/schemas/enterprise-app-runtime-kit.schema.json",
+  "title": "Enterprise App Runtime Kit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kitVersion", "compilerVersion", "shell", "moduleSelections", "pages", "adapters", "editableFiles", "smokeChecks"],
+  "properties": {
+    "kitVersion": { "type": "string" },
+    "compilerVersion": { "type": "string" },
+    "shell": {
+      "type": "object",
+      "required": ["homePageKey", "navigationStyle", "density", "tenantBanner", "approvalBanner"],
+      "properties": {
+        "homePageKey": { "type": "string" },
+        "navigationStyle": { "type": "string" },
+        "density": { "type": "string" },
+        "tenantBanner": { "type": "string" },
+        "approvalBanner": { "type": "string" }
+      }
+    },
+    "moduleSelections": { "type": "array", "items": { "type": "object" } },
+    "pages": { "type": "array", "items": { "type": "object" } },
+    "adapters": { "type": "array", "items": { "type": "object" } },
+    "editableFiles": { "type": "array", "items": { "type": "object" } },
+    "smokeChecks": { "type": "array", "items": { "type": "string" } }
+  }
+}

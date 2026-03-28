@@ -1,0 +1,22 @@
+{
+  "suiteVersion": "2026-03-28.eval-suite.v2",
+  "overallStatus": "warning",
+  "score": 88,
+  "summary": "Compiler evals passed with warnings. Score 88.",
+  "cases": [
+    {
+      "key": "tenant-boundary",
+      "label": "Tenant boundary clarity",
+      "status": "passed",
+      "summary": "Generated apps keep tenant boundaries explicit.",
+      "details": ["multi-tenant ready with tenant-scoped business entities"]
+    },
+    {
+      "key": "adapter-boundaries",
+      "label": "Adapter boundaries",
+      "status": "warning",
+      "summary": "At least one adapter remains deferred pending customer-specific configuration.",
+      "details": ["ERP Sync SDK is future-ready."]
+    }
+  ]
+}

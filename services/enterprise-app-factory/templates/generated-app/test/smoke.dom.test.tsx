@@ -7,7 +7,7 @@ import App from "../src/App.js";
 
 test("smoke renders key generated routes", () => {
   render(<App />);
-  expect(screen.getByText("Operational workspace built from reusable primitives.")).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: /workflow highlights/i })).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: /reports/i })).toBeInTheDocument();
+  expect(screen.getByText(/Generated Runtime Kit/i)).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: /Runtime Kit/i })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: /Compiler and Eval/i })).toBeInTheDocument();
 });

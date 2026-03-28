@@ -1,10 +1,24 @@
 {
-  "schemaVersion": "2026-03-27.v1",
-  "generatedAt": "2026-03-27T21:00:00.000Z",
+  "schemaVersion": "2026-03-28.spec.v2",
+  "generatedAt": "2026-03-28T06:00:00.000Z",
+  "compiler": {
+    "compilerVersion": "2026-03-28.compiler.v2",
+    "specVersion": "2026-03-28.spec.v2",
+    "targetRuntime": "generated-runtime-kit.v2",
+    "selectedDomainPackKeys": ["core-operations", "healthcare-logistics", "field-service"],
+    "selectedModuleKeys": ["dashboard", "entity-workbench", "workflow-orchestrator", "dispatch-board", "inventory-readiness", "service-ticket-console", "task-assignment", "approvals", "audit", "reports", "settings"],
+    "selectedAdapterKeys": ["design-handoff-adapter", "figma-bridge-adapter", "csv-batch-gateway", "erp-sync-sdk", "identity-provider-adapter"],
+    "stageResults": [
+      { "key": "normalize", "name": "Normalize Prompt", "status": "completed", "summary": "Normalized operator prompt.", "selectedKeys": ["northstar-medical-logistics"], "warnings": [] }
+    ],
+    "notes": ["The compiler keeps uncertainty and deferred integrations visible."]
+  },
   "customerProfile": {
     "name": "Northstar Medical Logistics",
     "slug": "northstar-medical-logistics",
+    "businessSummary": "Coordinates medical equipment delivery, pickup, cleaning status, warehouse movement, and hospital service requests across multiple regions.",
     "industry": "Healthcare Logistics",
+    "deploymentEnvironment": "multi-environment",
     "tenancy": "multi-tenant ready with tenant-scoped business entities",
     "branding": {
       "brandName": "Northstar Medical Logistics",
@@ -21,49 +35,102 @@
   },
   "businessDomain": "Healthcare Logistics operations",
   "appPurpose": "Internal operations app for dispatch, service tickets, inventory, approvals, and reporting.",
+  "summary": "Northstar Medical Logistics needs an internal enterprise app built from reusable modules, domain packs, and typed contracts for dispatch, service, approvals, and reporting.",
+  "identityAndAccess": {
+    "authStrategy": "Enterprise SSO or local admin bootstrap with later IdP cutover",
+    "tenantIsolation": "Tenant-scoped rows, tenant-aware APIs, and no cross-tenant data access by default",
+    "leastPrivilegeNotes": ["Operators get only the modules required for their responsibilities", "Approval rights are separated from general operational access"],
+    "approvalPolicy": "Irreversible workflow actions require explicit approval plus audit capture"
+  },
   "coreWorkflows": [
     {
       "key": "dispatch",
       "name": "Dispatch and Fulfillment",
+      "description": "Coordinate service requests, dispatch decisions, and execution visibility.",
+      "triggers": ["New customer request"],
+      "actors": ["dispatch_coordinator", "technician", "operations_manager"],
       "steps": [
-        { "key": "intake", "label": "Intake" },
-        { "key": "assign", "label": "Assign" }
-      ]
+        { "key": "intake", "label": "Intake", "ownerRoles": ["dispatch_coordinator"], "action": "Create order or service request", "auditEvent": "workflow.dispatch.intake" }
+      ],
+      "automationHints": ["Auto-prioritize at-risk orders"]
     }
   ],
   "businessEntities": [
     {
       "key": "inventory_item",
       "label": "Inventory Item",
+      "description": "Represents equipment, readiness state, and warehouse location.",
+      "ownership": "warehouse",
+      "tenantScoped": true,
+      "operations": ["create", "read", "update", "transfer", "mark-ready", "retire"],
+      "relatedEntities": ["shipment_order"],
       "fields": [
-        { "key": "assetTag", "label": "Asset Tag", "type": "string" }
+        { "key": "assetTag", "label": "Asset Tag", "type": "string", "required": true, "description": "Equipment identifier." }
       ]
     }
   ],
   "userRoles": [
-    { "key": "platform_admin", "name": "Platform Admin" },
-    { "key": "dispatch_coordinator", "name": "Dispatch Coordinator" }
+    { "key": "platform_admin", "name": "Platform Admin", "description": "Configures the platform.", "inheritsFrom": [], "visibleModules": ["dashboard"], "responsibilities": ["Manage settings"], "approvalScope": ["rbac"] },
+    { "key": "dispatch_coordinator", "name": "Dispatch Coordinator", "description": "Coordinates field work.", "inheritsFrom": [], "visibleModules": ["dispatch-board"], "responsibilities": ["Assign work"], "approvalScope": [] }
+  ],
+  "permissions": [
+    { "roleKey": "platform_admin", "resource": "inventory_item", "actions": ["create", "read", "update"], "approvalRequiredFor": ["retire"] }
   ],
   "integrations": [
-    { "key": "csv_exchange", "name": "CSV Exchange", "mode": "active" },
-    { "key": "erp_sync", "name": "ERP Sync", "mode": "future-ready" }
+    { "key": "csv_exchange", "name": "CSV Exchange", "category": "files", "mode": "active", "direction": "bidirectional", "notes": "Bulk import and export remain approval-gated." },
+    { "key": "erp_sync", "name": "ERP Sync", "category": "erp", "mode": "future-ready", "direction": "bidirectional", "notes": "Contract-first ERP boundary." }
+  ],
+  "complianceRequirements": [
+    { "key": "audit-evidence", "name": "Audit Evidence", "rationale": "Meaningful workflow events must stay attributable.", "controls": ["Append-only audit stream"] }
+  ],
+  "navigation": [
+    { "key": "dashboard", "label": "Operations Dashboard", "route": "/dashboard", "moduleKey": "dashboard", "requiredRoles": ["platform_admin"] }
+  ],
+  "uiModules": [
+    { "key": "dashboard", "name": "Operations Dashboard", "purpose": "Give operators a live view of workload.", "route": "/dashboard", "primitive": "kpi-ribbon-and-ops-board", "roles": ["platform_admin"] }
+  ],
+  "moduleSelections": [
+    { "key": "dashboard", "name": "Operations Dashboard", "route": "/dashboard", "kind": "dashboard", "source": "base", "reason": "Core compiler coverage.", "roles": ["platform_admin"], "domainTags": ["core"], "editableSurfaces": ["metric definitions"] }
+  ],
+  "adapterBindings": [
+    { "key": "design-handoff-adapter", "name": "Design Handoff Adapter", "mode": "active", "status": "selected", "reason": "Exports the design package.", "reviewNotes": ["Generation does not depend on Figma."] }
+  ],
+  "dataModel": {
+    "tables": [{ "name": "inventory_item", "purpose": "Warehouse asset state", "owner": "warehouse", "columns": ["assetTag"] }],
+    "relationships": [{ "from": "inventory_item", "to": "shipment_order", "relationship": "references" }]
+  },
+  "apiDraft": {
+    "endpoints": [{ "method": "GET", "path": "/api/inventory_item", "purpose": "List inventory items", "roles": ["platform_admin"] }]
+  },
+  "automationOpportunities": [
+    { "key": "sla-escalation", "name": "SLA Escalation", "trigger": "Workflow step exceeds its target window", "outcome": "Create an escalation task", "humanReview": "Manager confirms next action" }
   ],
   "approvalGates": [
-    { "key": "urgent-replacement", "name": "Urgent Replacement Approval", "trigger": "Urgent replacement request" }
+    { "key": "urgent-replacement", "name": "Urgent Replacement Approval", "description": "Review urgent replacements.", "risk": "high", "trigger": "Urgent replacement request", "requiredRoles": ["operations_manager", "approver"], "auditEvent": "approval.urgent_replacement.reviewed" }
   ],
-  "assumptions": [
-    "Generated apps own their own business records."
+  "notificationRules": [
+    { "key": "approval-needed", "name": "Approval Needed", "trigger": "A gated action enters pending approval", "channel": "email-or-in-app", "escalation": "Escalate after SLA breach" }
   ],
-  "unresolvedItems": [
-    "Select the customer identity provider."
+  "reportingViews": [
+    { "key": "throughput", "name": "Operational Throughput", "purpose": "Show workload movement.", "cadence": "daily" }
   ],
+  "settingsSections": [
+    { "key": "tenant-config", "name": "Tenant Configuration", "purpose": "Manage branding and workflow policies.", "owners": ["platform_admin"] }
+  ],
+  "assumptions": ["Generated apps own their own business records."],
+  "unresolvedItems": ["Select the customer identity provider."],
   "uncertainty": {
     "level": "medium",
-    "reasons": ["ERP details remain unresolved."],
-    "missingContext": ["Identity provider", "Final branding assets"]
+    "reasons": ["ERP and identity details remain unresolved."],
+    "missingContext": ["Identity provider", "Final branding assets"],
+    "operatorQuestions": ["Which identity provider will be used?"]
   },
   "blueprint": {
     "layout": "Three-zone operator workspace",
+    "routeGroups": ["/dashboard"],
+    "reusablePrimitives": ["kpi-ribbon-and-ops-board"],
+    "backgroundOperations": ["generation job tracking"],
+    "observability": ["file-backed job logs"],
     "persistenceOwnership": "Generated customer apps own their own business records, workflow outcomes, and approval decisions."
   }
 }

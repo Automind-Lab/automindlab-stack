@@ -29,6 +29,9 @@ test("parse endpoint returns spec preview", async () => {
   expect(response.status).toBe(200);
   expect(response.body.spec.customerProfile.slug).toBe("northstar-medical-logistics");
   expect(response.body.validation.valid).toBe(true);
+  expect(response.body.compilerReport.compilerVersion).toContain("compiler");
+  expect(response.body.runtimeKit.kitVersion).toContain("runtime-kit");
+  expect(response.body.evalSuite.score).toBeGreaterThan(0);
 });
 
 test("agent registry endpoint returns bounded council capabilities", async () => {
@@ -36,6 +39,21 @@ test("agent registry endpoint returns bounded council capabilities", async () =>
   expect(response.status).toBe(200);
   expect(response.body.providerModes).toContain("deterministic");
   expect(response.body.capabilityMatrix.some((entry: { key: string }) => entry.key === "job-by-job-subdelegation")).toBe(true);
+});
+
+test("compiler catalog endpoints expose modules, packs, and adapters", async () => {
+  const [modules, packs, adapters] = await Promise.all([
+    request(app).get("/api/factory/module-registry"),
+    request(app).get("/api/factory/domain-packs"),
+    request(app).get("/api/factory/adapters"),
+  ]);
+
+  expect(modules.status).toBe(200);
+  expect(packs.status).toBe(200);
+  expect(adapters.status).toBe(200);
+  expect(modules.body.some((entry: { key: string }) => entry.key === "dashboard")).toBe(true);
+  expect(packs.body.some((entry: { key: string }) => entry.key === "core-operations")).toBe(true);
+  expect(adapters.body.some((entry: { key: string }) => entry.key === "design-handoff-adapter")).toBe(true);
 });
 
 test("agent run endpoint returns a nested council review", async () => {

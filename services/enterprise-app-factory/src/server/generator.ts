@@ -6,10 +6,13 @@ import archiver from "archiver";
 import { buildDesignHandoff } from "../shared/design-handoff.js";
 import { slugify } from "../shared/spec-builder.js";
 import type {
+  CompilerReport,
   DesignHandoffPackage,
   EnterpriseAppSpec,
+  EvalSuiteResult,
   GenerationArtifact,
   GenerationLogEntry,
+  GeneratedRuntimeKit,
   OperatorHandoff,
   RepairSummary,
   VerificationStepResult,
@@ -97,6 +100,13 @@ export interface ComposeResult {
   designHandoff: DesignHandoffPackage;
 }
 
+export interface ComposeInput {
+  spec: EnterpriseAppSpec;
+  compilerReport: CompilerReport;
+  runtimeKit: GeneratedRuntimeKit;
+  evalSuite: EvalSuiteResult;
+}
+
 export interface VerificationOutcome {
   steps: VerificationStepResult[];
   passed: boolean;
@@ -110,12 +120,13 @@ export class GeneratedAppComposer {
   ) {}
 
   async compose(
-    spec: EnterpriseAppSpec,
+    input: ComposeInput,
     log: (entry: Omit<GenerationLogEntry, "at">) => Promise<void>,
   ): Promise<ComposeResult> {
+    const { spec, compilerReport, runtimeKit, evalSuite } = input;
     const appSlug = slugify(spec.customerProfile.name);
     const workspacePath = path.join(this.generatedRoot, appSlug);
-    const designHandoff = buildDesignHandoff(spec);
+    const designHandoff = buildDesignHandoff(spec, runtimeKit);
     const replacements = {
       "__APP_NAME__": spec.customerProfile.name,
       "__APP_SLUG__": appSlug,
@@ -132,9 +143,25 @@ export class GeneratedAppComposer {
 
     await fs.mkdir(path.join(workspacePath, "design"), { recursive: true });
     await fs.mkdir(path.join(workspacePath, "docs"), { recursive: true });
+    await fs.mkdir(path.join(workspacePath, "runtime"), { recursive: true });
     await fs.writeFile(
       path.join(workspacePath, "src", "generated", "app-spec.ts"),
       `import type { GeneratedAppSpec } from "../types.js";\n\nexport const appSpec: GeneratedAppSpec = ${JSON.stringify(spec, null, 2)};\n`,
+      "utf8",
+    );
+    await fs.writeFile(
+      path.join(workspacePath, "src", "generated", "runtime-kit.ts"),
+      `import type { GeneratedRuntimeKitManifest } from "../types.js";\n\nexport const runtimeKit: GeneratedRuntimeKitManifest = ${JSON.stringify(runtimeKit, null, 2)};\n`,
+      "utf8",
+    );
+    await fs.writeFile(
+      path.join(workspacePath, "src", "generated", "eval-suite.ts"),
+      `import type { GeneratedEvalSuite } from "../types.js";\n\nexport const evalSuite: GeneratedEvalSuite = ${JSON.stringify(evalSuite, null, 2)};\n`,
+      "utf8",
+    );
+    await fs.writeFile(
+      path.join(workspacePath, "src", "generated", "compiler-report.ts"),
+      `import type { GeneratedCompilerReport } from "../types.js";\n\nexport const compilerReport: GeneratedCompilerReport = ${JSON.stringify(compilerReport, null, 2)};\n`,
       "utf8",
     );
     await fs.writeFile(
@@ -153,13 +180,62 @@ export class GeneratedAppComposer {
       "utf8",
     );
     await fs.writeFile(
+      path.join(workspacePath, "design", "content-model.json"),
+      `${JSON.stringify(designHandoff.contentModel, null, 2)}\n`,
+      "utf8",
+    );
+    await fs.writeFile(
+      path.join(workspacePath, "runtime", "runtime-kit.json"),
+      `${JSON.stringify(runtimeKit, null, 2)}\n`,
+      "utf8",
+    );
+    await fs.writeFile(
+      path.join(workspacePath, "runtime", "eval-suite.json"),
+      `${JSON.stringify(evalSuite, null, 2)}\n`,
+      "utf8",
+    );
+    await fs.writeFile(
+      path.join(workspacePath, "runtime", "compiler-report.json"),
+      `${JSON.stringify(compilerReport, null, 2)}\n`,
+      "utf8",
+    );
+    await fs.writeFile(
       path.join(workspacePath, "factory-manifest.json"),
-      `${JSON.stringify({ generatedAt: new Date().toISOString(), specVersion: spec.schemaVersion, appSlug, designPackage: "design/design-handoff.json" }, null, 2)}\n`,
+      `${JSON.stringify({
+        generatedAt: new Date().toISOString(),
+        specVersion: spec.schemaVersion,
+        compilerVersion: compilerReport.compilerVersion,
+        runtimeKitVersion: runtimeKit.kitVersion,
+        evalSuiteVersion: evalSuite.suiteVersion,
+        appSlug,
+        designPackage: "design/design-handoff.json",
+        runtimeKit: "runtime/runtime-kit.json",
+      }, null, 2)}\n`,
       "utf8",
     );
     await fs.writeFile(
       path.join(workspacePath, "docs", "ARCHITECTURE.md"),
-      `# ${spec.customerProfile.name} Architecture\n\n${spec.summary}\n\n## Persistence ownership\n\n${spec.blueprint.persistenceOwnership}\n`,
+      [
+        `# ${spec.customerProfile.name} Architecture`,
+        "",
+        spec.summary,
+        "",
+        "## Compiler",
+        "",
+        `- Compiler version: ${compilerReport.compilerVersion}`,
+        `- Runtime target: ${compilerReport.targetRuntime}`,
+        `- Domain packs: ${compilerReport.selectedDomainPackKeys.join(", ")}`,
+        `- Modules: ${compilerReport.selectedModuleKeys.join(", ")}`,
+        `- Adapters: ${compilerReport.selectedAdapterKeys.join(", ")}`,
+        "",
+        "## Persistence ownership",
+        "",
+        spec.blueprint.persistenceOwnership,
+        "",
+        "## Eval summary",
+        "",
+        `${evalSuite.summary}`,
+      ].join("\n"),
       "utf8",
     );
     await fs.writeFile(
@@ -170,9 +246,28 @@ export class GeneratedAppComposer {
         "Change the generated app through these files:",
         "",
         "- `src/generated/app-spec.ts` for structured spec updates",
+        "- `src/generated/runtime-kit.ts` for page and widget composition",
+        "- `src/generated/eval-suite.ts` for compiler eval evidence",
         "- `design/design-handoff.json` for design token and component inventory export",
         "- `src/styles.css` for runtime theme refinements",
         "- `docs/ARCHITECTURE.md` to review ownership and approval boundaries",
+      ].join("\n"),
+      "utf8",
+    );
+    await fs.writeFile(
+      path.join(workspacePath, "docs", "RUNTIME_KIT.md"),
+      [
+        `# ${spec.customerProfile.name} Runtime Kit`,
+        "",
+        `Runtime kit version: ${runtimeKit.kitVersion}`,
+        "",
+        "## Pages",
+        "",
+        ...runtimeKit.pages.map((page) => `- ${page.title} (${page.route})`),
+        "",
+        "## Editable files",
+        "",
+        ...runtimeKit.editableFiles.map((file) => `- ${file.label}: ${file.path}`),
       ].join("\n"),
       "utf8",
     );
@@ -184,6 +279,8 @@ export class GeneratedAppComposer {
       artifacts: [
         { key: "workspace", type: "workspace", path: workspacePath, label: "Generated workspace" },
         { key: "design-handoff", type: "design", path: path.join(workspacePath, "design", "design-handoff.json"), label: "Design handoff package", downloadable: true, downloadName: `${appSlug}-design-handoff.json` },
+        { key: "runtime-kit", type: "runtime-kit", path: path.join(workspacePath, "runtime", "runtime-kit.json"), label: "Generated runtime kit", downloadable: true, downloadName: `${appSlug}-runtime-kit.json` },
+        { key: "eval-suite", type: "eval", path: path.join(workspacePath, "runtime", "eval-suite.json"), label: "Compiler eval suite", downloadable: true, downloadName: `${appSlug}-eval-suite.json` },
         { key: "customization-guide", type: "docs", path: path.join(workspacePath, "docs", "CUSTOMIZATION.md"), label: "Customization guide", downloadable: true, downloadName: `${appSlug}-customization.md` },
         { key: "factory-manifest", type: "manifest", path: path.join(workspacePath, "factory-manifest.json"), label: "Factory manifest", downloadable: true, downloadName: `${appSlug}-factory-manifest.json` },
       ],
@@ -263,6 +360,8 @@ export class GeneratedAppComposer {
   async packageWorkspace(
     spec: EnterpriseAppSpec,
     workspacePath: string,
+    runtimeKit: GeneratedRuntimeKit,
+    evalSuite: EvalSuiteResult,
     log: (entry: Omit<GenerationLogEntry, "at">) => Promise<void>,
   ): Promise<{ artifact: GenerationArtifact; handoff: OperatorHandoff }> {
     const appSlug = slugify(spec.customerProfile.name);
@@ -280,7 +379,7 @@ export class GeneratedAppComposer {
         downloadable: true,
         downloadName: path.basename(archivePath),
       },
-      handoff: this.buildOperatorHandoff(spec, workspacePath, archivePath),
+      handoff: this.buildOperatorHandoff(spec, workspacePath, archivePath, runtimeKit, evalSuite),
     };
   }
 
@@ -308,6 +407,8 @@ export class GeneratedAppComposer {
     spec: EnterpriseAppSpec,
     workspacePath: string,
     archivePath: string,
+    runtimeKit: GeneratedRuntimeKit,
+    evalSuite: EvalSuiteResult,
   ): OperatorHandoff {
     return {
       startupInstructions: [
@@ -332,14 +433,22 @@ export class GeneratedAppComposer {
       ],
       customizationAreas: [
         { label: "Structured app spec", path: path.join(workspacePath, "src", "generated", "app-spec.ts") },
+        { label: "Runtime kit manifest", path: path.join(workspacePath, "src", "generated", "runtime-kit.ts") },
         { label: "Theme and runtime styles", path: path.join(workspacePath, "src", "styles.css") },
         { label: "Design handoff package", path: path.join(workspacePath, "design", "design-handoff.json") },
         { label: "Customization guide", path: path.join(workspacePath, "docs", "CUSTOMIZATION.md") },
       ],
+      runtimeKitHighlights: [
+        `Pages: ${runtimeKit.pages.map((page) => page.title).join(", ")}`,
+        `Eval score: ${evalSuite.score}`,
+        `Editable files: ${runtimeKit.editableFiles.map((file) => file.path).join(", ")}`,
+      ],
+      adapterReviewAreas: spec.adapterBindings.map((binding) => `${binding.name}: ${binding.status}`),
       approvalReviewAreas: spec.approvalGates.map((gate) => `${gate.name}: ${gate.trigger}`),
       testingChecklist: [
         "Open the dashboard and confirm navigation renders all expected modules.",
         "Inspect at least one entity screen, one workflow screen, and the approvals screen.",
+        "Review the runtime kit and eval suite artifacts before deeper customization.",
         "Run `npm run lint`, `npm run typecheck`, `npm run test`, `npm run smoke`, and `npm run build` after customization changes.",
       ],
     };

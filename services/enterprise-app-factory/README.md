@@ -5,10 +5,10 @@ This service adds a constrained internal builder surface to `automindlab-stack`.
 It gives operators a practical path to:
 
 - intake a customer application request
-- translate the prompt into a typed structured spec
+- compile the prompt into a versioned typed spec using reusable domain packs, module registry entries, and adapter bindings
 - validate assumptions, conflicts, risks, and approval gates
 - run a bounded council review with typed nested delegation
-- generate a customer-specific application workspace from reusable primitives
+- generate a customer-specific application workspace plus runtime kit and eval artifacts from reusable primitives
 - verify the generated workspace with install, lint, typecheck, test, smoke, and build steps
 - package the verified workspace into a downloadable archive with startup and test instructions
 - export design-handoff artifacts without hard-coupling runtime success to Figma
@@ -44,7 +44,7 @@ npm run verify:sample
 
 ## Key directories
 
-- `src/shared/` typed contracts, parser, validator, and design handoff builders
+- `src/shared/` typed contracts, compiler, module registry, domain packs, adapter SDK metadata, validator, runtime kit, eval harness, and design handoff builders
 - `src/server/` API routes, file-backed job store, bounded council runtime, generation pipeline, and CLI
 - `src/client/` operator console UI
 - `templates/generated-app/` reusable generated app runtime copied into customer workspaces

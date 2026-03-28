@@ -4,31 +4,40 @@
   "title": "Enterprise App Design Handoff",
   "type": "object",
   "additionalProperties": false,
-  "required": ["generatedAt", "themeConfig", "tokens", "componentManifest", "screenMap", "copyMap", "figmaAdapter"],
+  "required": ["generatedAt", "themeConfig", "tokens", "tokenCollections", "themeVariables", "componentManifest", "screenMap", "pageSections", "contentModel", "copyMap", "figmaAdapter"],
   "properties": {
     "generatedAt": { "type": "string" },
     "themeConfig": {
       "type": "object",
-      "required": ["brandName", "primaryColor", "secondaryColor", "accentColor", "surfaceColor", "canvasColor"],
+      "required": ["brandName", "primaryColor", "secondaryColor", "accentColor", "surfaceColor", "canvasColor", "headingFont", "bodyFont", "density", "logoTreatment"],
       "properties": {
         "brandName": { "type": "string" },
         "primaryColor": { "type": "string" },
         "secondaryColor": { "type": "string" },
         "accentColor": { "type": "string" },
         "surfaceColor": { "type": "string" },
-        "canvasColor": { "type": "string" }
+        "canvasColor": { "type": "string" },
+        "headingFont": { "type": "string" },
+        "bodyFont": { "type": "string" },
+        "density": { "type": "string" },
+        "logoTreatment": { "type": "string" }
       }
     },
     "tokens": { "type": "array", "items": { "type": "object" } },
+    "tokenCollections": { "type": "array", "items": { "type": "object" } },
+    "themeVariables": { "type": "array", "items": { "type": "object" } },
     "componentManifest": { "type": "array", "items": { "type": "object" } },
     "screenMap": { "type": "array", "items": { "type": "object" } },
+    "pageSections": { "type": "array", "items": { "type": "object" } },
+    "contentModel": { "type": "array", "items": { "type": "object" } },
     "copyMap": { "type": "array", "items": { "type": "object" } },
     "figmaAdapter": {
       "type": "object",
-      "required": ["enabled", "mode", "importContract", "exportContract"],
+      "required": ["enabled", "mode", "adapterKey", "importContract", "exportContract"],
       "properties": {
         "enabled": { "type": "boolean" },
         "mode": { "type": "string" },
+        "adapterKey": { "type": "string" },
         "importContract": { "type": "string" },
         "exportContract": { "type": "string" }
       }

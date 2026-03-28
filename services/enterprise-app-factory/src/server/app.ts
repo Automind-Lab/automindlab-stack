@@ -102,6 +102,30 @@ app.get("/api/factory/agent-registry", async (_request, response, next) => {
   }
 });
 
+app.get("/api/factory/module-registry", async (_request, response, next) => {
+  try {
+    response.json(await service.getModuleRegistry());
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get("/api/factory/domain-packs", async (_request, response, next) => {
+  try {
+    response.json(await service.getDomainPackCatalog());
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get("/api/factory/adapters", async (_request, response, next) => {
+  try {
+    response.json(await service.getAdapterCatalog());
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.get("/api/factory/agent-runs", async (_request, response, next) => {
   try {
     response.json(await service.listAgentRuns());

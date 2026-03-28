@@ -1,11 +1,11 @@
 # Work In Progress
 
-Last updated: 2026-03-28 02:31 UTC
+Last updated: 2026-03-28 06:37 UTC
 
 ## Current focus
 
-- Active mission: hold the expanded Enterprise App Factory steady on `codex/enterprise-app-factory` now that the bounded council runtime, downloadable package flow, and ready-to-test operator handoff are implemented and verified.
-- Why now: this branch now contains a second complete vertical slice, so the highest-value work is preserving truthful evidence about what is supported, what is intentionally constrained, and what a future live-model tranche would still need.
+- Active mission: hold the upgraded Enterprise App Factory steady on `codex/enterprise-app-factory-compiler` now that the versioned compiler, registry layers, runtime kit, eval harness, and stronger design handoff are implemented and verified.
+- Why now: this branch now contains the next production-worthy compiler slice, so the highest-value work is preserving truthful evidence about what is shipped, what remains adapter- or contract-only, and what future expansion paths still need implementation.
 - Owner paths in play:
   - `AGENTS.md`
   - `README.md`
@@ -21,15 +21,17 @@ Last updated: 2026-03-28 02:31 UTC
 ## Current work packet
 
 - preserve the shipped operator console, API package, generated-app template, council runtime, schemas/examples, and sample workspace as the baseline
+- preserve the shipped versioned compiler, stage metadata, and operator-visible outputs as the new baseline
+- preserve the reusable module registry, domain-pack system, adapter SDK metadata, eval harness, and generated runtime-kit manifest
 - keep the repo-native ownership line explicit: factory owns specs/council runs/jobs/artifacts, generated apps own business records and approval outcomes
 - keep the capability matrix honest about bounded nested delegation versus full Codex parity
-- leave the download archive path and handoff surfaces stable for immediate testing
+- leave the download archive path and handoff surfaces stable while expanding what gets generated and verified
 
 ## Next milestone
 
-- optional review packaging on `codex/enterprise-app-factory`
-- optional deeper live-model provider work, richer repair heuristics, or broader domain packs if requested
-- otherwise preserve the current verified state as the branch baseline
+- optional review packaging on `codex/enterprise-app-factory-compiler`
+- optional broader domain packs, deeper adapter implementations, or richer eval coverage in a follow-on pass
+- otherwise preserve the current verified compiler slice as the branch baseline
 
 ## Risks and watchouts
 
@@ -45,3 +47,5 @@ Last updated: 2026-03-28 02:31 UTC
 - do not imply full Codex parity unless the implemented capability is actually present and verified
 - keep any council/agent sub-delegation policy constrained, typed, and operator-visible rather than unconstrained autonomy
 - do not claim full multi-OS proof beyond Windows until macOS and Linux verification evidence exists
+- do not introduce a parallel compiler architecture when the existing service/package/contracts can be extended in place
+- do not let module registries or domain packs become a loophole for unsafe or unvalidated generated behavior

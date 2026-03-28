@@ -11,5 +11,8 @@ test("buildEnterpriseAppSpec creates a constrained enterprise spec", () => {
   expect(spec.userRoles.some((role) => role.key === "dispatch_coordinator")).toBe(true);
   expect(spec.approvalGates.some((gate) => gate.key === "urgent-replacement")).toBe(true);
   expect(spec.integrations.some((integration) => integration.key === "erp_sync")).toBe(true);
+  expect(spec.compiler.compilerVersion).toContain("compiler");
+  expect(spec.moduleSelections.length).toBeGreaterThan(5);
+  expect(spec.adapterBindings.some((binding) => binding.key === "design-handoff-adapter")).toBe(true);
   expect(validation.valid).toBe(true);
 });

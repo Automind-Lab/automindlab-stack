@@ -233,6 +233,25 @@ textarea {
   gap: 14px;
 }
 
+.stage-stack {
+  display: grid;
+  gap: 12px;
+}
+
+.stage-card {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.stage-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+}
+
 .entity,
 .workflow,
 .preview-shell,
@@ -336,6 +355,10 @@ textarea {
 
 .status-risk {
   color: var(--danger);
+}
+
+.status-muted {
+  color: var(--muted);
 }
 
 .error-banner {

@@ -1,0 +1,39 @@
+{
+  "kitVersion": "2026-03-28.runtime-kit.v2",
+  "compilerVersion": "2026-03-28.compiler.v2",
+  "shell": {
+    "homePageKey": "dashboard",
+    "navigationStyle": "left-rail with route-backed operational modules",
+    "density": "balanced",
+    "tenantBanner": "Generated apps remain tenant-aware and own downstream business persistence after deployment.",
+    "approvalBanner": "Irreversible actions stay explicit and approval-gated in the generated runtime."
+  },
+  "moduleSelections": [
+    { "key": "dashboard", "name": "Operations Dashboard", "route": "/dashboard", "kind": "dashboard", "source": "base" }
+  ],
+  "pages": [
+    {
+      "key": "dashboard",
+      "title": "Operations Dashboard",
+      "route": "/dashboard",
+      "moduleKey": "dashboard",
+      "layout": "kpi-ribbon-and-ops-board",
+      "summary": "Show workload, approvals, and throughput at a glance.",
+      "roles": ["platform_admin"],
+      "widgets": [
+        { "key": "stats", "title": "Operational Stats", "kind": "stat-grid", "source": "spec.summary", "description": "Summarize entities, workflows, approvals, and integrations." }
+      ],
+      "emptyState": "No live dashboard data is configured yet.",
+      "approvalHints": []
+    }
+  ],
+  "adapters": [
+    { "key": "design-handoff-adapter", "name": "Design Handoff Adapter", "mode": "active", "status": "selected" }
+  ],
+  "editableFiles": [
+    { "label": "Structured app spec", "path": "src/generated/app-spec.ts", "purpose": "Refine the compiled business model.", "required": true }
+  ],
+  "smokeChecks": [
+    "Open the dashboard and verify the compiled navigation renders."
+  ]
+}
