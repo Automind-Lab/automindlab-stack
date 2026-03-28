@@ -1,4 +1,5 @@
 import express from "express";
+import rateLimit from "express-rate-limit";
 import fs from "node:fs/promises";
 import path from "node:path";
 import type { AgentRunRequest, DesignImportRequest, GenerationRequest, OperatorPromptInput } from "../shared/contracts.js";
@@ -18,6 +19,20 @@ async function fileExists(target: string): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+const fileAccessLimiter = rateLimit({
+  windowMs: 60_000,
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    error: "Too many file-backed requests. Please retry shortly.",
+  },
+});
+
+function getParam(value: string | string[] | undefined): string {
+  return Array.isArray(value) ? value[0] ?? "" : value ?? "";
 }
 
 app.use(express.json({ limit: "2mb" }));
@@ -59,14 +74,16 @@ app.get("/api/factory/jobs/:jobId", async (request, response, next) => {
   }
 });
 
-app.get("/api/factory/jobs/:jobId/artifacts/:artifactKey/download", async (request, response, next) => {
+app.get("/api/factory/jobs/:jobId/artifacts/:artifactKey/download", fileAccessLimiter, async (request, response, next) => {
   try {
-    const job = await service.getJob(request.params.jobId);
+    const jobId = getParam(request.params.jobId);
+    const artifactKey = getParam(request.params.artifactKey);
+    const job = await service.getJob(jobId);
     if (!job) {
       response.status(404).json({ error: "Job not found." });
       return;
     }
-    const artifact = job.artifacts.find((candidate) => candidate.key === request.params.artifactKey && candidate.downloadable);
+    const artifact = job.artifacts.find((candidate) => candidate.key === artifactKey && candidate.downloadable);
     if (!artifact) {
       response.status(404).json({ error: "Downloadable artifact not found." });
       return;
@@ -140,7 +157,7 @@ app.post("/api/factory/generate", async (request, response, next) => {
   }
 });
 
-app.use(async (request, response, next) => {
+app.use(fileAccessLimiter, async (request, response, next) => {
   if (request.path.startsWith("/api/")) {
     next();
     return;

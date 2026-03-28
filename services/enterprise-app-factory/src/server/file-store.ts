@@ -35,6 +35,17 @@ export interface AuditEvent {
   details: Record<string, unknown>;
 }
 
+function isSafeRecordId(value: string): boolean {
+  return /^[A-Za-z0-9_-]+$/.test(value);
+}
+
+function resolveRecordPath(directory: string, recordId: string): string {
+  if (!isSafeRecordId(recordId)) {
+    throw new Error(`Unsafe record id: ${recordId}`);
+  }
+  return path.join(directory, `${recordId}.json`);
+}
+
 export class AppFactoryFileStore {
   readonly baseDir = dataRoot();
   readonly jobDir = path.join(this.baseDir, "jobs");
@@ -102,12 +113,15 @@ export class AppFactoryFileStore {
 
   async writeJob(job: GenerationJob): Promise<void> {
     await this.init();
-    const location = path.join(this.jobDir, `${job.id}.json`);
+    const location = resolveRecordPath(this.jobDir, job.id);
     await fs.writeFile(location, `${JSON.stringify(job, null, 2)}\n`, "utf8");
   }
 
   async readJob(jobId: string): Promise<GenerationJob | undefined> {
-    const location = path.join(this.jobDir, `${jobId}.json`);
+    if (!isSafeRecordId(jobId)) {
+      return undefined;
+    }
+    const location = resolveRecordPath(this.jobDir, jobId);
     try {
       const raw = await fs.readFile(location, "utf8");
       return JSON.parse(raw) as GenerationJob;
@@ -131,12 +145,15 @@ export class AppFactoryFileStore {
 
   async writeAgentRun(run: AgentRun): Promise<void> {
     await this.init();
-    const location = path.join(this.agentRunDir, `${run.id}.json`);
+    const location = resolveRecordPath(this.agentRunDir, run.id);
     await fs.writeFile(location, `${JSON.stringify(run, null, 2)}\n`, "utf8");
   }
 
   async readAgentRun(runId: string): Promise<AgentRun | undefined> {
-    const location = path.join(this.agentRunDir, `${runId}.json`);
+    if (!isSafeRecordId(runId)) {
+      return undefined;
+    }
+    const location = resolveRecordPath(this.agentRunDir, runId);
     try {
       const raw = await fs.readFile(location, "utf8");
       return JSON.parse(raw) as AgentRun;

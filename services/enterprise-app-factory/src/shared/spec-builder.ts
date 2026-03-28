@@ -36,11 +36,23 @@ import type {
 const SPEC_VERSION = "2026-03-27.v1";
 
 export function slugify(input: string): string {
-  return input
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .replace(/-{2,}/g, "-");
+  let result = "";
+  let lastWasDash = false;
+
+  for (const character of input.toLowerCase()) {
+    const isAlphaNumeric = (character >= "a" && character <= "z") || (character >= "0" && character <= "9");
+    if (isAlphaNumeric) {
+      result += character;
+      lastWasDash = false;
+      continue;
+    }
+    if (!lastWasDash && result.length > 0) {
+      result += "-";
+      lastWasDash = true;
+    }
+  }
+
+  return result.endsWith("-") ? result.slice(0, -1) : result;
 }
 
 function normalizeText(input: OperatorPromptInput): string {
