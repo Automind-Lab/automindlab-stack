@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automindlab.dev/schemas/enterprise-app-generation-request.schema.json",
+  "title": "Enterprise App Generation Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["prompt", "spec", "approval"],
+  "properties": {
+    "prompt": { "$ref": "enterprise-app-factory-prompt.schema.json" },
+    "spec": { "$ref": "enterprise-app-spec.schema.json" },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["approvedBy", "approvedAt", "reason", "acknowledgedRisks"],
+      "properties": {
+        "approvedBy": { "type": "string" },
+        "approvedAt": { "type": "string" },
+        "reason": { "type": "string" },
+        "acknowledgedRisks": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

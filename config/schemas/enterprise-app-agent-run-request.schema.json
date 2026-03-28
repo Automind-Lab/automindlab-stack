@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automindlab.dev/schemas/enterprise-app-agent-run-request.schema.json",
+  "title": "Enterprise App Agent Run Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "prompt",
+    "spec",
+    "operator",
+    "focus",
+    "requestedSeatKeys",
+    "allowDelegation",
+    "maxDelegationDepth"
+  ],
+  "properties": {
+    "prompt": { "$ref": "enterprise-app-factory-prompt.schema.json" },
+    "spec": { "$ref": "enterprise-app-spec.schema.json" },
+    "operator": { "type": "string", "minLength": 1 },
+    "focus": { "type": "array", "items": { "type": "string" } },
+    "requestedSeatKeys": { "type": "array", "items": { "type": "string" } },
+    "allowDelegation": { "type": "boolean" },
+    "maxDelegationDepth": { "type": "integer", "minimum": 1, "maximum": 3 },
+    "providerMode": { "type": "string", "enum": ["deterministic"] },
+    "linkedGenerationJobId": { "type": "string" }
+  }
+}

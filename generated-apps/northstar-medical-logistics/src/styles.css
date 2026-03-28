@@ -1,0 +1,190 @@
+:root {
+  color-scheme: light;
+  --primary: #153f69;
+  --secondary: #5f95aa;
+  --accent: #d97a2b;
+  --surface: #f3f7f8;
+  --canvas: #e4edf0;
+  --ink: #172232;
+  --muted: #617180;
+  --line: rgba(23, 34, 50, 0.12);
+  font-family: "Aptos", "Segoe UI Variable Text", sans-serif;
+  background: radial-gradient(circle at top left, color-mix(in srgb, var(--secondary) 28%, transparent), transparent 34%), var(--canvas);
+  color: var(--ink);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+button {
+  font: inherit;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+}
+
+.side-nav {
+  padding: 24px;
+  border-right: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), color-mix(in srgb, var(--surface) 92%, white));
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--secondary);
+  font-size: 0.76rem;
+}
+
+.side-nav h1,
+.hero h2 {
+  font-family: "Bahnschrift SemiBold", "Aptos Display", sans-serif;
+  margin-top: 0;
+}
+
+.side-nav nav {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.nav-link {
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: white;
+  color: var(--ink);
+  padding: 10px 12px;
+}
+
+.nav-link.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+.main-column {
+  padding: 24px;
+  display: grid;
+  gap: 18px;
+}
+
+.hero,
+.panel,
+.workflow-card,
+.stat {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+}
+
+.hero {
+  padding: 22px;
+  display: grid;
+  gap: 18px;
+}
+
+.panel {
+  padding: 18px;
+}
+
+.panel-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.stack {
+  display: grid;
+  gap: 14px;
+}
+
+.stack.plain {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.stack.plain li {
+  display: grid;
+  gap: 4px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+
+.workflow-card {
+  padding: 16px;
+}
+
+.workflow-card ol {
+  display: grid;
+  gap: 8px;
+  padding-left: 18px;
+}
+
+.workflow-card li {
+  display: grid;
+  gap: 4px;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.stat {
+  padding: 14px;
+}
+
+.stat p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.stat strong {
+  display: block;
+  font-size: 1.5rem;
+  margin-top: 10px;
+}
+
+.entity-block + .entity-block {
+  margin-top: 20px;
+}
+
+.meta {
+  color: var(--muted);
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+@media (max-width: 960px) {
+  .app-shell,
+  .panel-grid,
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+}

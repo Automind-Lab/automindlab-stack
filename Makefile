@@ -1,4 +1,4 @@
-.PHONY: doctor doctor-plus health-check install-git-hooks configure-agents worker-status runtime-doctor bootstrap-recovery workspace-sync workflow-validate repo-validate routines skill-pack contract-validate github-automation-validate downstream-sync-validate capability-intake-validate runtime-profile-validate operator-surface-validate agentmail-runtime-validate agentmail-doctor agentmail-live-check browser-validation-validate browser-validation-plan enterprise-skill-bundles-validate runtime-fixture-smoke diagnostic-install diagnostic-start diagnostic-test diagnostic-ci up down review-comments
+.PHONY: doctor doctor-plus health-check install-git-hooks configure-agents worker-status runtime-doctor bootstrap-recovery workspace-sync workflow-validate repo-validate routines skill-pack contract-validate github-automation-validate downstream-sync-validate capability-intake-validate runtime-profile-validate operator-surface-validate agentmail-runtime-validate agentmail-doctor agentmail-live-check browser-validation-validate browser-validation-plan enterprise-skill-bundles-validate runtime-fixture-smoke diagnostic-install diagnostic-start diagnostic-test diagnostic-ci enterprise-app-factory-contract-validate enterprise-app-factory-ci enterprise-app-factory-council-sample enterprise-app-factory-sample up down review-comments
 
 doctor:
 	./scripts/runtime-doctor.sh
@@ -65,6 +65,18 @@ browser-validation-plan:
 enterprise-skill-bundles-validate:
 	node scripts/validate-enterprise-skill-bundles.mjs
 
+enterprise-app-factory-contract-validate:
+	node scripts/validate-enterprise-app-factory-contracts.mjs
+
+enterprise-app-factory-ci:
+	cd services/enterprise-app-factory && npm run ci
+
+enterprise-app-factory-council-sample:
+	cd services/enterprise-app-factory && npm run council:sample
+
+enterprise-app-factory-sample:
+	cd services/enterprise-app-factory && npm run sample
+
 runtime-fixture-smoke:
 	node scripts/openclaw-fixture-smoke.mjs
 
@@ -84,6 +96,7 @@ repo-validate:
 	node scripts/validate-agentmail-runtime.mjs
 	node scripts/validate-browser-validation.mjs
 	node scripts/validate-enterprise-skill-bundles.mjs
+	node scripts/validate-enterprise-app-factory-contracts.mjs
 
 routines:
 	node scripts/automind-routines.mjs list

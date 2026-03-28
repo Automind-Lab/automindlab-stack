@@ -1,0 +1,62 @@
+[
+  {
+    "key": "dashboard",
+    "title": "Operations Dashboard",
+    "route": "/dashboard",
+    "purpose": "Give operators a live view of workload, approvals, risk, and throughput."
+  },
+  {
+    "key": "entities",
+    "title": "Entity Workbench",
+    "route": "/entities",
+    "purpose": "Manage business entities through typed forms, tables, and detail views."
+  },
+  {
+    "key": "workflows",
+    "title": "Workflow Orchestrator",
+    "route": "/workflows",
+    "purpose": "Track multi-step operational flows with visible ownership and escalation."
+  },
+  {
+    "key": "approvals",
+    "title": "Approval Center",
+    "route": "/approvals",
+    "purpose": "Keep irreversible actions behind explicit review and audit events."
+  },
+  {
+    "key": "audit",
+    "title": "Audit Stream",
+    "route": "/audit",
+    "purpose": "Trace meaningful workflow events and changes across the tenant boundary."
+  },
+  {
+    "key": "roles",
+    "title": "Roles and Access",
+    "route": "/roles",
+    "purpose": "Review least-privilege access and approval scopes by role."
+  },
+  {
+    "key": "integrations",
+    "title": "Integrations",
+    "route": "/integrations",
+    "purpose": "Make sync boundaries, credential ownership, and failure modes explicit."
+  },
+  {
+    "key": "notifications",
+    "title": "Notifications",
+    "route": "/notifications",
+    "purpose": "Configure operator-facing rules and escalation paths."
+  },
+  {
+    "key": "reports",
+    "title": "Reports",
+    "route": "/reports",
+    "purpose": "Expose operational summaries and trend views for review."
+  },
+  {
+    "key": "settings",
+    "title": "Settings",
+    "route": "/settings",
+    "purpose": "Handle tenant-aware configuration without hard-coding secrets or approvals."
+  }
+]

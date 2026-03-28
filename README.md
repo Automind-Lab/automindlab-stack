@@ -39,6 +39,7 @@ Read these first when operating AutoMindLab from this repo:
 - runtime-owned AgentMail email identities, setup guidance, and live-check path
 - diff-aware browser-proof planning for downstream operator and inbox surfaces
 - curated enterprise skill bundles for repeatable adoption across enterprise engagements
+- the internal Enterprise App Factory operator console and reusable generated-customer-app workspace system
 - reusable service contracts for downstream consumer products
 
 ## Boundary model
@@ -114,6 +115,16 @@ These files exist to make startup order, current state, recovery steps, and reus
   - `config/operator/`
   - `docs/OPERATOR_SURFACE_CONTRACT.md`
   - `docs/OPERATOR_APPROVAL_POLICY.md`
+- enterprise app factory
+  - `services/enterprise-app-factory/`
+  - `docs/ENTERPRISE_APP_FACTORY_CONTRACT.md`
+  - `config/schemas/enterprise-app-factory-prompt.schema.json`
+  - `config/schemas/enterprise-app-spec.schema.json`
+  - `config/schemas/enterprise-app-generation-request.schema.json`
+  - `config/schemas/enterprise-app-design-handoff.schema.json`
+  - `config/schemas/enterprise-app-agent-run-request.schema.json`
+  - `config/schemas/enterprise-app-agent-run.schema.json`
+  - `generated-apps/`
 - contracts and services
   - `config/schemas/`
   - `config/examples/`
@@ -145,11 +156,15 @@ These files exist to make startup order, current state, recovery steps, and reus
 - `node scripts/validate-browser-validation.mjs`
 - `node scripts/plan-browser-validation.mjs --mode branch`
 - `node scripts/validate-enterprise-skill-bundles.mjs`
+- `node scripts/validate-enterprise-app-factory-contracts.mjs`
 - `node scripts/openclaw-fixture-smoke.mjs`
 - `node scripts/run-operator-action.mjs list`
 - `node scripts/automind-skill-pack.mjs list`
 - `node scripts/automind-routines.mjs list`
 - `npm test --prefix services/diagnostic`
+- `npm run ci --prefix services/enterprise-app-factory`
+- `npm run council:sample --prefix services/enterprise-app-factory`
+- `npm run sample --prefix services/enterprise-app-factory`
 
 ## Finish-Clean Rule
 
@@ -230,6 +245,22 @@ The enterprise translation of donor skill-pack discoverability lives in:
 - `docs/ENTERPRISE_SKILL_BUNDLES.md`
 
 This turns reusable capability clusters into a governed catalog instead of depending on donor-repo packaging.
+
+### Enterprise App Factory
+
+The internal enterprise builder surface lives in:
+
+- `services/enterprise-app-factory/`
+- `docs/ENTERPRISE_APP_FACTORY_CONTRACT.md`
+- `config/schemas/enterprise-app-factory-prompt.schema.json`
+- `config/schemas/enterprise-app-spec.schema.json`
+- `config/schemas/enterprise-app-generation-request.schema.json`
+- `config/schemas/enterprise-app-design-handoff.schema.json`
+- `config/schemas/enterprise-app-agent-run-request.schema.json`
+- `config/schemas/enterprise-app-agent-run.schema.json`
+- `generated-apps/`
+
+This surface keeps prompt intake, bounded council review, spec validation, approval-gated generation, downloadable packages, design handoff, and sample generated workspaces inside AutoMindLab-native runtime boundaries without treating generated output as committed business state.
 
 ### FLOWCOMMANDER diagnostic consultation
 

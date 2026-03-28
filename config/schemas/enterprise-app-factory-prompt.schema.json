@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automindlab.dev/schemas/enterprise-app-factory-prompt.schema.json",
+  "title": "Enterprise App Factory Prompt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["customerName", "businessDescription", "applicationNeeds", "constraints"],
+  "properties": {
+    "customerName": { "type": "string", "minLength": 1 },
+    "businessDescription": { "type": "string", "minLength": 1 },
+    "applicationNeeds": { "type": "string", "minLength": 1 },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["compliance", "integrations", "roles", "approvalRequirements"],
+      "properties": {
+        "industry": { "type": "string" },
+        "compliance": { "type": "array", "items": { "type": "string" } },
+        "integrations": { "type": "array", "items": { "type": "string" } },
+        "roles": { "type": "array", "items": { "type": "string" } },
+        "approvalRequirements": { "type": "array", "items": { "type": "string" } },
+        "environment": { "type": "string" },
+        "deploymentTarget": { "type": "string" },
+        "tenancy": { "type": "string" }
+      }
+    }
+  }
+}

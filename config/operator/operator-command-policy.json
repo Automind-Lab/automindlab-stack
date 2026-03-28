@@ -15,10 +15,10 @@
     "system.elevate": "deny"
   },
   "safeCommandExact": [
-    "node scripts/validate-repo-operating-system.mjs && node scripts/validate-ona-skills.mjs && node scripts/automind-skill-pack.mjs validate && node scripts/automind-routines.mjs validate && node scripts/validate-workflows.mjs && node scripts/validate-runtime-contracts.mjs && node scripts/validate-github-automation.mjs && node scripts/github-autonomy-selftest.mjs && node scripts/validate-downstream-sync.mjs && node scripts/validate-capability-intake.mjs && node scripts/validate-runtime-topology-profiles.mjs && node scripts/validate-operator-surfaces.mjs && node scripts/validate-agentmail-runtime.mjs && node scripts/validate-browser-validation.mjs && node scripts/validate-enterprise-skill-bundles.mjs && node scripts/openclaw-fixture-smoke.mjs",
+    "node scripts/validate-repo-operating-system.mjs && node scripts/validate-ona-skills.mjs && node scripts/automind-skill-pack.mjs validate && node scripts/automind-routines.mjs validate && node scripts/validate-workflows.mjs && node scripts/validate-runtime-contracts.mjs && node scripts/validate-github-automation.mjs && node scripts/github-autonomy-selftest.mjs && node scripts/validate-downstream-sync.mjs && node scripts/validate-capability-intake.mjs && node scripts/validate-runtime-topology-profiles.mjs && node scripts/validate-operator-surfaces.mjs && node scripts/validate-agentmail-runtime.mjs && node scripts/validate-browser-validation.mjs && node scripts/validate-enterprise-skill-bundles.mjs && node scripts/validate-enterprise-app-factory-contracts.mjs && node scripts/openclaw-fixture-smoke.mjs",
     "bash ./scripts/worker-status.sh",
     "bash ./scripts/runtime-doctor.sh",
-    "node scripts/validate-repo-operating-system.mjs && node scripts/validate-ona-skills.mjs && node scripts/automind-skill-pack.mjs validate && node scripts/automind-routines.mjs validate && node scripts/validate-workflows.mjs && node scripts/validate-runtime-contracts.mjs && node scripts/validate-github-automation.mjs && node scripts/github-autonomy-selftest.mjs && node scripts/validate-downstream-sync.mjs && node scripts/validate-capability-intake.mjs && node scripts/validate-runtime-topology-profiles.mjs && node scripts/validate-operator-surfaces.mjs && node scripts/validate-agentmail-runtime.mjs && node scripts/validate-browser-validation.mjs && node scripts/validate-enterprise-skill-bundles.mjs",
+    "node scripts/validate-repo-operating-system.mjs && node scripts/validate-ona-skills.mjs && node scripts/automind-skill-pack.mjs validate && node scripts/automind-routines.mjs validate && node scripts/validate-workflows.mjs && node scripts/validate-runtime-contracts.mjs && node scripts/validate-github-automation.mjs && node scripts/github-autonomy-selftest.mjs && node scripts/validate-downstream-sync.mjs && node scripts/validate-capability-intake.mjs && node scripts/validate-runtime-topology-profiles.mjs && node scripts/validate-operator-surfaces.mjs && node scripts/validate-agentmail-runtime.mjs && node scripts/validate-browser-validation.mjs && node scripts/validate-enterprise-skill-bundles.mjs && node scripts/validate-enterprise-app-factory-contracts.mjs",
     "node scripts/validate-workflows.mjs",
     "npm test --prefix services/diagnostic",
     "node scripts/validate-downstream-sync.mjs",
@@ -30,6 +30,10 @@
     "node scripts/validate-browser-validation.mjs",
     "node scripts/plan-browser-validation.mjs --mode branch",
     "node scripts/validate-enterprise-skill-bundles.mjs",
+    "node scripts/validate-enterprise-app-factory-contracts.mjs",
+    "npm run ci --prefix services/enterprise-app-factory",
+    "npm run council:sample --prefix services/enterprise-app-factory",
+    "npm run sample --prefix services/enterprise-app-factory",
     "node scripts/openclaw-fixture-smoke.mjs",
     "bash ./scripts/bootstrap-recovery.sh --dry-run",
     "bash ./scripts/configure-openclaw-agents.sh"

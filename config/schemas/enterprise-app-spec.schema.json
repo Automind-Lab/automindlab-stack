@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automindlab.dev/schemas/enterprise-app-spec.schema.json",
+  "title": "Enterprise App Spec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "customerProfile",
+    "businessDomain",
+    "appPurpose",
+    "coreWorkflows",
+    "businessEntities",
+    "userRoles",
+    "integrations",
+    "approvalGates",
+    "assumptions",
+    "unresolvedItems",
+    "uncertainty",
+    "blueprint"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string" },
+    "generatedAt": { "type": "string" },
+    "customerProfile": {
+      "type": "object",
+      "required": ["name", "slug", "industry", "tenancy", "branding"],
+      "properties": {
+        "name": { "type": "string" },
+        "slug": { "type": "string" },
+        "industry": { "type": "string" },
+        "tenancy": { "type": "string" },
+        "branding": {
+          "type": "object",
+          "required": ["brandName", "primaryColor", "secondaryColor", "accentColor", "surfaceColor", "canvasColor", "headingFont", "bodyFont", "density", "logoTreatment"],
+          "properties": {
+            "brandName": { "type": "string" },
+            "primaryColor": { "type": "string" },
+            "secondaryColor": { "type": "string" },
+            "accentColor": { "type": "string" },
+            "surfaceColor": { "type": "string" },
+            "canvasColor": { "type": "string" },
+            "headingFont": { "type": "string" },
+            "bodyFont": { "type": "string" },
+            "density": { "type": "string" },
+            "logoTreatment": { "type": "string" }
+          }
+        }
+      }
+    },
+    "businessDomain": { "type": "string" },
+    "appPurpose": { "type": "string" },
+    "coreWorkflows": {
+      "type": "array",
+      "items": { "type": "object", "required": ["key", "name", "steps"], "properties": { "key": { "type": "string" }, "name": { "type": "string" }, "steps": { "type": "array" } } }
+    },
+    "businessEntities": {
+      "type": "array",
+      "items": { "type": "object", "required": ["key", "label", "fields"], "properties": { "key": { "type": "string" }, "label": { "type": "string" }, "fields": { "type": "array" } } }
+    },
+    "userRoles": {
+      "type": "array",
+      "items": { "type": "object", "required": ["key", "name"], "properties": { "key": { "type": "string" }, "name": { "type": "string" } } }
+    },
+    "integrations": {
+      "type": "array",
+      "items": { "type": "object", "required": ["key", "name", "mode"], "properties": { "key": { "type": "string" }, "name": { "type": "string" }, "mode": { "type": "string" } } }
+    },
+    "approvalGates": {
+      "type": "array",
+      "items": { "type": "object", "required": ["key", "name", "trigger"], "properties": { "key": { "type": "string" }, "name": { "type": "string" }, "trigger": { "type": "string" } } }
+    },
+    "assumptions": { "type": "array", "items": { "type": "string" } },
+    "unresolvedItems": { "type": "array", "items": { "type": "string" } },
+    "uncertainty": {
+      "type": "object",
+      "required": ["level", "reasons", "missingContext"],
+      "properties": {
+        "level": { "type": "string" },
+        "reasons": { "type": "array", "items": { "type": "string" } },
+        "missingContext": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "blueprint": {
+      "type": "object",
+      "required": ["layout", "persistenceOwnership"],
+      "properties": {
+        "layout": { "type": "string" },
+        "persistenceOwnership": { "type": "string" }
+      }
+    }
+  }
+}

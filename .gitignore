@@ -1,1 +1,8 @@
 node_modules/
+dist/
+coverage/
+data/app-factory/
+generated-apps/**/node_modules/
+generated-apps/**/dist/
+generated-apps/**/coverage/
+generated-apps/**/package-lock.json

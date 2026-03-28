@@ -26,6 +26,12 @@
       "description": "Manifest-driven operator/admin surfaces for enterprise runtime owners."
     },
     {
+      "id": "enterprise-app-factory-contract",
+      "name": "Enterprise App Factory Contract",
+      "path": "docs/ENTERPRISE_APP_FACTORY_CONTRACT.md",
+      "description": "Typed contract for the internal enterprise builder and generated workspace system."
+    },
+    {
       "id": "approval-policy",
       "name": "Operator Approval Policy",
       "path": "docs/OPERATOR_APPROVAL_POLICY.md",
@@ -84,7 +90,7 @@
     {
       "id": "doctor-plus",
       "name": "Doctor Plus",
-      "command": "node scripts/validate-repo-operating-system.mjs && node scripts/validate-ona-skills.mjs && node scripts/automind-skill-pack.mjs validate && node scripts/automind-routines.mjs validate && node scripts/validate-workflows.mjs && node scripts/validate-runtime-contracts.mjs && node scripts/validate-github-automation.mjs && node scripts/github-autonomy-selftest.mjs && node scripts/validate-downstream-sync.mjs && node scripts/validate-capability-intake.mjs && node scripts/validate-runtime-topology-profiles.mjs && node scripts/validate-operator-surfaces.mjs && node scripts/validate-agentmail-runtime.mjs && node scripts/validate-browser-validation.mjs && node scripts/validate-enterprise-skill-bundles.mjs && node scripts/openclaw-fixture-smoke.mjs",
+      "command": "node scripts/validate-repo-operating-system.mjs && node scripts/validate-ona-skills.mjs && node scripts/automind-skill-pack.mjs validate && node scripts/automind-routines.mjs validate && node scripts/validate-workflows.mjs && node scripts/validate-runtime-contracts.mjs && node scripts/validate-github-automation.mjs && node scripts/github-autonomy-selftest.mjs && node scripts/validate-downstream-sync.mjs && node scripts/validate-capability-intake.mjs && node scripts/validate-runtime-topology-profiles.mjs && node scripts/validate-operator-surfaces.mjs && node scripts/validate-agentmail-runtime.mjs && node scripts/validate-browser-validation.mjs && node scripts/validate-enterprise-skill-bundles.mjs && node scripts/validate-enterprise-app-factory-contracts.mjs && node scripts/openclaw-fixture-smoke.mjs",
       "capability": "runtime.validate",
       "approvalMode": "allow",
       "ownerSurface": "host",
@@ -111,7 +117,7 @@
     {
       "id": "repo-validate",
       "name": "Repo Validate",
-      "command": "node scripts/validate-repo-operating-system.mjs && node scripts/validate-ona-skills.mjs && node scripts/automind-skill-pack.mjs validate && node scripts/automind-routines.mjs validate && node scripts/validate-workflows.mjs && node scripts/validate-runtime-contracts.mjs && node scripts/validate-github-automation.mjs && node scripts/github-autonomy-selftest.mjs && node scripts/validate-downstream-sync.mjs && node scripts/validate-capability-intake.mjs && node scripts/validate-runtime-topology-profiles.mjs && node scripts/validate-operator-surfaces.mjs && node scripts/validate-agentmail-runtime.mjs && node scripts/validate-browser-validation.mjs && node scripts/validate-enterprise-skill-bundles.mjs",
+      "command": "node scripts/validate-repo-operating-system.mjs && node scripts/validate-ona-skills.mjs && node scripts/automind-skill-pack.mjs validate && node scripts/automind-routines.mjs validate && node scripts/validate-workflows.mjs && node scripts/validate-runtime-contracts.mjs && node scripts/validate-github-automation.mjs && node scripts/github-autonomy-selftest.mjs && node scripts/validate-downstream-sync.mjs && node scripts/validate-capability-intake.mjs && node scripts/validate-runtime-topology-profiles.mjs && node scripts/validate-operator-surfaces.mjs && node scripts/validate-agentmail-runtime.mjs && node scripts/validate-browser-validation.mjs && node scripts/validate-enterprise-skill-bundles.mjs && node scripts/validate-enterprise-app-factory-contracts.mjs",
       "capability": "repo.validate",
       "approvalMode": "allow",
       "ownerSurface": "repo",
@@ -134,6 +140,42 @@
       "approvalMode": "allow",
       "ownerSurface": "repo",
       "description": "Run the diagnostic service test suite."
+    },
+    {
+      "id": "enterprise-app-factory-contract-validate",
+      "name": "Enterprise App Factory Contract Validate",
+      "command": "node scripts/validate-enterprise-app-factory-contracts.mjs",
+      "capability": "repo.validate",
+      "approvalMode": "allow",
+      "ownerSurface": "repo",
+      "description": "Validate enterprise app factory schemas, examples, docs, and env contract surfaces."
+    },
+    {
+      "id": "enterprise-app-factory-ci",
+      "name": "Enterprise App Factory CI",
+      "command": "npm run ci --prefix services/enterprise-app-factory",
+      "capability": "service.validate",
+      "approvalMode": "allow",
+      "ownerSurface": "repo",
+      "description": "Run lint, typecheck, tests, and build for the Enterprise App Factory service."
+    },
+    {
+      "id": "enterprise-app-factory-sample",
+      "name": "Enterprise App Factory Sample",
+      "command": "npm run sample --prefix services/enterprise-app-factory",
+      "capability": "repo.mutate",
+      "approvalMode": "prompt",
+      "ownerSurface": "repo",
+      "description": "Regenerate and verify the sample generated customer app workspace."
+    },
+    {
+      "id": "enterprise-app-factory-council-sample",
+      "name": "Enterprise App Factory Council Sample",
+      "command": "npm run council:sample --prefix services/enterprise-app-factory",
+      "capability": "repo.mutate",
+      "approvalMode": "prompt",
+      "ownerSurface": "repo",
+      "description": "Run the bounded council sample review and persist the resulting agent-run evidence."
     },
     {
       "id": "downstream-sync-validate",
@@ -366,6 +408,26 @@
       "contractRefs": [
         "config/skills/enterprise-skill-bundles.json",
         "config/schemas/enterprise-skill-bundles.schema.json"
+      ]
+    },
+    {
+      "id": "enterprise-app-factory",
+      "name": "Enterprise App Factory",
+      "path": "docs/ENTERPRISE_APP_FACTORY_CONTRACT.md",
+      "description": "Internal operator console and constrained customer-app generation system.",
+      "contractRefs": [
+        "services/enterprise-app-factory/README.md",
+        "config/schemas/enterprise-app-factory-prompt.schema.json",
+        "config/schemas/enterprise-app-spec.schema.json",
+        "config/schemas/enterprise-app-generation-request.schema.json",
+        "config/schemas/enterprise-app-design-handoff.schema.json",
+        "config/schemas/enterprise-app-agent-run-request.schema.json",
+        "config/schemas/enterprise-app-agent-run.schema.json",
+        "config/examples/enterprise-app-factory-prompt.example.json",
+        "config/examples/enterprise-app-spec.example.json",
+        "config/examples/enterprise-app-design-handoff.example.json",
+        "config/examples/enterprise-app-agent-run-request.example.json",
+        "config/examples/enterprise-app-agent-run.example.json"
       ]
     }
   ]

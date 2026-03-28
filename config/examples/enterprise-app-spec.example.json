@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "2026-03-27.v1",
+  "generatedAt": "2026-03-27T21:00:00.000Z",
+  "customerProfile": {
+    "name": "Northstar Medical Logistics",
+    "slug": "northstar-medical-logistics",
+    "industry": "Healthcare Logistics",
+    "tenancy": "multi-tenant ready with tenant-scoped business entities",
+    "branding": {
+      "brandName": "Northstar Medical Logistics",
+      "primaryColor": "#153f69",
+      "secondaryColor": "#5f95aa",
+      "accentColor": "#d97a2b",
+      "surfaceColor": "#f3f7f8",
+      "canvasColor": "#e4edf0",
+      "headingFont": "\"Bahnschrift SemiBold\", \"Aptos Display\", sans-serif",
+      "bodyFont": "\"Aptos\", \"Segoe UI Variable Text\", sans-serif",
+      "density": "balanced",
+      "logoTreatment": "Northstar monogram with a compass-star accent"
+    }
+  },
+  "businessDomain": "Healthcare Logistics operations",
+  "appPurpose": "Internal operations app for dispatch, service tickets, inventory, approvals, and reporting.",
+  "coreWorkflows": [
+    {
+      "key": "dispatch",
+      "name": "Dispatch and Fulfillment",
+      "steps": [
+        { "key": "intake", "label": "Intake" },
+        { "key": "assign", "label": "Assign" }
+      ]
+    }
+  ],
+  "businessEntities": [
+    {
+      "key": "inventory_item",
+      "label": "Inventory Item",
+      "fields": [
+        { "key": "assetTag", "label": "Asset Tag", "type": "string" }
+      ]
+    }
+  ],
+  "userRoles": [
+    { "key": "platform_admin", "name": "Platform Admin" },
+    { "key": "dispatch_coordinator", "name": "Dispatch Coordinator" }
+  ],
+  "integrations": [
+    { "key": "csv_exchange", "name": "CSV Exchange", "mode": "active" },
+    { "key": "erp_sync", "name": "ERP Sync", "mode": "future-ready" }
+  ],
+  "approvalGates": [
+    { "key": "urgent-replacement", "name": "Urgent Replacement Approval", "trigger": "Urgent replacement request" }
+  ],
+  "assumptions": [
+    "Generated apps own their own business records."
+  ],
+  "unresolvedItems": [
+    "Select the customer identity provider."
+  ],
+  "uncertainty": {
+    "level": "medium",
+    "reasons": ["ERP details remain unresolved."],
+    "missingContext": ["Identity provider", "Final branding assets"]
+  },
+  "blueprint": {
+    "layout": "Three-zone operator workspace",
+    "persistenceOwnership": "Generated customer apps own their own business records, workflow outcomes, and approval decisions."
+  }
+}

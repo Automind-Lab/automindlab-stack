@@ -1,0 +1,176 @@
+{
+  "id": "agent_1743130000000_ab12cd",
+  "status": "completed",
+  "createdAt": "2026-03-28T02:40:00.000Z",
+  "updatedAt": "2026-03-28T02:40:00.000Z",
+  "providerMode": "deterministic",
+  "operator": "Enterprise Operator",
+  "request": {
+    "prompt": {
+      "customerName": "Northstar Medical Logistics",
+      "businessDescription": "Coordinates medical equipment delivery, pickup, cleaning status, warehouse movement, and hospital service requests across multiple regions.",
+      "applicationNeeds": "Build an internal operations app with dispatch dashboard, service tickets, pickup/delivery workflows, warehouse inventory status, hospital account views, technician task assignments, approvals for urgent replacements, audit logs, role-based access, and reporting.",
+      "constraints": {
+        "industry": "Healthcare Logistics",
+        "compliance": ["Auditability", "Least privilege"],
+        "integrations": ["CSV import/export", "Future ERP integration"],
+        "roles": ["Dispatch Coordinator", "Warehouse Lead", "Technician"],
+        "approvalRequirements": ["Urgent replacement approval", "Inventory disposition approval"],
+        "environment": "local-first with promotion to staging and production",
+        "deploymentTarget": "internal web",
+        "tenancy": "multi-tenant"
+      }
+    },
+    "spec": {
+      "schemaVersion": "2026-03-27.v1",
+      "generatedAt": "2026-03-27T21:00:00.000Z",
+      "customerProfile": {
+        "name": "Northstar Medical Logistics",
+        "slug": "northstar-medical-logistics",
+        "industry": "Healthcare Logistics",
+        "tenancy": "multi-tenant ready with tenant-scoped business entities",
+        "branding": {
+          "brandName": "Northstar Medical Logistics",
+          "primaryColor": "#153f69",
+          "secondaryColor": "#5f95aa",
+          "accentColor": "#d97a2b",
+          "surfaceColor": "#f3f7f8",
+          "canvasColor": "#e4edf0",
+          "headingFont": "\"Bahnschrift SemiBold\", \"Aptos Display\", sans-serif",
+          "bodyFont": "\"Aptos\", \"Segoe UI Variable Text\", sans-serif",
+          "density": "balanced",
+          "logoTreatment": "Northstar monogram with a compass-star accent"
+        }
+      },
+      "businessDomain": "Healthcare Logistics operations",
+      "appPurpose": "Internal operations app for dispatch, service tickets, inventory, approvals, and reporting.",
+      "coreWorkflows": [
+        {
+          "key": "dispatch",
+          "name": "Dispatch and Fulfillment",
+          "steps": [
+            { "key": "intake", "label": "Intake" },
+            { "key": "assign", "label": "Assign" }
+          ]
+        }
+      ],
+      "businessEntities": [
+        {
+          "key": "inventory_item",
+          "label": "Inventory Item",
+          "fields": [
+            { "key": "assetTag", "label": "Asset Tag", "type": "string" }
+          ]
+        }
+      ],
+      "userRoles": [
+        { "key": "platform_admin", "name": "Platform Admin" },
+        { "key": "dispatch_coordinator", "name": "Dispatch Coordinator" }
+      ],
+      "integrations": [
+        { "key": "csv_exchange", "name": "CSV Exchange", "mode": "active" },
+        { "key": "erp_sync", "name": "ERP Sync", "mode": "future-ready" }
+      ],
+      "approvalGates": [
+        { "key": "urgent-replacement", "name": "Urgent Replacement Approval", "trigger": "Urgent replacement request" }
+      ],
+      "assumptions": [
+        "Generated apps own their own business records."
+      ],
+      "unresolvedItems": [
+        "Select the customer identity provider."
+      ],
+      "uncertainty": {
+        "level": "medium",
+        "reasons": ["ERP details remain unresolved."],
+        "missingContext": ["Identity provider", "Final branding assets"]
+      },
+      "blueprint": {
+        "layout": "Three-zone operator workspace",
+        "persistenceOwnership": "Generated customer apps own their own business records, workflow outcomes, and approval decisions."
+      }
+    },
+    "operator": "Enterprise Operator",
+    "focus": ["architecture", "security", "download", "test"],
+    "requestedSeatKeys": ["tesla", "marcus", "jobs"],
+    "allowDelegation": true,
+    "maxDelegationDepth": 3,
+    "providerMode": "deterministic"
+  },
+  "selectedSeatKeys": ["tesla", "marcus", "jobs"],
+  "summary": "Workflow interactions and integration seams are coherent, but they still need explicit host-owned ingress boundaries and downstream approval controls.",
+  "root": {
+    "id": "automind-host_root",
+    "agentKey": "automind-host",
+    "name": "AutoMindLab Host",
+    "type": "host",
+    "depth": 0,
+    "status": "completed",
+    "purpose": "Host synthesis",
+    "summary": "Ran a bounded council review using 3 seat(s) and 4 delegated check(s).",
+    "findings": [],
+    "recommendations": [
+      {
+        "key": "host-review-output",
+        "title": "Keep the council output advisory and operator-visible",
+        "rationale": "The council runtime helps structure judgment, but it should not silently commit downstream state.",
+        "priority": "now",
+        "owner": "automind-host",
+        "blocking": true
+      }
+    ],
+    "children": [
+      {
+        "id": "tesla_1",
+        "agentKey": "tesla",
+        "name": "Nikola Tesla",
+        "type": "council-seat",
+        "depth": 1,
+        "status": "completed",
+        "purpose": "Seat review",
+        "summary": "Workflow interactions and integration seams are coherent, but they still need explicit host-owned ingress boundaries and downstream approval controls.",
+        "findings": [],
+        "recommendations": [],
+        "children": []
+      }
+    ]
+  },
+  "delegationPlan": [
+    {
+      "from": "tesla",
+      "to": "workflow-systems-analyst",
+      "purpose": "Nikola Tesla delegated seat review",
+      "reason": "Workflow interactions and integration seams are coherent, but they still need explicit host-owned ingress boundaries and downstream approval controls."
+    }
+  ],
+  "capabilityMatrix": [
+    {
+      "key": "structured-council-review",
+      "label": "Structured council review",
+      "support": "supported",
+      "notes": "The host can run a bounded multi-seat review with nested delegates and typed output."
+    },
+    {
+      "key": "general-purpose-coding-agent",
+      "label": "General-purpose coding agent parity",
+      "support": "planned",
+      "notes": "The factory now has a constrained advisory council runtime, not full Codex feature parity."
+    }
+  ],
+  "uncertainty": {
+    "level": "medium",
+    "reasons": ["The spec is intentionally constrained and typed, but some customer deployment decisions remain open."],
+    "missingContext": ["Select the customer identity provider and login method for production deployment."],
+    "operatorQuestions": ["Select the customer identity provider and login method for production deployment."]
+  },
+  "warnings": [],
+  "logs": [
+    {
+      "at": "2026-03-28T02:40:00.000Z",
+      "agentKey": "tesla",
+      "depth": 1,
+      "message": "Running Nikola Tesla",
+      "level": "info"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "generatedAt": "2026-03-27T21:00:00.000Z",
+  "themeConfig": {
+    "brandName": "Northstar Medical Logistics",
+    "primaryColor": "#153f69",
+    "secondaryColor": "#5f95aa",
+    "accentColor": "#d97a2b",
+    "surfaceColor": "#f3f7f8",
+    "canvasColor": "#e4edf0"
+  },
+  "tokens": [
+    { "name": "color.brand.primary", "value": "#153f69", "type": "color" }
+  ],
+  "componentManifest": [
+    { "key": "dashboard", "name": "Operations Dashboard", "sourceModule": "dashboard", "editableProps": ["title"] }
+  ],
+  "screenMap": [
+    { "key": "dashboard", "title": "Operations Dashboard", "route": "/dashboard", "purpose": "Review work at a glance." }
+  ],
+  "copyMap": [
+    { "key": "summary", "text": "Northstar Medical Logistics needs an internal enterprise app.", "location": "application shell header" }
+  ],
+  "figmaAdapter": {
+    "enabled": false,
+    "mode": "optional",
+    "importContract": "design-handoff-package.v1",
+    "exportContract": "design-handoff-package.v1"
+  }
+}

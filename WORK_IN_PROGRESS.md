@@ -1,11 +1,11 @@
 # Work In Progress
 
-Last updated: 2026-03-27 15:49 UTC
+Last updated: 2026-03-28 02:31 UTC
 
 ## Current focus
 
-- Active mission: maintain a clean enterprise runtime baseline on `main` and only open a new tranche when there is a concrete next capability to add.
-- Why now: the major enterprise translation work is merged, so the highest-value immediate work is keeping repo state truthful and starting future work from a clean baseline.
+- Active mission: hold the expanded Enterprise App Factory steady on `codex/enterprise-app-factory` now that the bounded council runtime, downloadable package flow, and ready-to-test operator handoff are implemented and verified.
+- Why now: this branch now contains a second complete vertical slice, so the highest-value work is preserving truthful evidence about what is supported, what is intentionally constrained, and what a future live-model tranche would still need.
 - Owner paths in play:
   - `AGENTS.md`
   - `README.md`
@@ -14,19 +14,22 @@ Last updated: 2026-03-27 15:49 UTC
   - `scripts/`
   - `.ona/skills/`
   - `config/`
-  - `docs/`
+- `docs/`
+- `services/enterprise-app-factory/`
+- `generated-apps/`
 
 ## Current work packet
 
-- keep the merged operating-system, validation, and donor-translation surfaces stable on `main`
-- preserve honest evidence boundaries until live AgentMail and OpenClaw proof is gathered on a real runtime host
-- start future work from a clean branch with commit, push, PR, and clean-tree discipline already installed
+- preserve the shipped operator console, API package, generated-app template, council runtime, schemas/examples, and sample workspace as the baseline
+- keep the repo-native ownership line explicit: factory owns specs/council runs/jobs/artifacts, generated apps own business records and approval outcomes
+- keep the capability matrix honest about bounded nested delegation versus full Codex parity
+- leave the download archive path and handoff surfaces stable for immediate testing
 
 ## Next milestone
 
-- gather optional live AgentMail proof once credentials are available
-- optionally rerun runtime doctor, worker status, and bootstrap recovery on a compatible OpenClaw host if live-gateway proof is required
-- otherwise hold `main` clean until the next requested tranche
+- optional review packaging on `codex/enterprise-app-factory`
+- optional deeper live-model provider work, richer repair heuristics, or broader domain packs if requested
+- otherwise preserve the current verified state as the branch baseline
 
 ## Risks and watchouts
 
@@ -35,4 +38,10 @@ Last updated: 2026-03-27 15:49 UTC
 - do not claim parity for any capability that is still doc-only or unvalidated
 - do not imply NemoClaw is implemented beyond the contract/evidence level declared in `config/runtime-profiles/`
 - do not let manifest-backed operator actions become a back door to unrestricted host execution
-- be explicit that local proof now includes AgentMail contract and live-check scaffolding plus a reusable OpenClaw fixture smoke harness and Git Bash shell checks, but still does not prove a real gateway instance or real inbox readiness because `openclaw`, seeded live workspaces, and AgentMail credentials are absent on this machine
+- do not turn generated or agent-produced output into committed business state without explicit downstream confirmation and persistence
+- keep irreversible generation/export writes behind explicit approval data and visible audit logs
+- keep Figma/design integration optional and adapter-based so app generation never blocks on external design tooling
+- keep generated customer apps template-driven and editable instead of drifting toward one-off bespoke output
+- do not imply full Codex parity unless the implemented capability is actually present and verified
+- keep any council/agent sub-delegation policy constrained, typed, and operator-visible rather than unconstrained autonomy
+- do not claim full multi-OS proof beyond Windows until macOS and Linux verification evidence exists
