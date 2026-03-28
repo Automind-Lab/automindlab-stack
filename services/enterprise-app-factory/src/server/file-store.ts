@@ -46,6 +46,10 @@ function resolveRecordPath(directory: string, recordId: string): string {
   return path.join(directory, `${recordId}.json`);
 }
 
+function isJsonRecordFile(fileName: string): boolean {
+  return fileName.endsWith(".json");
+}
+
 export class AppFactoryFileStore {
   readonly baseDir = dataRoot();
   readonly jobDir = path.join(this.baseDir, "jobs");
@@ -117,11 +121,7 @@ export class AppFactoryFileStore {
     await fs.writeFile(location, `${JSON.stringify(job, null, 2)}\n`, "utf8");
   }
 
-  async readJob(jobId: string): Promise<GenerationJob | undefined> {
-    if (!isSafeRecordId(jobId)) {
-      return undefined;
-    }
-    const location = resolveRecordPath(this.jobDir, jobId);
+  private async readJobFile(location: string): Promise<GenerationJob | undefined> {
     try {
       const raw = await fs.readFile(location, "utf8");
       return JSON.parse(raw) as GenerationJob;
@@ -130,13 +130,27 @@ export class AppFactoryFileStore {
     }
   }
 
+  async readJob(jobId: string): Promise<GenerationJob | undefined> {
+    if (!isSafeRecordId(jobId)) {
+      return undefined;
+    }
+    await this.init();
+    const fileName = `${jobId}.json`;
+    const files = await fs.readdir(this.jobDir);
+    const matchedFile = files.find((file) => file === fileName);
+    if (!matchedFile) {
+      return undefined;
+    }
+    return this.readJobFile(path.join(this.jobDir, matchedFile));
+  }
+
   async listJobs(): Promise<GenerationJob[]> {
     await this.init();
     const files = await fs.readdir(this.jobDir);
     const jobs = await Promise.all(
       files
-        .filter((file) => file.endsWith(".json"))
-        .map(async (file) => this.readJob(path.basename(file, ".json"))),
+        .filter(isJsonRecordFile)
+        .map(async (file) => this.readJobFile(path.join(this.jobDir, file))),
     );
     return jobs
       .filter((job): job is GenerationJob => Boolean(job))
@@ -149,11 +163,7 @@ export class AppFactoryFileStore {
     await fs.writeFile(location, `${JSON.stringify(run, null, 2)}\n`, "utf8");
   }
 
-  async readAgentRun(runId: string): Promise<AgentRun | undefined> {
-    if (!isSafeRecordId(runId)) {
-      return undefined;
-    }
-    const location = resolveRecordPath(this.agentRunDir, runId);
+  private async readAgentRunFile(location: string): Promise<AgentRun | undefined> {
     try {
       const raw = await fs.readFile(location, "utf8");
       return JSON.parse(raw) as AgentRun;
@@ -162,13 +172,27 @@ export class AppFactoryFileStore {
     }
   }
 
+  async readAgentRun(runId: string): Promise<AgentRun | undefined> {
+    if (!isSafeRecordId(runId)) {
+      return undefined;
+    }
+    await this.init();
+    const fileName = `${runId}.json`;
+    const files = await fs.readdir(this.agentRunDir);
+    const matchedFile = files.find((file) => file === fileName);
+    if (!matchedFile) {
+      return undefined;
+    }
+    return this.readAgentRunFile(path.join(this.agentRunDir, matchedFile));
+  }
+
   async listAgentRuns(): Promise<AgentRun[]> {
     await this.init();
     const files = await fs.readdir(this.agentRunDir);
     const runs = await Promise.all(
       files
-        .filter((file) => file.endsWith(".json"))
-        .map(async (file) => this.readAgentRun(path.basename(file, ".json"))),
+        .filter(isJsonRecordFile)
+        .map(async (file) => this.readAgentRunFile(path.join(this.agentRunDir, file))),
     );
     return runs
       .filter((run): run is AgentRun => Boolean(run))
