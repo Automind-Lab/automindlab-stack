@@ -1,21 +1,37 @@
 {
-  "generatedAt": "2026-03-27T21:00:00.000Z",
+  "generatedAt": "2026-03-28T06:00:00.000Z",
   "themeConfig": {
     "brandName": "Northstar Medical Logistics",
     "primaryColor": "#153f69",
     "secondaryColor": "#5f95aa",
     "accentColor": "#d97a2b",
     "surfaceColor": "#f3f7f8",
-    "canvasColor": "#e4edf0"
+    "canvasColor": "#e4edf0",
+    "headingFont": "\"Bahnschrift SemiBold\", \"Aptos Display\", sans-serif",
+    "bodyFont": "\"Aptos\", \"Segoe UI Variable Text\", sans-serif",
+    "density": "balanced",
+    "logoTreatment": "Northstar monogram with a compass-star accent"
   },
   "tokens": [
     { "name": "color.brand.primary", "value": "#153f69", "type": "color" }
   ],
+  "tokenCollections": [
+    { "key": "brand-colors", "name": "Brand Colors", "tokenNames": ["color.brand.primary"] }
+  ],
+  "themeVariables": [
+    { "name": "color.brand.primary", "cssVar": "--color-brand-primary", "value": "#153f69" }
+  ],
   "componentManifest": [
-    { "key": "dashboard", "name": "Operations Dashboard", "sourceModule": "dashboard", "editableProps": ["title"] }
+    { "key": "dashboard", "name": "Operations Dashboard", "sourceModule": "dashboard", "editableProps": ["metric definitions"] }
   ],
   "screenMap": [
-    { "key": "dashboard", "title": "Operations Dashboard", "route": "/dashboard", "purpose": "Review work at a glance." }
+    { "key": "dashboard", "title": "Operations Dashboard", "route": "/dashboard", "purpose": "Give operators a live view of workload." }
+  ],
+  "pageSections": [
+    { "key": "dashboard.stats", "screenKey": "dashboard", "moduleKey": "dashboard", "title": "Operational Stats", "primitive": "stat-grid", "copyKeys": ["dashboard.summary", "dashboard.stats.title"] }
+  ],
+  "contentModel": [
+    { "key": "inventory_item", "entityKey": "inventory_item", "label": "Inventory Item", "ownership": "warehouse", "fields": ["Asset Tag"], "notes": ["Tenant scoped by default."] }
   ],
   "copyMap": [
     { "key": "summary", "text": "Northstar Medical Logistics needs an internal enterprise app.", "location": "application shell header" }
@@ -23,7 +39,9 @@
   "figmaAdapter": {
     "enabled": false,
     "mode": "optional",
-    "importContract": "design-handoff-package.v1",
-    "exportContract": "design-handoff-package.v1"
+    "adapterKey": "figma-bridge-adapter",
+    "importContract": "design-handoff-package.v2",
+    "exportContract": "design-handoff-package.v2",
+    "notes": ["Generation does not fail when the bridge is absent."]
   }
 }

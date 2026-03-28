@@ -15,8 +15,19 @@
     }
   },
   "spec": {
-    "schemaVersion": "2026-03-27.v1",
-    "generatedAt": "2026-03-27T21:00:00.000Z",
+    "schemaVersion": "2026-03-28.spec.v2",
+    "generatedAt": "2026-03-28T06:00:00.000Z",
+    "compiler": {
+      "compilerVersion": "2026-03-28.compiler.v2",
+      "specVersion": "2026-03-28.spec.v2",
+      "targetRuntime": "generated-runtime-kit.v2",
+      "selectedDomainPackKeys": ["core-operations", "healthcare-logistics"],
+      "selectedModuleKeys": ["dashboard", "dispatch-board", "approvals"],
+      "selectedAdapterKeys": ["design-handoff-adapter", "erp-sync-sdk"],
+      "stageResults": [
+        { "key": "normalize", "name": "Normalize Prompt", "status": "completed", "summary": "Normalized operator prompt.", "selectedKeys": ["northstar-medical-logistics"], "warnings": [] }
+      ]
+    },
     "customerProfile": {
       "name": "Northstar Medical Logistics",
       "slug": "northstar-medical-logistics",
@@ -37,6 +48,13 @@
     },
     "businessDomain": "Healthcare Logistics operations",
     "appPurpose": "Internal operations app for dispatch, service tickets, inventory, approvals, and reporting.",
+    "summary": "Northstar Medical Logistics needs an internal enterprise app built from reusable modules, domain packs, and typed contracts.",
+    "identityAndAccess": {
+      "authStrategy": "Enterprise SSO or local admin bootstrap with later IdP cutover",
+      "tenantIsolation": "Tenant-scoped rows, tenant-aware APIs, and no cross-tenant data access by default",
+      "leastPrivilegeNotes": ["Approval rights are separated from general operational access"],
+      "approvalPolicy": "Irreversible workflow actions require explicit approval plus audit capture"
+    },
     "coreWorkflows": [
       {
         "key": "dispatch",
@@ -64,6 +82,12 @@
       { "key": "csv_exchange", "name": "CSV Exchange", "mode": "active" },
       { "key": "erp_sync", "name": "ERP Sync", "mode": "future-ready" }
     ],
+    "moduleSelections": [
+      { "key": "dashboard", "name": "Operations Dashboard", "route": "/dashboard", "kind": "dashboard", "source": "base" }
+    ],
+    "adapterBindings": [
+      { "key": "design-handoff-adapter", "name": "Design Handoff Adapter", "mode": "active", "status": "selected" }
+    ],
     "approvalGates": [
       { "key": "urgent-replacement", "name": "Urgent Replacement Approval", "trigger": "Urgent replacement request" }
     ],
@@ -80,6 +104,10 @@
     },
     "blueprint": {
       "layout": "Three-zone operator workspace",
+      "routeGroups": ["/dashboard"],
+      "reusablePrimitives": ["kpi-ribbon-and-ops-board"],
+      "backgroundOperations": ["generation job tracking"],
+      "observability": ["file-backed job logs"],
       "persistenceOwnership": "Generated customer apps own their own business records, workflow outcomes, and approval decisions."
     }
   },

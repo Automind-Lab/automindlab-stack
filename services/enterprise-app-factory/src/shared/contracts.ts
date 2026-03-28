@@ -5,6 +5,35 @@ export type AgentProviderMode = "deterministic";
 export type AgentNodeType = "host" | "council-seat" | "specialist";
 export type AgentRecommendationPriority = "now" | "next" | "later";
 export type CapabilitySupportLevel = "supported" | "planned" | "unsupported";
+export type CompilerStageStatus = "completed" | "warning" | "blocked";
+export type ModuleKind =
+  | "shell"
+  | "dashboard"
+  | "data"
+  | "workflow"
+  | "approval"
+  | "audit"
+  | "access"
+  | "integration"
+  | "notification"
+  | "reporting"
+  | "settings";
+export type RuntimeWidgetKind =
+  | "stat-grid"
+  | "workflow-list"
+  | "entity-table"
+  | "approval-list"
+  | "audit-feed"
+  | "report-list"
+  | "settings-list"
+  | "integration-list"
+  | "role-list"
+  | "notification-list"
+  | "copy-block";
+export type AdapterCategory = "design" | "identity" | "files" | "erp" | "notifications" | "analytics";
+export type AdapterMode = "optional" | "active" | "future-ready";
+export type AdapterBindingStatus = "selected" | "optional" | "deferred";
+export type EvalStatus = "passed" | "warning" | "failed";
 
 export interface BrandingConstraints {
   primaryColor?: string;
@@ -236,9 +265,158 @@ export interface Uncertainty {
   operatorQuestions: string[];
 }
 
+export interface RuntimeWidgetBlueprint {
+  key: string;
+  title: string;
+  kind: RuntimeWidgetKind;
+  source: string;
+  description: string;
+}
+
+export interface ModuleRegistryEntry {
+  key: string;
+  name: string;
+  description: string;
+  kind: ModuleKind;
+  route: string;
+  primitive: string;
+  domainTags: string[];
+  defaultRoles: string[];
+  editableSurfaces: string[];
+  requiredAdapterKeys: string[];
+  approvalTouchpoints: string[];
+  observability: string[];
+  widgetBlueprints: RuntimeWidgetBlueprint[];
+}
+
+export interface DomainPackSummary {
+  key: string;
+  name: string;
+  version: string;
+  description: string;
+  triggerKeywords: string[];
+  selectedWhen: string;
+  moduleKeys: string[];
+  roleKeys: string[];
+  entityKeys: string[];
+  workflowKeys: string[];
+  integrationKeys: string[];
+  complianceKeys: string[];
+  adapterKeys: string[];
+  notes: string[];
+}
+
+export interface AdapterSdkDefinition {
+  key: string;
+  name: string;
+  category: AdapterCategory;
+  mode: AdapterMode;
+  description: string;
+  runtimeBoundary: string;
+  secretsModel: string;
+  failureMode: string;
+  configFields: string[];
+  hookPoints: string[];
+}
+
+export interface AdapterBinding {
+  key: string;
+  name: string;
+  mode: AdapterMode;
+  status: AdapterBindingStatus;
+  reason: string;
+  reviewNotes: string[];
+}
+
+export interface CompilerStageResult {
+  key: string;
+  name: string;
+  status: CompilerStageStatus;
+  summary: string;
+  selectedKeys: string[];
+  warnings: string[];
+}
+
+export interface CompiledModuleSelection {
+  key: string;
+  name: string;
+  route: string;
+  kind: ModuleKind;
+  source: "base" | "domain-pack" | "explicit";
+  reason: string;
+  roles: string[];
+  domainTags: string[];
+  editableSurfaces: string[];
+}
+
+export interface CompilerReport {
+  compilerVersion: string;
+  specVersion: string;
+  targetRuntime: string;
+  selectedDomainPackKeys: string[];
+  selectedModuleKeys: string[];
+  selectedAdapterKeys: string[];
+  stageResults: CompilerStageResult[];
+  notes: string[];
+}
+
+export interface RuntimeKitEditableFile {
+  label: string;
+  path: string;
+  purpose: string;
+  required: boolean;
+}
+
+export interface RuntimeKitPage {
+  key: string;
+  title: string;
+  route: string;
+  moduleKey: string;
+  layout: string;
+  summary: string;
+  roles: string[];
+  widgets: RuntimeWidgetBlueprint[];
+  emptyState: string;
+  approvalHints: string[];
+}
+
+export interface GeneratedRuntimeKit {
+  kitVersion: string;
+  compilerVersion: string;
+  shell: {
+    homePageKey: string;
+    navigationStyle: string;
+    density: string;
+    tenantBanner: string;
+    approvalBanner: string;
+  };
+  moduleSelections: CompiledModuleSelection[];
+  pages: RuntimeKitPage[];
+  adapters: AdapterBinding[];
+  editableFiles: RuntimeKitEditableFile[];
+  smokeChecks: string[];
+}
+
+export interface EvalCaseResult {
+  key: string;
+  label: string;
+  status: EvalStatus;
+  summary: string;
+  details: string[];
+}
+
+export interface EvalSuiteResult {
+  suiteVersion: string;
+  overallStatus: EvalStatus;
+  score: number;
+  summary: string;
+  cases: EvalCaseResult[];
+}
+
 export interface EnterpriseAppSpec {
   schemaVersion: string;
   generatedAt: string;
+  compiler: CompilerReport;
   customerProfile: CustomerProfile;
   businessDomain: string;
   appPurpose: string;
@@ -252,6 +430,8 @@ export interface EnterpriseAppSpec {
   complianceRequirements: ComplianceRequirement[];
   navigation: NavigationItem[];
   uiModules: UiModuleDefinition[];
+  moduleSelections: CompiledModuleSelection[];
+  adapterBindings: AdapterBinding[];
   dataModel: DataModelDraft;
   apiDraft: ApiContractDraft;
   automationOpportunities: AutomationOpportunity[];
@@ -286,6 +466,18 @@ export interface DesignToken {
   type: "color" | "font" | "spacing" | "radius" | "shadow";
 }
 
+export interface DesignTokenCollection {
+  key: string;
+  name: string;
+  tokenNames: string[];
+}
+
+export interface ThemeVariable {
+  name: string;
+  cssVar: string;
+  value: string;
+}
+
 export interface DesignComponentManifestEntry {
   key: string;
   name: string;
@@ -300,6 +492,24 @@ export interface ScreenMapEntry {
   purpose: string;
 }
 
+export interface PageSectionMapEntry {
+  key: string;
+  screenKey: string;
+  moduleKey: string;
+  title: string;
+  primitive: string;
+  copyKeys: string[];
+}
+
+export interface ContentModelEntry {
+  key: string;
+  entityKey: string;
+  label: string;
+  ownership: string;
+  fields: string[];
+  notes: string[];
+}
+
 export interface CopyMapEntry {
   key: string;
   text: string;
@@ -309,6 +519,7 @@ export interface CopyMapEntry {
 export interface FigmaAdapterDefinition {
   enabled: boolean;
   mode: "optional" | "configured";
+  adapterKey: string;
   importContract: string;
   exportContract: string;
   notes: string[];
@@ -318,8 +529,12 @@ export interface DesignHandoffPackage {
   generatedAt: string;
   themeConfig: ThemeConfig;
   tokens: DesignToken[];
+  tokenCollections: DesignTokenCollection[];
+  themeVariables: ThemeVariable[];
   componentManifest: DesignComponentManifestEntry[];
   screenMap: ScreenMapEntry[];
+  pageSections: PageSectionMapEntry[];
+  contentModel: ContentModelEntry[];
   copyMap: CopyMapEntry[];
   figmaAdapter: FigmaAdapterDefinition;
 }
@@ -339,7 +554,7 @@ export interface GenerationRequest {
 
 export interface GenerationArtifact {
   key: string;
-  type: "workspace" | "archive" | "design" | "docs" | "manifest";
+  type: "workspace" | "archive" | "design" | "docs" | "manifest" | "runtime-kit" | "eval";
   path: string;
   label: string;
   downloadable?: boolean;
@@ -377,6 +592,8 @@ export interface OperatorHandoff {
   knownLimitations: string[];
   nextRecommendedEdits: string[];
   customizationAreas: OperatorHandoffLink[];
+  runtimeKitHighlights: string[];
+  adapterReviewAreas: string[];
   approvalReviewAreas: string[];
   testingChecklist: string[];
 }
@@ -388,7 +605,10 @@ export interface GenerationJob {
   updatedAt: string;
   prompt: OperatorPromptInput;
   spec: EnterpriseAppSpec;
+  compilerReport: CompilerReport;
   validation: ValidationResult;
+  runtimeKit: GeneratedRuntimeKit;
+  evalSuite: EvalSuiteResult;
   approval: GenerationApproval;
   workspacePath?: string;
   artifacts: GenerationArtifact[];

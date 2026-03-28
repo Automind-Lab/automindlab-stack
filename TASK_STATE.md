@@ -1,22 +1,42 @@
 # Task State
 
-Last updated: 2026-03-28 02:31 UTC
+Last updated: 2026-03-28 06:37 UTC
 
 ## Current status
 
-- Description: Extended the Enterprise App Factory tranche with a constrained council/agent control plane, downloadable generated-workspace packaging, static client serving for the built service, and a test-ready operator handoff while preserving host/worker approval and audit boundaries.
+- Description: Completed the next Enterprise App Factory tranche on `codex/enterprise-app-factory-compiler`, upgrading the service into a versioned spec compiler with module registry, domain packs, adapter SDK metadata, runtime kit generation, compiler evals, and stronger design handoff artifacts.
 - Active repo: `C:\Users\cody_\Git\automindlab-stack`
-- Branch: `codex/enterprise-app-factory`
-- Last successful step: implemented the bounded council runtime and downloadable package flow, updated the operator console and repo contracts, and validated service CI, council sample, sample generation, sample verification, operator surfaces, enterprise app factory contracts, and repo operating-system files.
-- Next intended step: review the branch diff for packaging, commit/push/PR flow, or continue with a deeper live-model/runtime-parity tranche if requested.
+- Branch: `codex/enterprise-app-factory-compiler`
+- Last successful step: verified the upgraded service with `npm run ci`, regenerated and verified the Northstar sample workspace, validated enterprise app factory contracts, operator surfaces, and repo operating-system files, and repaired the generated runtime template until the end-to-end sample passed.
+- Next intended step: review the branch diff for packaging, commit/push/PR flow, or continue with the next requested enterprise-app-factory tranche.
 - Verification complete: true
 - Manual steps remaining:
-  - optional: review the council/runtime capability matrix and decide whether to pursue a live model-backed provider in a future pass
-  - optional: commit, push, and open a PR for `codex/enterprise-app-factory`
+  - optional: commit, push, and open a PR for `codex/enterprise-app-factory-compiler`
+  - optional: add more domain packs, richer adapter implementations, or broader eval coverage in a follow-on pass
   - optional: run cross-OS verification on macOS and Linux hosts before claiming full multi-OS proof
 - Safe to resume: true
 
 ## Recent checkpoints
+
+- 2026-03-28 06:37 UTC
+  - Repo: `C:\Users\cody_\Git\automindlab-stack`
+  - Branch: `codex/enterprise-app-factory-compiler`
+  - Files touched: Enterprise App Factory shared/server/client/template code, repo schemas/examples/docs, generated Northstar workspace, validation script, and continuity docs
+  - Last successful step: completed the compiler/registy/domain-pack/adapter/runtime-kit/eval refactor, updated the operator console and generated runtime template, regenerated the sample workspace, and validated `npm run ci`, `npm run sample`, `npm run verify:sample`, `node scripts/validate-enterprise-app-factory-contracts.mjs`, `node scripts/validate-operator-surfaces.mjs`, and `node scripts/validate-repo-operating-system.mjs`
+  - Next intended step: package the branch for review or continue with the next requested feature tranche
+  - Verification complete: true
+  - Manual steps remaining: optional review packaging and optional cross-OS verification
+  - Safe to resume: true
+
+- 2026-03-28 06:03 UTC
+  - Repo: `C:\Users\cody_\Git\automindlab-stack`
+  - Branch: `codex/enterprise-app-factory-compiler`
+  - Files touched: `TASK_STATE.md` and `WORK_IN_PROGRESS.md`
+  - Last successful step: read the required startup context, inspected the current Enterprise App Factory implementation on `main`, created the compiler upgrade branch, and scoped the refactor around existing service seams
+  - Next intended step: implement the versioned compiler, module registry, domain packs, adapter SDK metadata, eval harness, generated runtime kit, and matching UI/docs/test updates
+  - Verification complete: false
+  - Manual steps remaining: implementation, validation, and review packaging
+  - Safe to resume: true
 
 - 2026-03-28 02:31 UTC
   - Repo: `C:\Users\cody_\Git\automindlab-stack`

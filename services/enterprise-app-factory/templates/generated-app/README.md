@@ -21,6 +21,8 @@ npm run build
 ## Customize
 
 - `src/generated/app-spec.ts`
+- `src/generated/runtime-kit.ts`
+- `src/generated/eval-suite.ts`
 - `design/design-handoff.json`
 - `src/styles.css`
 - `docs/CUSTOMIZATION.md`

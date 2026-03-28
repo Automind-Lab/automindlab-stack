@@ -1,6 +1,10 @@
 {
-  "generatedAt": "2026-03-28T02:30:09.860Z",
-  "specVersion": "2026-03-27.v1",
+  "generatedAt": "2026-03-28T10:36:47.918Z",
+  "specVersion": "2026-03-28.spec.v2",
+  "compilerVersion": "2026-03-28.compiler.v2",
+  "runtimeKitVersion": "2026-03-28.runtime-kit.v2",
+  "evalSuiteVersion": "2026-03-28.eval-suite.v2",
   "appSlug": "northstar-medical-logistics",
-  "designPackage": "design/design-handoff.json"
+  "designPackage": "design/design-handoff.json",
+  "runtimeKit": "runtime/runtime-kit.json"
 }

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automindlab.dev/schemas/enterprise-app-eval-suite.schema.json",
+  "title": "Enterprise App Eval Suite",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["suiteVersion", "overallStatus", "score", "summary", "cases"],
+  "properties": {
+    "suiteVersion": { "type": "string" },
+    "overallStatus": { "type": "string" },
+    "score": { "type": "number" },
+    "summary": { "type": "string" },
+    "cases": { "type": "array", "items": { "type": "object" } }
+  }
+}

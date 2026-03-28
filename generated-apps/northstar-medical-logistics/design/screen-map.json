@@ -6,13 +6,13 @@
     "purpose": "Give operators a live view of workload, approvals, risk, and throughput."
   },
   {
-    "key": "entities",
+    "key": "entity-workbench",
     "title": "Entity Workbench",
     "route": "/entities",
     "purpose": "Manage business entities through typed forms, tables, and detail views."
   },
   {
-    "key": "workflows",
+    "key": "workflow-orchestrator",
     "title": "Workflow Orchestrator",
     "route": "/workflows",
     "purpose": "Track multi-step operational flows with visible ownership and escalation."
@@ -58,5 +58,35 @@
     "title": "Settings",
     "route": "/settings",
     "purpose": "Handle tenant-aware configuration without hard-coding secrets or approvals."
+  },
+  {
+    "key": "dispatch-board",
+    "title": "Dispatch Board",
+    "route": "/dispatch",
+    "purpose": "A dispatch-focused board for delivery, pickup, and field-routing work."
+  },
+  {
+    "key": "inventory-readiness",
+    "title": "Inventory Readiness",
+    "route": "/inventory",
+    "purpose": "Show warehouse readiness, cleaning status, and movement events."
+  },
+  {
+    "key": "service-ticket-console",
+    "title": "Service Ticket Console",
+    "route": "/service-tickets",
+    "purpose": "Review service request intake, ownership, and field resolution state."
+  },
+  {
+    "key": "account-operations",
+    "title": "Account Operations",
+    "route": "/accounts",
+    "purpose": "Account-level visibility for service history, regions, and risk."
+  },
+  {
+    "key": "task-assignment",
+    "title": "Task Assignment Board",
+    "route": "/tasks",
+    "purpose": "Track technician and operator assignments with due dates and escalation paths."
   }
 ]

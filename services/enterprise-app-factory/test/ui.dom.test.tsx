@@ -26,6 +26,15 @@ test("operator console loads default prompt", async () => {
     if (url.endsWith("/api/factory/agent-runs")) {
       return new Response(JSON.stringify([]), { status: 200 });
     }
+    if (url.endsWith("/api/factory/module-registry")) {
+      return new Response(JSON.stringify([]), { status: 200 });
+    }
+    if (url.endsWith("/api/factory/domain-packs")) {
+      return new Response(JSON.stringify([]), { status: 200 });
+    }
+    if (url.endsWith("/api/factory/adapters")) {
+      return new Response(JSON.stringify([]), { status: 200 });
+    }
     throw new Error(`Unexpected fetch: ${url}`);
   }));
 
@@ -35,5 +44,6 @@ test("operator console loads default prompt", async () => {
     expect(screen.getByDisplayValue("Northstar Medical Logistics")).toBeInTheDocument();
   });
   expect(screen.getByText("Enterprise App Factory")).toBeInTheDocument();
-  expect(screen.getByRole("button", { name: /run council review/i })).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: /compile spec/i })).toBeInTheDocument();
+  expect(screen.getByText(/Registry Snapshot/i)).toBeInTheDocument();
 });

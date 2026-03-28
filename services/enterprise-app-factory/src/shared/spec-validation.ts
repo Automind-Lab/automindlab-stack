@@ -61,6 +61,16 @@ export function validateEnterpriseAppSpec(spec: EnterpriseAppSpec): ValidationRe
     });
   }
 
+  if (!spec.compiler.compilerVersion.trim()) {
+    push(issues, {
+      code: "spec.compiler.version.required",
+      severity: "error",
+      path: "compiler.compilerVersion",
+      message: "Compiler version metadata is required.",
+      suggestedAction: "Build the spec through the versioned compiler pipeline.",
+    });
+  }
+
   if (!spec.customerProfile.tenancy.toLowerCase().includes("tenant")) {
     push(issues, {
       code: "spec.tenancy.explicit",
@@ -98,6 +108,26 @@ export function validateEnterpriseAppSpec(spec: EnterpriseAppSpec): ValidationRe
       path: "userRoles",
       message: "Enterprise apps should expose more than one role to preserve least privilege.",
       suggestedAction: "Add an operational role and an approval or audit role.",
+    });
+  }
+
+  if (spec.moduleSelections.length < 4) {
+    push(issues, {
+      code: "spec.module_selections.minimum",
+      severity: "warning",
+      path: "moduleSelections",
+      message: "The generated runtime should expose a broad enough module set to be useful and reviewable.",
+      suggestedAction: "Add module coverage for dashboard, workflow, governance, and settings surfaces.",
+    });
+  }
+
+  if (spec.adapterBindings.length === 0) {
+    push(issues, {
+      code: "spec.adapter_bindings.required",
+      severity: "warning",
+      path: "adapterBindings",
+      message: "Adapter bindings should remain explicit even when they are optional or deferred.",
+      suggestedAction: "Add typed adapter bindings for design, identity, and integration surfaces.",
     });
   }
 

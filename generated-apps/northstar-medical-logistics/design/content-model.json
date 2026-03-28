@@ -1,0 +1,98 @@
+[
+  {
+    "key": "approval_request",
+    "entityKey": "approval_request",
+    "label": "Approval Request",
+    "ownership": "governance",
+    "fields": [
+      "Request Type",
+      "Requested By",
+      "Risk Level",
+      "Decision State"
+    ],
+    "notes": [
+      "Captures explicitly gated actions and the justification behind them.",
+      "Tenant scoped by default."
+    ]
+  },
+  {
+    "key": "shipment_order",
+    "entityKey": "shipment_order",
+    "label": "Shipment Order",
+    "ownership": "operations",
+    "fields": [
+      "Order Number",
+      "Service Window",
+      "Status",
+      "Priority"
+    ],
+    "notes": [
+      "Tracks delivery and pickup obligations, timing, and status.",
+      "Tenant scoped by default."
+    ]
+  },
+  {
+    "key": "service_ticket",
+    "entityKey": "service_ticket",
+    "label": "Service Ticket",
+    "ownership": "operations",
+    "fields": [
+      "Ticket Number",
+      "Issue Type",
+      "Requested By",
+      "Resolution State"
+    ],
+    "notes": [
+      "Captures customer-reported work, triage, and resolution state.",
+      "Tenant scoped by default."
+    ]
+  },
+  {
+    "key": "inventory_item",
+    "entityKey": "inventory_item",
+    "label": "Inventory Item",
+    "ownership": "warehouse",
+    "fields": [
+      "Asset Tag",
+      "Current Location",
+      "Readiness State",
+      "Condition"
+    ],
+    "notes": [
+      "Represents equipment, readiness state, and warehouse location.",
+      "Tenant scoped by default."
+    ]
+  },
+  {
+    "key": "account",
+    "entityKey": "account",
+    "label": "Account",
+    "ownership": "customer-ops",
+    "fields": [
+      "Account Name",
+      "Region",
+      "Service Tier",
+      "Status"
+    ],
+    "notes": [
+      "Represents a customer account, service profile, and regional footprint.",
+      "Tenant scoped by default."
+    ]
+  },
+  {
+    "key": "task_assignment",
+    "entityKey": "task_assignment",
+    "label": "Task Assignment",
+    "ownership": "operations",
+    "fields": [
+      "Task Code",
+      "Assigned To",
+      "Due At",
+      "State"
+    ],
+    "notes": [
+      "Assigns operational work to a person or team with due dates and evidence.",
+      "Tenant scoped by default."
+    ]
+  }
+]
