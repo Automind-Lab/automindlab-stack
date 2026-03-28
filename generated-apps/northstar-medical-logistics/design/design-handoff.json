@@ -1,0 +1,269 @@
+{
+  "generatedAt": "2026-03-28T02:30:09.515Z",
+  "themeConfig": {
+    "brandName": "Northstar Medical Logistics",
+    "primaryColor": "#153f69",
+    "secondaryColor": "#5f95aa",
+    "accentColor": "#d97a2b",
+    "surfaceColor": "#f3f7f8",
+    "canvasColor": "#e4edf0",
+    "headingFont": "\"Bahnschrift SemiBold\", \"Aptos Display\", sans-serif",
+    "bodyFont": "\"Aptos\", \"Segoe UI Variable Text\", sans-serif",
+    "density": "balanced",
+    "logoTreatment": "Northstar monogram with a compass-star accent"
+  },
+  "tokens": [
+    {
+      "name": "color.brand.primary",
+      "value": "#153f69",
+      "type": "color"
+    },
+    {
+      "name": "color.brand.secondary",
+      "value": "#5f95aa",
+      "type": "color"
+    },
+    {
+      "name": "color.brand.accent",
+      "value": "#d97a2b",
+      "type": "color"
+    },
+    {
+      "name": "color.surface.default",
+      "value": "#f3f7f8",
+      "type": "color"
+    },
+    {
+      "name": "color.canvas.default",
+      "value": "#e4edf0",
+      "type": "color"
+    },
+    {
+      "name": "font.heading",
+      "value": "\"Bahnschrift SemiBold\", \"Aptos Display\", sans-serif",
+      "type": "font"
+    },
+    {
+      "name": "font.body",
+      "value": "\"Aptos\", \"Segoe UI Variable Text\", sans-serif",
+      "type": "font"
+    },
+    {
+      "name": "spacing.section",
+      "value": "24px",
+      "type": "spacing"
+    },
+    {
+      "name": "radius.panel",
+      "value": "18px",
+      "type": "radius"
+    }
+  ],
+  "componentManifest": [
+    {
+      "key": "dashboard",
+      "name": "Operations Dashboard",
+      "sourceModule": "dashboard",
+      "editableProps": [
+        "title",
+        "emptyStateCopy",
+        "accentColor",
+        "tableDensity"
+      ]
+    },
+    {
+      "key": "entities",
+      "name": "Entity Workbench",
+      "sourceModule": "entities",
+      "editableProps": [
+        "title",
+        "emptyStateCopy",
+        "accentColor",
+        "tableDensity"
+      ]
+    },
+    {
+      "key": "workflows",
+      "name": "Workflow Orchestrator",
+      "sourceModule": "workflows",
+      "editableProps": [
+        "title",
+        "emptyStateCopy",
+        "accentColor",
+        "tableDensity"
+      ]
+    },
+    {
+      "key": "approvals",
+      "name": "Approval Center",
+      "sourceModule": "approvals",
+      "editableProps": [
+        "title",
+        "emptyStateCopy",
+        "accentColor",
+        "tableDensity"
+      ]
+    },
+    {
+      "key": "audit",
+      "name": "Audit Stream",
+      "sourceModule": "audit",
+      "editableProps": [
+        "title",
+        "emptyStateCopy",
+        "accentColor",
+        "tableDensity"
+      ]
+    },
+    {
+      "key": "roles",
+      "name": "Roles and Access",
+      "sourceModule": "roles",
+      "editableProps": [
+        "title",
+        "emptyStateCopy",
+        "accentColor",
+        "tableDensity"
+      ]
+    },
+    {
+      "key": "integrations",
+      "name": "Integrations",
+      "sourceModule": "integrations",
+      "editableProps": [
+        "title",
+        "emptyStateCopy",
+        "accentColor",
+        "tableDensity"
+      ]
+    },
+    {
+      "key": "notifications",
+      "name": "Notifications",
+      "sourceModule": "notifications",
+      "editableProps": [
+        "title",
+        "emptyStateCopy",
+        "accentColor",
+        "tableDensity"
+      ]
+    },
+    {
+      "key": "reports",
+      "name": "Reports",
+      "sourceModule": "reports",
+      "editableProps": [
+        "title",
+        "emptyStateCopy",
+        "accentColor",
+        "tableDensity"
+      ]
+    },
+    {
+      "key": "settings",
+      "name": "Settings",
+      "sourceModule": "settings",
+      "editableProps": [
+        "title",
+        "emptyStateCopy",
+        "accentColor",
+        "tableDensity"
+      ]
+    }
+  ],
+  "screenMap": [
+    {
+      "key": "dashboard",
+      "title": "Operations Dashboard",
+      "route": "/dashboard",
+      "purpose": "Give operators a live view of workload, approvals, risk, and throughput."
+    },
+    {
+      "key": "entities",
+      "title": "Entity Workbench",
+      "route": "/entities",
+      "purpose": "Manage business entities through typed forms, tables, and detail views."
+    },
+    {
+      "key": "workflows",
+      "title": "Workflow Orchestrator",
+      "route": "/workflows",
+      "purpose": "Track multi-step operational flows with visible ownership and escalation."
+    },
+    {
+      "key": "approvals",
+      "title": "Approval Center",
+      "route": "/approvals",
+      "purpose": "Keep irreversible actions behind explicit review and audit events."
+    },
+    {
+      "key": "audit",
+      "title": "Audit Stream",
+      "route": "/audit",
+      "purpose": "Trace meaningful workflow events and changes across the tenant boundary."
+    },
+    {
+      "key": "roles",
+      "title": "Roles and Access",
+      "route": "/roles",
+      "purpose": "Review least-privilege access and approval scopes by role."
+    },
+    {
+      "key": "integrations",
+      "title": "Integrations",
+      "route": "/integrations",
+      "purpose": "Make sync boundaries, credential ownership, and failure modes explicit."
+    },
+    {
+      "key": "notifications",
+      "title": "Notifications",
+      "route": "/notifications",
+      "purpose": "Configure operator-facing rules and escalation paths."
+    },
+    {
+      "key": "reports",
+      "title": "Reports",
+      "route": "/reports",
+      "purpose": "Expose operational summaries and trend views for review."
+    },
+    {
+      "key": "settings",
+      "title": "Settings",
+      "route": "/settings",
+      "purpose": "Handle tenant-aware configuration without hard-coding secrets or approvals."
+    }
+  ],
+  "copyMap": [
+    {
+      "key": "summary",
+      "text": "Northstar Medical Logistics needs an internal enterprise app built from reusable primitives for Build an internal operations app with dispatch dashboard, service tickets, pickup and delivery workflows, warehouse inventory status, hospital account views, technician task assignments, approvals for urgent replacements, audit logs, role-based access, and reporting. Include admin settings, notification rules, CSV import and export, and future ERP integration support.",
+      "location": "application shell header"
+    },
+    {
+      "key": "purpose",
+      "text": "Build an internal operations app with dispatch dashboard, service tickets, pickup and delivery workflows, warehouse inventory status, hospital account views, technician task assignments, approvals for urgent replacements, audit logs, role-based access, and reporting. Include admin settings, notification rules, CSV import and export, and future ERP integration support.",
+      "location": "overview screen"
+    },
+    {
+      "key": "report.throughput",
+      "text": "Show workload movement, completion rates, and backlog shape.",
+      "location": "reporting/throughput"
+    },
+    {
+      "key": "report.approval-latency",
+      "text": "Track time-to-decision for gated actions.",
+      "location": "reporting/approval-latency"
+    }
+  ],
+  "figmaAdapter": {
+    "enabled": false,
+    "mode": "optional",
+    "importContract": "design-handoff-package.v1",
+    "exportContract": "design-handoff-package.v1",
+    "notes": [
+      "Figma integration is adapter-based and optional.",
+      "Generation does not fail when no design adapter is configured.",
+      "Use the token and screen map payloads as the boundary for future Figma MCP work."
+    ]
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://automindlab.dev/schemas/enterprise-app-agent-run.schema.json",
+  "title": "Enterprise App Agent Run",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "status",
+    "createdAt",
+    "updatedAt",
+    "providerMode",
+    "operator",
+    "request",
+    "selectedSeatKeys",
+    "summary",
+    "root",
+    "delegationPlan",
+    "capabilityMatrix",
+    "uncertainty",
+    "warnings",
+    "logs"
+  ],
+  "properties": {
+    "id": { "type": "string" },
+    "status": { "type": "string" },
+    "createdAt": { "type": "string" },
+    "updatedAt": { "type": "string" },
+    "providerMode": { "type": "string", "enum": ["deterministic"] },
+    "operator": { "type": "string" },
+    "linkedGenerationJobId": { "type": "string" },
+    "request": { "$ref": "enterprise-app-agent-run-request.schema.json" },
+    "selectedSeatKeys": { "type": "array", "items": { "type": "string" } },
+    "summary": { "type": "string" },
+    "root": { "$ref": "#/$defs/node" },
+    "delegationPlan": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["from", "to", "purpose", "reason"],
+        "properties": {
+          "from": { "type": "string" },
+          "to": { "type": "string" },
+          "purpose": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "capabilityMatrix": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["key", "label", "support", "notes"],
+        "properties": {
+          "key": { "type": "string" },
+          "label": { "type": "string" },
+          "support": { "type": "string" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "uncertainty": {
+      "type": "object",
+      "required": ["level", "reasons", "missingContext", "operatorQuestions"],
+      "properties": {
+        "level": { "type": "string" },
+        "reasons": { "type": "array", "items": { "type": "string" } },
+        "missingContext": { "type": "array", "items": { "type": "string" } },
+        "operatorQuestions": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "logs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["at", "agentKey", "depth", "message", "level"],
+        "properties": {
+          "at": { "type": "string" },
+          "agentKey": { "type": "string" },
+          "depth": { "type": "integer" },
+          "message": { "type": "string" },
+          "level": { "type": "string" }
+        }
+      }
+    },
+    "failureReason": { "type": "string" }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "agentKey", "name", "type", "depth", "status", "purpose", "summary", "findings", "recommendations", "children"],
+      "properties": {
+        "id": { "type": "string" },
+        "agentKey": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "type": "string" },
+        "depth": { "type": "integer" },
+        "status": { "type": "string" },
+        "purpose": { "type": "string" },
+        "summary": { "type": "string" },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["severity", "title", "detail", "safeAction"],
+            "properties": {
+              "severity": { "type": "string" },
+              "title": { "type": "string" },
+              "detail": { "type": "string" },
+              "safeAction": { "type": "string" }
+            }
+          }
+        },
+        "recommendations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["key", "title", "rationale", "priority", "owner", "blocking"],
+            "properties": {
+              "key": { "type": "string" },
+              "title": { "type": "string" },
+              "rationale": { "type": "string" },
+              "priority": { "type": "string" },
+              "owner": { "type": "string" },
+              "blocking": { "type": "boolean" }
+            }
+          }
+        },
+        "children": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/node" }
+        }
+      }
+    }
+  }
+}

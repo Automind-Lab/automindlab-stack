@@ -1,21 +1,62 @@
 # Task State
 
-Last updated: 2026-03-27 15:49 UTC
+Last updated: 2026-03-28 02:31 UTC
 
 ## Current status
 
-- Description: The major enterprise translation pass is merged to `main`, including runtime operating-system hardening, governed donor capability intake, runtime-owned email contracts, browser-proof planning, and finish-clean publishing hooks.
+- Description: Extended the Enterprise App Factory tranche with a constrained council/agent control plane, downloadable generated-workspace packaging, static client serving for the built service, and a test-ready operator handoff while preserving host/worker approval and audit boundaries.
 - Active repo: `C:\Users\cody_\Git\automindlab-stack`
-- Branch: `main`
-- Last successful step: merged PR `#32` and PR `#33`, fast-forwarded local `main` to `origin/main`, and confirmed the repo is clean with no open PRs.
-- Next intended step: optional live AgentMail/OpenClaw proof on a machine with credentials and a real gateway install, or begin the next enterprise capability tranche from the now-clean `main` branch.
+- Branch: `codex/enterprise-app-factory`
+- Last successful step: implemented the bounded council runtime and downloadable package flow, updated the operator console and repo contracts, and validated service CI, council sample, sample generation, sample verification, operator surfaces, enterprise app factory contracts, and repo operating-system files.
+- Next intended step: review the branch diff for packaging, commit/push/PR flow, or continue with a deeper live-model/runtime-parity tranche if requested.
 - Verification complete: true
 - Manual steps remaining:
-  - optional: export `AGENTMAIL_API_KEY` and `AGENTMAIL_BASE_URL`, then run `node scripts/agentmail-live-check.mjs --require-live`
-  - optional: run `./scripts/runtime-doctor.sh`, `./scripts/worker-status.sh`, and `./scripts/bootstrap-recovery.sh` on a machine that has a live `openclaw` installation and seeded workspaces
+  - optional: review the council/runtime capability matrix and decide whether to pursue a live model-backed provider in a future pass
+  - optional: commit, push, and open a PR for `codex/enterprise-app-factory`
+  - optional: run cross-OS verification on macOS and Linux hosts before claiming full multi-OS proof
 - Safe to resume: true
 
 ## Recent checkpoints
+
+- 2026-03-28 02:31 UTC
+  - Repo: `C:\Users\cody_\Git\automindlab-stack`
+  - Branch: `codex/enterprise-app-factory`
+  - Files touched: Enterprise App Factory service source/tests/docs, root/service env examples, repo schemas/examples, operator manifest/policy, Makefile, README, generated sample workspace, and continuity docs
+  - Last successful step: completed the bounded council runtime, generated-package download flow, operator UI refresh, and validation including `npm run ci`, `npm run council:sample`, `npm run sample`, `npm run verify:sample`, `node scripts/validate-enterprise-app-factory-contracts.mjs`, `node scripts/validate-operator-surfaces.mjs`, and `node scripts/validate-repo-operating-system.mjs`
+  - Next intended step: package the branch for review or continue with a deeper live-model follow-on if requested
+  - Verification complete: true
+  - Manual steps remaining: optional commit/push/PR and optional cross-OS verification
+  - Safe to resume: true
+
+- 2026-03-28 02:32 UTC
+  - Repo: `C:\Users\cody_\Git\automindlab-stack`
+  - Branch: `codex/enterprise-app-factory`
+  - Files touched: `TASK_STATE.md` and `WORK_IN_PROGRESS.md`
+  - Last successful step: reloaded startup context, inspected the current Enterprise App Factory implementation, and scoped the next extension for council/agent orchestration plus downloadable packaging
+  - Next intended step: implement the new runtime contracts, UI, packaging, docs, and verification updates
+  - Verification complete: false
+  - Manual steps remaining: implementation, validation, and optional review packaging
+  - Safe to resume: true
+
+- 2026-03-28 01:53 UTC
+  - Repo: `C:\Users\cody_\Git\automindlab-stack`
+  - Branch: `codex/enterprise-app-factory`
+  - Files touched: `.env.example`, `.gitignore`, `README.md`, `Makefile`, `TASK_STATE.md`, `WORK_IN_PROGRESS.md`, `docs/ENTERPRISE_APP_FACTORY_CONTRACT.md`, `scripts/validate-enterprise-app-factory-contracts.mjs`, `config/operator/`, `config/schemas/`, `config/examples/`, `services/enterprise-app-factory/`, and `generated-apps/northstar-medical-logistics/`
+  - Last successful step: completed the Enterprise App Factory implementation plus sample generation and verification
+  - Next intended step: package the branch for review or continue with deeper refinement if requested
+  - Verification complete: true
+  - Manual steps remaining: optional review packaging and additional polish only
+  - Safe to resume: true
+
+- 2026-03-28 01:17 UTC
+  - Repo: `C:\Users\cody_\Git\automindlab-stack`
+  - Branch: `codex/enterprise-app-factory`
+  - Files touched: `TASK_STATE.md` and `WORK_IN_PROGRESS.md`
+  - Last successful step: established the enterprise app factory architecture and continuity checkpoint after reading required startup context plus reference-repo conventions
+  - Next intended step: implement the new service package, contracts, generated app system, and validation flow
+  - Verification complete: false
+  - Manual steps remaining: implementation, dependency install, validation, and review
+  - Safe to resume: true
 
 - 2026-03-27 11:50 UTC
   - Repo: `C:\Users\cody_\Git\automindlab-stack`
